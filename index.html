@@ -169,6 +169,57 @@
             ring: #4f46e5;
         }
         
+        /* API Key Management Styles */
+        .api-key-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        #api-key-input {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+        
+        #api-key-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .api-key-status {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .api-key-status.text-green-600::before {
+            content: '✓';
+            color: #16a34a;
+            font-weight: bold;
+        }
+        
+        .api-key-status.text-red-500::before {
+            content: '✗';
+            color: #dc2626;
+            font-weight: bold;
+        }
+        
+        .api-key-status.text-yellow-600::before {
+            content: '⚠';
+            color: #d97706;
+            font-weight: bold;
+        }
+        
+        #toggle-api-key-visibility {
+            transition: color 0.2s ease;
+        }
+        
+        #toggle-api-key-visibility:hover {
+            color: #3b82f6;
+        }
+        
         #ai-summarize-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: #2563eb; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; z-index: 999; transition: transform 0.2s ease-in-out; }
         #ai-summarize-btn:hover { transform: scale(1.1); }
 
@@ -412,6 +463,36 @@
             <div id="tab-content" class="py-4 flex-grow overflow-y-auto">
                 <!-- TAB: IA -->
                 <div id="panel-ia" class="tab-panel space-y-4">
+                    <details class="control-group" open>
+                        <summary><span>Configuration API Gemini</span><label class="completion-label"><input type="checkbox" id="completion-ia-config" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-3">
+                            <div class="space-y-2">
+                                <label for="api-key-input" class="block text-sm font-medium text-gray-700">Clé API Gemini</label>
+                                <div class="flex gap-2">
+                                    <input type="password" id="api-key-input" placeholder="Entrez votre clé API Gemini..." class="flex-1 p-2 border rounded-md text-sm">
+                                    <button id="save-api-key-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm flex items-center gap-1">
+                                        <i class="fas fa-save"></i> Sauver
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span id="api-key-status" class="api-key-status text-sm text-red-500">Clé API manquante</span>
+                                    <button id="toggle-api-key-visibility" class="text-gray-500 hover:text-gray-700 text-sm" title="Afficher/Masquer la clé">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+                                    <p class="text-xs text-blue-800">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        <strong>Comment obtenir votre clé API :</strong><br>
+                                        1. Allez sur <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline">Google AI Studio</a><br>
+                                        2. Créez une nouvelle clé API<br>
+                                        3. Copiez-la et collez-la ci-dessus<br>
+                                        <em>La clé est stockée localement dans votre navigateur.</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
                     <details class="control-group" open>
                         <summary><span>Analyse IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
@@ -729,7 +810,7 @@
             // --- GLOBAL SELECTORS (STATIC) ---
             const controls = {
                 aiInput: document.getElementById('ai-input'), analyzeBtn: document.getElementById('analyze-btn'), loader: document.getElementById('loader-overlay'), loaderText: document.getElementById('loader-text'),
-                apiKeyInput: document.getElementById('api-key-input'), saveApiKeyBtn: document.getElementById('save-api-key-btn'), apiKeyStatus: document.getElementById('api-key-status'),
+                apiKeyInput: document.getElementById('api-key-input'), saveApiKeyBtn: document.getElementById('save-api-key-btn'), apiKeyStatus: document.getElementById('api-key-status'), toggleApiKeyVisibilityBtn: document.getElementById('toggle-api-key-visibility'),
                 nom: document.getElementById('nom'), prenom: document.getElementById('prenom'), poste: document.getElementById('poste'),
                 description: document.getElementById('description'), competences: document.getElementById('competences'), aiSynthesizeSkillsBtn: document.getElementById('ai-synthesize-skills-btn'),
                 experienceList: document.getElementById('experience-list'), addExperienceBtn: document.getElementById('add-experience'),
@@ -1497,6 +1578,25 @@
                 }
             }
 
+            function toggleApiKeyVisibility() {
+                if (!controls.apiKeyInput || !controls.toggleApiKeyVisibilityBtn) return;
+                
+                const isPassword = controls.apiKeyInput.type === 'password';
+                const icon = controls.toggleApiKeyVisibilityBtn.querySelector('i');
+                
+                if (isPassword) {
+                    controls.apiKeyInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                    controls.toggleApiKeyVisibilityBtn.title = 'Masquer la clé';
+                } else {
+                    controls.apiKeyInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                    controls.toggleApiKeyVisibilityBtn.title = 'Afficher la clé';
+                }
+            }
+
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
@@ -1627,8 +1727,8 @@
                 
                 setDefaultRecruiterInfo();
                 applyTheme('professional');
-                document.querySelector('.layout-btn[data-layout="layout-1-col"]').click();
-                document.querySelector('.skill-style-btn[data-skill-style="tags"]').click();
+                document.querySelector('.layout-btn[data-layout="layout-1-col"]')?.click();
+                document.querySelector('.skill-style-btn[data-skill-style="tags"]')?.click();
                 
                 Object.values(sliders).forEach(config => {
                     const defaultValue = config.el.defaultValue;
@@ -1651,670 +1751,50 @@
                 showNotification("Le CV a été réinitialisé.", "success");
             }
 
-            function applyTheme(themeName) {
-                const theme = themes[themeName];
-                if (!theme) return;
-
-                controls.primaryColorPicker.value = theme.primaryColor;
-                controls.secondaryColorPicker.value = theme.secondaryColor;
-                controls.bodyTextColorPicker.value = theme.bodyTextColor;
-                controls.fontFamilyH1Select.value = theme.fontH1;
-                controls.fontFamilyH2Select.value = theme.fontH2;
-                controls.fontFamilyBodySelect.value = theme.fontBody;
-
-                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-                document.querySelector(`.theme-btn[data-theme="${themeName}"]`)?.classList.add('active');
-
-                updateAllStyles();
-                updatePreview('theme');
-            }
+            // --- INITIALIZATION ---
             
-            async function handleAIAction(action, moduleElement) {
-                let prompt = '';
-                let targetControl = null;
-
-                switch (action) {
-                    case 'rewrite-profile':
-                        const profileText = controls.description.value;
-                        if (!profileText) { showNotification("Le profil est vide.", "error"); return; }
-                        prompt = `En tant qu'expert en recrutement, réécris ce profil de CV pour qu'il soit plus percutant et professionnel, en utilisant des verbes d'action forts. Garde une longueur similaire et un ton professionnel. Ne retourne que le paragraphe final réécrit, sans aucun commentaire. Le profil actuel est : "${profileText}"`;
-                        targetControl = controls.description;
-                        const newProfile = await callGeminiAPI(prompt);
-                        if (newProfile && targetControl) {
-                            targetControl.value = newProfile;
-                            showNotification("Profil amélioré par l'IA.", "success");
-                        }
-                        break;
-                    case 'summarize-experience':
-                        await summarizeAllExperiencesAI();
-                        break;
-                    case 'rewrite-formation':
-                        const formations = getDynamicData(controls.formationList);
-                        if (formations.length === 0) { showNotification("Aucune formation à améliorer.", "error"); return; }
-                        const formationSchema = { type: "ARRAY", items: { type: "OBJECT", properties: { title: { type: "STRING" }, meta: { type: "STRING" } } } };
-                        const formationPrompt = `En tant qu'expert RH, améliore la formulation de ces entrées de formation pour un CV. Rends les titres plus percutants et les descriptions plus claires si nécessaire. Ne retourne que le résultat final sous forme de tableau JSON \`[{"title": "...", "meta": "..."}]\` sans aucun commentaire ou texte additionnel. Voici les données actuelles : ${JSON.stringify(formations.map(f => ({ title: f.title, meta: f.meta })))}`;
-                        const newFormations = await callGeminiAPI(formationPrompt, formationSchema);
-                        if (newFormations && Array.isArray(newFormations)) {
-                            controls.formationList.innerHTML = '';
-                            newFormations.forEach(form => createDynamicItem(controls.formationList, [{ key: 'title', placeholder: 'Nom du diplôme' }, { key: 'meta', placeholder: 'Établissement & Année' }], form));
-                            showNotification("Formations améliorées par l'IA.", "success");
-                        }
-                        break;
-                    case 'rewrite-skills':
-                        await synthesizeSkillsWithAI();
-                        break;
-                    default:
-                        return;
-                }
-                updatePreview('form');
-            }
+            // Load API key on startup
+            loadApiKey();
             
-            function setDefaultRecruiterInfo() {
-                controls.bannerNom.value = "Lyes AMARA";
-                controls.bannerPoste.value = "Responsable d’activité recrutement – BTP – France";
-                controls.bannerEmail.value = "l.amara@ltd-international.com";
-                controls.bannerTel.value = "01 56 02 12 25 / 06 34 25 32 96";
-            }
-
-            function anonymizeCV() {
-                if (isAnonymized) {
-                    controls.nom.value = originalData.nom;
-                    controls.prenom.value = originalData.prenom;
-                    
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-secret"></i> Anonymiser le CV';
-                    isAnonymized = false;
-                    showNotification("CV désanonymisé.", "success");
-                } else {
-                    originalData = {
-                        nom: controls.nom.value,
-                        prenom: controls.prenom.value,
-                    };
-                    
-                    const firstLetter = originalData.nom ? originalData.nom.charAt(0) + '.' : '';
-                    controls.nom.value = firstLetter;
-                    controls.prenom.value = originalData.prenom;
-                    
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-check"></i> Désanonymiser le CV';
-                    isAnonymized = true;
-                    showNotification("CV anonymisé.", "success");
-                }
-                updatePreview('form');
-            }
-
-            async function summarizeAllExperiencesAI() {
-                const experienceItems = controls.experienceList.querySelectorAll('.data-desc');
-                if (experienceItems.length === 0) {
-                    showNotification("Aucune expérience à résumer.", "error");
-                    return;
-                }
-
-                showLoader("Synthèse des expériences...");
-                for (let i = 0; i < experienceItems.length; i++) {
-                    const textarea = experienceItems[i];
-                    const originalText = textarea.value;
-                    if (originalText) {
-                        const prompt = `Résume la description de cette mission professionnelle en 5 lignes maximum. Utilise des verbes d'action et un format de liste à puces (chaque point commençant par '• '). Ne retourne que le texte final formaté en liste à puces, sans aucune phrase d'introduction, de conclusion ou de commentaire. Voici la description : "${originalText}"`;
-                        const summary = await callGeminiAPI(prompt);
-                        if (summary) {
-                            textarea.value = summary;
-                        }
-                    }
-                }
-                hideLoader();
-                updatePreview('form');
-                showNotification("Toutes les expériences ont été synthétisées.", "success");
-            }
-
-            async function synthesizeSkillsWithAI() {
-                const currentSkills = controls.competences.value;
-                if (!currentSkills) {
-                    showNotification("La liste de compétences est vide.", "error");
-                    return;
-                }
-                const prompt = `Analyse cette liste de compétences de CV: "${currentSkills}". Regroupe-les par catégories pertinentes (ex: Langages, Frameworks, Outils, Logiciels, Langues, etc.). Retourne le résultat sous la forme "Catégorie 1: compétence A, compétence B\nCatégorie 2: compétence C, compétence D". Ne retourne que le texte final formaté, sans aucune phrase d'introduction, de conclusion ou de commentaire.`;
-
-                const organizedSkills = await callGeminiAPI(prompt);
-                if (organizedSkills) {
-                    controls.competences.value = organizedSkills;
-                    updatePreview('form');
-                    showNotification("Compétences organisées par l'IA.", "success");
-                }
-            }
-
-            async function limitSkillsWithAI() {
-                const currentSkills = controls.competences.value;
-                const jobTitle = controls.poste.value;
-                if (!currentSkills) {
-                    showNotification("La liste de compétences est vide.", "error");
-                    return;
-                }
-                if (!jobTitle) {
-                    showNotification("Veuillez renseigner le 'Poste recherché' pour de meilleurs résultats.", "error");
-                    return;
-                }
-                const prompt = `À partir de cette liste de compétences: "${currentSkills}", sélectionne les 10 compétences les plus importantes et pertinentes pour un poste de "${jobTitle}". Retourne uniquement la liste des 10 compétences, séparées par des virgules, sans aucune phrase d'introduction, de conclusion ou de commentaire.`;
-
-                const limitedSkills = await callGeminiAPI(prompt);
-                if (limitedSkills) {
-                    controls.competences.value = limitedSkills;
-                    updatePreview('form');
-                    showNotification("Compétences limitées à 10 par l'IA.", "success");
-                }
-            }
-            
-            function removeBannerBackground() {
-                preview.bannerBgImg.src = '';
-                controls.bannerBgImage.value = ''; // Reset file input
-                controls.bannerBgOpacity.value = 1;
-                controls.bannerBgBlur.value = 0;
-                controls.bannerBgGrayscale.checked = false;
-                updateBannerBackground();
-            }
-
-            // NEW: Progress Bar Update Function
-            function updateProgressBar() {
-                const checkboxes = document.querySelectorAll('.completion-checkbox');
-                const total = checkboxes.length;
-                const completed = document.querySelectorAll('.completion-checkbox:checked').length;
-                const percentage = total > 0 ? (completed / total) * 100 : 0;
-
-                const progressBar = document.getElementById('progress-bar');
-                const progressText = document.getElementById('progress-text');
-
-                if(progressBar) progressBar.style.width = `${percentage}%`;
-                if(progressText) progressText.textContent = `${completed}/${total} sections complétées`;
-            }
-
-            function populateLevelsFromText() {
-                const text = controls.competences.value;
-                const skills = text
-                    .replace(/.*:/g, '') // Remove category labels like "Langages:"
-                    .split(/,|\n/)
-                    .map(s => s.trim())
-                    .filter(Boolean);
-
-                controls.skillsLevelList.innerHTML = '';
-                skills.forEach(skill => createSkillLevelItem(skill, 3));
-            }
-
-            // --- INITIALIZATION FUNCTION ---
-            function initializeAll() {
-                console.log("Initializing UI components and event listeners...");
-                
-                reinitializePreviewSelectors();
-                initializeSortableForPage(1);
-                
-                populateFontSelectors();
-                populateIconPicker();
-
-                loadApiKey();
-
-                // --- EVENT LISTENERS ---
-
-                const tabNavigation = document.getElementById('tab-navigation');
-                const tabPanels = document.querySelectorAll('.tab-panel');
-                const tabButtons = document.querySelectorAll('.tab-btn');
-                
-                tabNavigation.addEventListener('click', (e) => {
-                    const tabBtn = e.target.closest('.tab-btn');
-                    if (!tabBtn) return;
-                    tabPanels.forEach(panel => panel.classList.add('hidden'));
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('border-blue-600', 'text-blue-600');
-                        btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                    });
-                    const targetPanelId = tabBtn.dataset.target;
-                    document.querySelector(targetPanelId).classList.remove('hidden');
-                    tabBtn.classList.add('border-blue-600', 'text-blue-600');
-                    tabBtn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+            // Event listeners for API key management
+            if (controls.saveApiKeyBtn) {
+                controls.saveApiKeyBtn.addEventListener('click', () => {
+                    saveApiKey();
+                    showNotification("Clé API sauvegardée avec succès.", "success");
                 });
-                tabButtons[0].click();
-
-                controls.saveApiKeyBtn.addEventListener('click', saveApiKey);
-                controls.apiKeyInput.addEventListener('input', updateApiKeyStatus);
-
-                controls.undoBtn.addEventListener('click', undo);
-                controls.redoBtn.addEventListener('click', redo);
-                document.addEventListener('keydown', (e) => {
-                    if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); }
-                    if (e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); }
-                });
-
-                controls.addExperienceBtn.addEventListener('click', () => createDynamicItem(controls.experienceList, [{ key: 'title', placeholder: 'Titre du poste' }, { key: 'meta', placeholder: 'Entreprise & Dates' }, { key: 'desc', placeholder: 'Description des missions', type: 'textarea' }]));
-                controls.addFormationBtn.addEventListener('click', () => createDynamicItem(controls.formationList, [{ key: 'title', placeholder: 'Nom du diplôme' }, { key: 'meta', placeholder: 'Établissement & Année' }]));
-                
-                const controlsPanel = document.getElementById('controls');
-                controlsPanel.addEventListener('input', (e) => {
-                    if (e.target.matches('.cv-input, .banner-input, .custom-section-input, #banner-bg-opacity, #banner-bg-blur, #banner-bg-grayscale')) {
-                        if (e.target.matches('#banner-bg-opacity, #banner-bg-blur, #banner-bg-grayscale')) {
-                             updateBannerBackground();
+            }
+            
+            if (controls.toggleApiKeyVisibilityBtn) {
+                controls.toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
+            }
+            
+            if (controls.apiKeyInput) {
+                controls.apiKeyInput.addEventListener('input', () => {
+                    // Update status in real-time as user types
+                    const hasKey = controls.apiKeyInput.value.trim().length > 0;
+                    if (controls.apiKeyStatus) {
+                        if (hasKey) {
+                            controls.apiKeyStatus.textContent = 'Clé API prête à être sauvegardée';
+                            controls.apiKeyStatus.classList.remove('text-red-500');
+                            controls.apiKeyStatus.classList.add('text-yellow-600');
                         } else {
-                             updatePreview('form');
-                             updateAllStyles();
+                            controls.apiKeyStatus.textContent = 'Clé API manquante';
+                            controls.apiKeyStatus.classList.remove('text-yellow-600', 'text-green-600');
+                            controls.apiKeyStatus.classList.add('text-red-500');
                         }
-                    }
-                    if(e.target.matches('.completion-checkbox')) {
-                        updateProgressBar();
-                    }
-                     if(e.target.matches('.skill-level-input')) {
-                         e.target.nextElementSibling.textContent = `${e.target.value}/5`;
-                         updatePreview('form');
-                     }
-                });
-                 controlsPanel.addEventListener('change', (e) => {
-                    if (e.target.matches('.cv-input, .banner-input, .custom-section-input')) {
-                        updatePreview('form');
-                        updateAllStyles();
-                    }
-                });
-
-                controls.bannerImage.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => { preview.bannerImg.src = event.target.result; };
-                        reader.readAsDataURL(file);
                     }
                 });
                 
-                controls.bannerBgImage.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            preview.bannerBgImg.src = event.target.result;
-                            updateBannerBackground();
-                        };
-                        reader.readAsDataURL(file);
+                // Save API key on Enter
+                controls.apiKeyInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        saveApiKey();
+                        showNotification("Clé API sauvegardée avec succès.", "success");
                     }
                 });
-
-                preview.previewWrapper.addEventListener('input', (e) => {
-                    if (e.target.hasAttribute('contenteditable')) {
-                        syncFormFromPreview(e.target);
-                    }
-                });
-
-                preview.previewWrapper.addEventListener('click', (e) => {
-                    const target = e.target;
-                    
-                    const visibilityBtn = target.closest('.toggle-visibility-btn');
-                    if (visibilityBtn) {
-                        const moduleElement = visibilityBtn.closest('.cv-module');
-                        const icon = visibilityBtn.querySelector('i');
-                        if (moduleElement) {
-                            moduleElement.classList.toggle('section-hidden');
-                            const isHidden = moduleElement.classList.contains('section-hidden');
-                            if (icon) {
-                                icon.className = `fas ${isHidden ? 'fa-eye-slash' : 'fa-eye'}`;
-                            }
-                        }
-                        return;
-                    }
-
-                    const aiBtn = target.closest('.ai-action-btn');
-                    if (aiBtn) {
-                        const action = aiBtn.dataset.action;
-                        if (action) {
-                            handleAIAction(action);
-                        }
-                        return;
-                    }
-
-                    const deleteBlockBtn = target.closest('.delete-block-btn');
-                    if (deleteBlockBtn) {
-                        const itemContainer = deleteBlockBtn.closest('.dynamic-item-container');
-                        if (itemContainer) {
-                            const index = parseInt(itemContainer.dataset.index, 10);
-                            const type = itemContainer.dataset.type;
-                            const formList = type === 'experience' ? controls.experienceList : controls.formationList;
-                            if (formList.children[index]) {
-                                formList.children[index].remove();
-                                updatePreview('form');
-                            }
-                        } else {
-                            const customModule = deleteBlockBtn.closest('.custom-module-preview');
-                            if(customModule) {
-                                const controlItem = controls.customSectionsList.querySelector(`[data-section-id="${customModule.id}"]`);
-                                if(controlItem) controlItem.remove();
-                                customModule.remove();
-                            }
-                        }
-                        return;
-                    }
-
-                    const addLineBtn = target.closest('.add-line-preview-btn');
-                    if (addLineBtn) {
-                        const index = parseInt(addLineBtn.dataset.index, 10);
-                        const type = addLineBtn.dataset.type;
-                        if (type === 'experience') createDynamicItem(controls.experienceList, [{ key: 'title', placeholder: 'Titre du poste' }, { key: 'meta', placeholder: 'Entreprise & Dates' }, { key: 'desc', placeholder: 'Description des missions', type: 'textarea' }], {}, index);
-                        else if (type === 'formation') createDynamicItem(controls.formationList, [{ key: 'title', placeholder: 'Nom du diplôme' }, { key: 'meta', placeholder: 'Établissement & Année' }], {}, index);
-                        return;
-                    }
-
-                    const deleteLineBtn = target.closest('.delete-line-btn');
-                    if (deleteLineBtn) {
-                        const wrapper = deleteLineBtn.closest('.editable-wrapper');
-                        if (wrapper) {
-                            wrapper.remove();
-                            syncFormFromPreview(wrapper.closest('.dynamic-preview-item') || document.getElementById('cv-description-preview'));
-                        }
-                        return;
-                    }
-                    
-                    const removePageBtn = target.closest('.remove-page-btn');
-                    if (removePageBtn) {
-                        const pageContainer = removePageBtn.closest('.a4-page-container');
-                        if (pageContainer) {
-                            pageContainer.remove();
-                            checkAllPagesOverflow();
-                        }
-                        return;
-                    }
-                });
-
-                controlsPanel.addEventListener('click', (e) => {
-                    const target = e.target;
-                    
-                    const removeBtn = target.closest('.remove-dynamic-item-btn, .remove-skill-level-btn');
-                    if (removeBtn) {
-                        removeBtn.parentElement.remove();
-                        updatePreview('form');
-                        return;
-                    }
-                    const removeSectionBtn = target.closest('.remove-section-btn');
-                    if (removeSectionBtn) {
-                        const sectionDiv = removeSectionBtn.closest('[data-section-id]');
-                        const sectionId = sectionDiv.dataset.sectionId;
-                        sectionDiv.remove();
-                        const previewModule = document.getElementById(sectionId);
-                        if(previewModule) previewModule.remove();
-                        return;
-                    }
-                    
-                    const layoutBtn = target.closest('.layout-btn');
-                    if (layoutBtn) {
-                        const layout = layoutBtn.dataset.layout;
-                        document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active'));
-                        layoutBtn.classList.add('active');
-                        document.querySelectorAll('.cv-body-container').forEach(container => {
-                           container.className = `cv-body-container ${layout}`;
-                           if (layout === 'layout-1-col') {
-                               const col2 = container.querySelector('.cv-column:nth-child(2)');
-                               const col1 = container.querySelector('.cv-column:nth-child(1)');
-                               if (col2 && col1) Array.from(col2.children).forEach(module => col1.appendChild(module));
-                           }
-                           container.style.gridTemplateColumns = '';
-                        });
-                        setupAllResizers();
-                        checkAllPagesOverflow();
-                        return;
-                    }
-
-                    const titleStyleBtn = target.closest('.section-title-style-btn');
-                    if (titleStyleBtn) {
-                        document.querySelectorAll('.section-title-style-btn').forEach(b => b.classList.remove('active'));
-                        titleStyleBtn.classList.add('active');
-                        updateAllStyles();
-                        return;
-                    }
-                    
-                    const themeBtn = target.closest('.theme-btn');
-                    if (themeBtn) {
-                        applyTheme(themeBtn.dataset.theme);
-                        return;
-                    }
-
-                    const logoSizeBtn = target.closest('.logo-size-btn');
-                    if (logoSizeBtn) {
-                        document.querySelectorAll('.logo-size-btn').forEach(b => b.classList.remove('active'));
-                        logoSizeBtn.classList.add('active');
-                        preview.bannerImg.className = `logo-${logoSizeBtn.dataset.logoSize}`;
-                        return;
-                    }
-
-                    const skillStyleBtn = target.closest('.skill-style-btn');
-                    if (skillStyleBtn) {
-                        document.querySelectorAll('.skill-style-btn').forEach(b => b.classList.remove('active'));
-                        skillStyleBtn.classList.add('active');
-                        const style = skillStyleBtn.dataset.skillStyle;
-                        controls.skillsTextControls.classList.toggle('hidden', style === 'levels');
-                        controls.skillsLevelControls.classList.toggle('hidden', style !== 'levels');
-                        if (style === 'levels') {
-                            populateLevelsFromText();
-                        }
-                        updatePreview('form');
-                        return;
-                    }
-                    
-                    const gaugeStyleBtn = target.closest('.gauge-style-btn');
-                    if (gaugeStyleBtn) {
-                        document.querySelectorAll('.gauge-style-btn').forEach(b => b.classList.remove('active'));
-                        gaugeStyleBtn.classList.add('active');
-                        updatePreview('form');
-                        return;
-                    }
-
-                    const styleToggleBtn = target.closest('.style-toggle-btn');
-                    if (styleToggleBtn) {
-                        styleToggleBtn.classList.toggle('active');
-                        updatePreview('form');
-                        return;
-                    }
-                });
-
-                Object.values(sliders).forEach(config => {
-                    config.el.addEventListener('input', () => {
-                        config.valueEl.textContent = config.el.value;
-                        root.style.setProperty(config.property, `${config.el.value}${config.unit}`);
-                        checkAllPagesOverflow();
-                    });
-                });
-                
-                controls.analyzeBtn.addEventListener('click', async () => {
-                    const text = controls.aiInput.value;
-                    if (!text) { showNotification("Veuillez coller du texte à analyser.", "error"); return; }
-                    const schema = {
-                        type: "OBJECT",
-                        properties: {
-                            nom: { type: "STRING" }, prenom: { type: "STRING" }, poste: { type: "STRING" }, description: { type: "STRING" },
-                            experiences: { type: "ARRAY", items: { type: "OBJECT", properties: { title: { type: "STRING" }, meta: { type: "STRING" }, desc: { type: "STRING" } } } },
-                            formations: { type: "ARRAY", items: { type: "OBJECT", properties: { title: { type: "STRING" }, meta: { type: "STRING" } } } },
-                            competences: { type: "STRING" }
-                        }
-                    };
-                    const prompt = `Analyse le texte suivant et extrais les informations pour un CV. Formate la sortie en JSON respectant ce schéma. Sois concis. Texte : """${text}"""`;
-                    
-                    const extractedData = await callGeminiAPI(prompt, schema);
-                    
-                    if (extractedData) {
-                        controls.nom.value = extractedData.nom || '';
-                        controls.prenom.value = extractedData.prenom || '';
-                        controls.poste.value = extractedData.poste || '';
-                        controls.description.value = extractedData.description || '';
-                        controls.competences.value = extractedData.competences || '';
-                        
-                        controls.experienceList.innerHTML = '';
-                        (extractedData.experiences || []).forEach(exp => createDynamicItem(controls.experienceList, [{ key: 'title', placeholder: 'Titre du poste' }, { key: 'meta', placeholder: 'Entreprise & Dates' }, { key: 'desc', placeholder: 'Description', type: 'textarea' }], exp));
-                        
-                        controls.formationList.innerHTML = '';
-                        (extractedData.formations || []).forEach(form => createDynamicItem(controls.formationList, [{ key: 'title', placeholder: 'Nom du diplôme' }, { key: 'meta', placeholder: 'Établissement & Année' }], form));
-
-                        updatePreview('form');
-                        showNotification("CV rempli par l'IA !", "success");
-                    }
-                });
-                
-                controls.generateMailBtn.addEventListener('click', async () => {
-                    const nomCandidat = `${controls.prenom.value} ${controls.nom.value}`.trim();
-                    const posteCandidat = controls.poste.value;
-                    const dispoCandidat = controls.qualificationDispo.value;
-                    const salaireCandidat = controls.qualificationSalaire.value;
-                    const profilCandidat = controls.description.value;
-                    const nomRecruteur = controls.bannerNom.value || "votre consultant";
-                    const posteRecruteur = controls.bannerPoste.value || "cabinet de recrutement";
-
-                    if (!nomCandidat || !posteCandidat) {
-                        showNotification("Veuillez renseigner au moins le nom, prénom et poste du candidat.", "error");
-                        return;
-                    }
-
-                    const prompt = `En tant que consultant en recrutement pour un cabinet, rédige un e-mail de vente percutant destiné à un client pour lui présenter un excellent candidat.
-                    
-                    **Ton Persona:** Tu es ${nomRecruteur}, ${posteRecruteur}. Tu es proactif, professionnel et tu connais bien ton marché.
-                    **Objectif:** Convaincre le client de l'adéquation du profil avec ses besoins potentiels et l'inciter à en savoir plus.
-                    
-                    **Informations sur le candidat à intégrer:**
-                    - Nom du candidat: ${nomCandidat}
-                    - Poste ciblé: ${posteCandidat}
-                    - Disponibilité: ${dispoCandidat || 'à discuter'}
-                    - Prétentions salariales: ${salaireCandidat || 'à discuter'}
-                    - Résumé du profil: "${profilCandidat}"
-
-                    **Structure de l'e-mail:**
-                    1.  **Objet accrocheur:** Ex: "Profil - [Poste du candidat]" ou "Opportunité: Un [Poste du candidat] pour vos équipes".
-                    2.  **Introduction:** Commence par une formule de politesse professionnelle (ex: "Bonjour,"). Mentionne que tu le contactes pour lui présenter un profil qui pourrait l'intéresser.
-                    3.  **Présentation du profil:** Met en avant les points forts du candidat en te basant sur son résumé. Sois concis et impactant. Mentionne le poste, et éventuellement une ou deux compétences clés si elles sont évidentes.
-                    4.  **Informations pratiques:** Indique sa disponibilité et ses prétentions salariales de manière professionnelle.
-                    5.  **Call to action:** Propose d'envoyer le CV complet et/ou de planifier un bref appel pour discuter plus en détail du profil.
-                    6.  **Conclusion:** Termine par une formule de politesse et ta signature (${nomRecruteur}).
-
-                    **Important:** Ne retourne QUE le texte de l'e-mail (objet inclus, sous la forme "Objet: ..."), sans aucune phrase d'introduction ou de conclusion de ta part. Le ton doit être celui d'un partenaire commercial, pas celui du candidat.`;
-
-                    const mailContent = await callGeminiAPI(prompt);
-                    if (mailContent) {
-                        controls.recruiterMailContent.value = mailContent;
-                        showNotification("E-mail de présentation client généré.", "success");
-                    }
-                });
-
-                controls.downloadPdfBtn.addEventListener('click', async () => {
-                    const filename = `CV_${controls.prenom.value}_${controls.nom.value}.pdf`.replace(/ /g, '_');
-                    document.body.classList.add('presentation-mode');
-
-                    const bannerImg = preview.bannerImg;
-                    const bannerBg = preview.bannerBgImg;
-                    const originalBannerImg = { src: bannerImg.src, style: bannerImg.style.cssText };
-                    const originalBannerBg = { src: bannerBg.src, style: bannerBg.style.cssText };
-
-                    const processImage = async (imgElement, isCircle = false) => {
-                        if (!imgElement.src || imgElement.src.startsWith('https://placehold.co')) return;
-
-                        const img = new Image();
-                        img.crossOrigin = "anonymous";
-                        
-                        const promise = new Promise((resolve) => {
-                            img.onload = () => {
-                                const canvas = document.createElement('canvas');
-                                const ctx = canvas.getContext('2d');
-                                const size = Math.min(img.naturalWidth, img.naturalHeight);
-                                canvas.width = isCircle ? size : img.naturalWidth;
-                                canvas.height = isCircle ? size : img.naturalHeight;
-
-                                if (isCircle) {
-                                    ctx.beginPath();
-                                    ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
-                                    ctx.clip();
-                                }
-                                
-                                const hRatio = canvas.width / img.naturalWidth;
-                                const vRatio = canvas.height / img.naturalHeight;
-                                const ratio = Math.max(hRatio, vRatio);
-                                const centerShift_x = (canvas.width - img.naturalWidth * ratio) / 2;
-                                const centerShift_y = (canvas.height - img.naturalHeight * ratio) / 2;
-                                
-                                const opacity = imgElement.style.opacity || '1';
-                                const filter = imgElement.style.filter || 'none';
-                                ctx.globalAlpha = parseFloat(opacity);
-                                ctx.filter = filter;
-                                
-                                ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, centerShift_x, centerShift_y, img.naturalWidth * ratio, img.naturalHeight * ratio);
-
-                                imgElement.src = canvas.toDataURL('image/png');
-                                imgElement.style.borderRadius = '0';
-                                imgElement.style.objectFit = 'contain';
-                                imgElement.style.filter = 'none';
-                                imgElement.style.opacity = '1';
-                                resolve();
-                            };
-                            img.onerror = () => {
-                                console.error("Could not load image for PDF processing:", imgElement.src);
-                                resolve(); // Resolve anyway to not block PDF generation
-                            };
-                        });
-                        img.src = imgElement.src;
-                        return promise;
-                    };
-                    
-                    await processImage(bannerImg, true);
-                    await processImage(bannerBg, false);
-
-                    const opt = {
-                        margin: 0,
-                        filename: filename,
-                        image: { type: 'jpeg', quality: 0.98 },
-                        html2canvas: { scale: 2, useCORS: true, logging: false },
-                        jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
-                    };
-
-                    html2pdf().from(preview.previewWrapper).set(opt).save().finally(() => {
-                        bannerImg.src = originalBannerImg.src;
-                        bannerImg.style.cssText = originalBannerImg.style;
-                        bannerBg.src = originalBannerBg.src;
-                        bannerBg.style.cssText = originalBannerBg.style;
-                        document.body.classList.remove('presentation-mode');
-                    });
-                });
-
-                controls.resetCvBtn.addEventListener('click', async () => {
-                    const confirmed = await showConfirmModal("Nouveau CV", "Êtes-vous sûr de vouloir réinitialiser complètement le CV ?");
-                    if (confirmed) resetCVToDefault();
-                });
-                
-                controls.togglePresentationModeBtn.addEventListener('click', () => {
-                    document.body.classList.toggle('presentation-mode');
-                    const isActive = document.body.classList.contains('presentation-mode');
-                    controls.togglePresentationModeBtn.innerHTML = `<i class="fa-solid ${isActive ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isActive ? 'Quitter Présentation' : 'Mode Présentation'}`;
-                });
-                
-                controls.toggleOverflowBtn.addEventListener('click', (e) => {
-                    document.body.classList.toggle('overflow-check-active');
-                    e.currentTarget.classList.toggle('active');
-                    checkAllPagesOverflow();
-                });
-
-                controls.aiSummarizeBtn.addEventListener('click', summarizeAllExperiencesAI);
-                controls.aiSynthesizeSkillsBtn.addEventListener('click', synthesizeSkillsWithAI);
-                controls.aiLimitSkillsBtn.addEventListener('click', limitSkillsWithAI);
-                controls.anonymizeBtn.addEventListener('click', anonymizeCV);
-                controls.resetRecruiterBtn.addEventListener('click', () => { setDefaultRecruiterInfo(); updatePreview('form'); });
-                controls.addPageBtn.addEventListener('click', () => addNewPage());
-                controls.removeBannerBgBtn.addEventListener('click', () => removeBannerBackground());
-                controls.addSectionBtn.addEventListener('click', () => {
-                    const title = controls.newSectionTitleInput.value.trim();
-                    if(title) {
-                        addCustomSection(title);
-                        controls.newSectionTitleInput.value = '';
-                    } else {
-                        showNotification("Veuillez entrer un titre pour la nouvelle section.", "error");
-                    }
-                });
-                controls.sectionSuggestionSelect.addEventListener('change', (e) => {
-                    if(e.target.value) controls.newSectionTitleInput.value = e.target.value;
-                });
-                controls.fixBannerTopBtn.addEventListener('click', () => moveBannerTo('top'));
-                controls.fixBannerBottomBtn.addEventListener('click', () => moveBannerTo('bottom'));
-                controls.modularBannerBtn.addEventListener('click', () => moveBannerTo('modular'));
-                controls.addSkillLevelBtn.addEventListener('click', () => createSkillLevelItem());
-
-                document.querySelectorAll('.a4-page').forEach(setupOverflowObserver);
             }
             
-            // --- START THE APP ---
-            initializeAll();
-            resetCVToDefault(); // Start with a clean slate
         });
-
     </script>
 </body>
 </html>
