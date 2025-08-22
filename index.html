@@ -1,10 +1,12 @@
+<!-- Test comment -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créateur de CV IA - Pro Recruteur</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS CDN removed for production - Use PostCSS plugin or Tailwind CLI instead -->
+    <!-- See: https://tailwindcss.com/docs/installation -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:wght@400;700&family=Merriweather:wght@400;700&family=Oswald:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -320,8 +322,38 @@
         }
 
     </style>
+    
+    <!-- Custom CSS to replace missing Tailwind utility classes -->
+    <style>
+        /* Replace Tailwind utility classes */
+        .bg-gray-200 { background-color: #e5e7eb; }
+        .bg-white { background-color: #ffffff; }
+        .bg-opacity-75 { opacity: 0.75; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .fixed { position: fixed; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .h-16 { height: 4rem; }
+        .w-16 { width: 4rem; }
+        .rounded-full { border-radius: 9999px; }
+        .border-4 { border-width: 4px; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .border-t-blue-600 { border-top-color: #2563eb; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .mt-4 { margin-top: 1rem; }
+        .text-gray-600 { color: #4b5563; }
+        .font-medium { font-weight: 500; }
+    </style>
 </head>
-<body class="bg-gray-200 font-sans">
+<body class="bg-gray-200">
 
     <!-- OVERLAYS AND MODALS -->
     <div id="loader-overlay" class="hidden fixed inset-0 bg-white bg-opacity-75 flex-col items-center justify-center z-[9999]">
@@ -829,15 +861,15 @@
             const themes = {
                 professional: {
                     primaryColor: '#2563eb', secondaryColor: '#334155', bodyTextColor: '#334155',
-                    fontH1: "'Montserrat', sans-serif", fontH2: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif"
+                    fontH1: "'Montserrat', 'sans-serif'", fontH2: "'Montserrat', 'sans-serif'", fontBody: "'Lato', 'sans-serif'"
                 },
                 creative: {
                     primaryColor: '#db2777', secondaryColor: '#4f46e5', bodyTextColor: '#44403c',
-                    fontH1: "'Playfair Display', serif", fontH2: "'Oswald', sans-serif", fontBody: "'Nunito Sans', sans-serif"
+                    fontH1: "'Playfair Display', 'serif'", fontH2: "'Oswald', 'sans-serif'", fontBody: "'Nunito Sans', 'sans-serif'"
                 },
                 modern: {
                     primaryColor: '#16a34a', secondaryColor: '#1f2937', bodyTextColor: '#374151',
-                    fontH1: "'Oswald', sans-serif", fontH2: "'Source Sans Pro', sans-serif", fontBody: "'Source Sans Pro', sans-serif"
+                    fontH1: "'Oswald', 'sans-serif'", fontH2: "'Source Sans Pro', 'sans-serif'", fontBody: "'Source Sans Pro', 'sans-serif'"
                 }
             };
             
@@ -1558,16 +1590,16 @@
 
             function populateFontSelectors() {
                 const fonts = [
-                    { name: 'Lato', value: "'Lato', sans-serif" },
-                    { name: 'Montserrat', value: "'Montserrat', sans-serif" },
+                    { name: 'Lato', value: "'Lato', 'sans-serif'" },
+                    { name: 'Montserrat', value: "'Montserrat', 'sans-serif'" },
                     { name: 'Roboto Mono', value: "'Roboto Mono', monospace" },
-                    { name: 'Playfair Display', value: "'Playfair Display', serif" },
-                    { name: 'Merriweather', value: "'Merriweather', serif" },
-                    { name: 'Oswald', value: "'Oswald', sans-serif" },
-                    { name: 'Open Sans', value: "'Open Sans', sans-serif" },
-                    { name: 'Source Sans Pro', value: "'Source Sans Pro', sans-serif" },
-                    { name: 'Nunito Sans', value: "'Nunito Sans', sans-serif" },
-                    { name: 'Cormorant Garamond', value: "'Cormorant Garamond', serif" },
+                    { name: 'Playfair Display', value: "'Playfair Display', 'serif'" },
+                    { name: 'Merriweather', value: "'Merriweather', 'serif'" },
+                    { name: 'Oswald', value: "'Oswald', 'sans-serif'" },
+                    { name: 'Open Sans', value: "'Open Sans', 'sans-serif'" },
+                    { name: 'Source Sans Pro', value: "'Source Sans Pro', 'sans-serif'" },
+                    { name: 'Nunito Sans', value: "'Nunito Sans', 'sans-serif'" },
+                    { name: 'Cormorant Garamond', value: "'Cormorant Garamond', 'serif'" },
                 ];
                 const selects = [controls.fontFamilyH1Select, controls.fontFamilyH2Select, controls.fontFamilyBodySelect, controls.bannerNomFont];
                 selects.forEach(select => {
