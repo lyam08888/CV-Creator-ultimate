@@ -1,12 +1,10 @@
-<!-- Test comment -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créateur de CV IA - Pro Recruteur</title>
-    <!-- Tailwind CSS CDN removed for production - Use PostCSS plugin or Tailwind CLI instead -->
-    <!-- See: https://tailwindcss.com/docs/installation -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:wght@400;700&family=Merriweather:wght@400;700&family=Oswald:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -373,38 +371,8 @@
         }
 
     </style>
-    
-    <!-- Custom CSS to replace missing Tailwind utility classes -->
-    <style>
-        /* Replace Tailwind utility classes */
-        .bg-gray-200 { background-color: #e5e7eb; }
-        .bg-white { background-color: #ffffff; }
-        .bg-opacity-75 { opacity: 0.75; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .fixed { position: fixed; }
-        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .h-16 { height: 4rem; }
-        .w-16 { width: 4rem; }
-        .rounded-full { border-radius: 9999px; }
-        .border-4 { border-width: 4px; }
-        .border-gray-200 { border-color: #e5e7eb; }
-        .border-t-blue-600 { border-top-color: #2563eb; }
-        .animate-spin { animation: spin 1s linear infinite; }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .mt-4 { margin-top: 1rem; }
-        .text-gray-600 { color: #4b5563; }
-        .font-medium { font-weight: 500; }
-    </style>
 </head>
-<body class="bg-gray-200">
+<body class="bg-gray-200 font-sans">
 
     <!-- OVERLAYS AND MODALS -->
     <div id="loader-overlay" class="hidden fixed inset-0 bg-white bg-opacity-75 flex-col items-center justify-center z-[9999]">
@@ -810,7 +778,6 @@
             // --- GLOBAL SELECTORS (STATIC) ---
             const controls = {
                 aiInput: document.getElementById('ai-input'), analyzeBtn: document.getElementById('analyze-btn'), loader: document.getElementById('loader-overlay'), loaderText: document.getElementById('loader-text'),
-                apiKeyInput: document.getElementById('api-key-input'), saveApiKeyBtn: document.getElementById('save-api-key-btn'), apiKeyStatus: document.getElementById('api-key-status'), toggleApiKeyVisibilityBtn: document.getElementById('toggle-api-key-visibility'),
                 nom: document.getElementById('nom'), prenom: document.getElementById('prenom'), poste: document.getElementById('poste'),
                 description: document.getElementById('description'), competences: document.getElementById('competences'), aiSynthesizeSkillsBtn: document.getElementById('ai-synthesize-skills-btn'),
                 experienceList: document.getElementById('experience-list'), addExperienceBtn: document.getElementById('add-experience'),
@@ -931,15 +898,15 @@
             const themes = {
                 professional: {
                     primaryColor: '#2563eb', secondaryColor: '#334155', bodyTextColor: '#334155',
-                    fontH1: "'Montserrat', 'sans-serif'", fontH2: "'Montserrat', 'sans-serif'", fontBody: "'Lato', 'sans-serif'"
+                    fontH1: "'Montserrat', sans-serif", fontH2: "'Montserrat', sans-serif", fontBody: "'Lato', sans-serif"
                 },
                 creative: {
                     primaryColor: '#db2777', secondaryColor: '#4f46e5', bodyTextColor: '#44403c',
-                    fontH1: "'Playfair Display', 'serif'", fontH2: "'Oswald', 'sans-serif'", fontBody: "'Nunito Sans', 'sans-serif'"
+                    fontH1: "'Playfair Display', serif", fontH2: "'Oswald', sans-serif", fontBody: "'Nunito Sans', sans-serif"
                 },
                 modern: {
                     primaryColor: '#16a34a', secondaryColor: '#1f2937', bodyTextColor: '#374151',
-                    fontH1: "'Oswald', 'sans-serif'", fontH2: "'Source Sans Pro', 'sans-serif'", fontBody: "'Source Sans Pro', 'sans-serif'"
+                    fontH1: "'Oswald', sans-serif", fontH2: "'Source Sans Pro', sans-serif", fontBody: "'Source Sans Pro', sans-serif"
                 }
             };
             
@@ -949,9 +916,8 @@
             const root = document.documentElement;
             let isAnonymized = false;
             let originalData = {};
-            let isRestoringState = false;
+            let isRestoringState = false; 
             let activeIconTarget = null;
-            let storedApiKey = '';
             
             // --- UI UTILITIES ---
             function showLoader(text = "Chargement...") {
@@ -1546,62 +1512,10 @@
                 updateAllStyles();
             }
 
-            function saveApiKey() {
-                storedApiKey = controls.apiKeyInput.value.trim();
-                if (storedApiKey) {
-                    localStorage.setItem('gemini_api_key', storedApiKey);
-                } else {
-                    localStorage.removeItem('gemini_api_key');
-                }
-                updateApiKeyStatus();
-            }
-
-            function loadApiKey() {
-                storedApiKey = localStorage.getItem('gemini_api_key') || '';
-                if (controls.apiKeyInput) {
-                    controls.apiKeyInput.value = storedApiKey;
-                }
-                updateApiKeyStatus();
-                return storedApiKey;
-            }
-
-            function updateApiKeyStatus() {
-                if (!controls.apiKeyStatus) return;
-                if (storedApiKey) {
-                    controls.apiKeyStatus.textContent = 'Clé API enregistrée';
-                    controls.apiKeyStatus.classList.remove('text-red-500');
-                    controls.apiKeyStatus.classList.add('text-green-600');
-                } else {
-                    controls.apiKeyStatus.textContent = 'Clé API manquante';
-                    controls.apiKeyStatus.classList.remove('text-green-600');
-                    controls.apiKeyStatus.classList.add('text-red-500');
-                }
-            }
-
-            function toggleApiKeyVisibility() {
-                if (!controls.apiKeyInput || !controls.toggleApiKeyVisibilityBtn) return;
-                
-                const isPassword = controls.apiKeyInput.type === 'password';
-                const icon = controls.toggleApiKeyVisibilityBtn.querySelector('i');
-                
-                if (isPassword) {
-                    controls.apiKeyInput.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                    controls.toggleApiKeyVisibilityBtn.title = 'Masquer la clé';
-                } else {
-                    controls.apiKeyInput.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                    controls.toggleApiKeyVisibilityBtn.title = 'Afficher la clé';
-                }
-            }
-
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
-                    const apiKey = storedApiKey || '';
-                    if (!apiKey) throw new Error("Aucune clé API n'est enregistrée.");
+                    const apiKey = ""; // Provided automatically by the environment
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                     
                     const payload = {
@@ -1677,16 +1591,16 @@
 
             function populateFontSelectors() {
                 const fonts = [
-                    { name: 'Lato', value: "'Lato', 'sans-serif'" },
-                    { name: 'Montserrat', value: "'Montserrat', 'sans-serif'" },
+                    { name: 'Lato', value: "'Lato', sans-serif" },
+                    { name: 'Montserrat', value: "'Montserrat', sans-serif" },
                     { name: 'Roboto Mono', value: "'Roboto Mono', monospace" },
-                    { name: 'Playfair Display', value: "'Playfair Display', 'serif'" },
-                    { name: 'Merriweather', value: "'Merriweather', 'serif'" },
-                    { name: 'Oswald', value: "'Oswald', 'sans-serif'" },
-                    { name: 'Open Sans', value: "'Open Sans', 'sans-serif'" },
-                    { name: 'Source Sans Pro', value: "'Source Sans Pro', 'sans-serif'" },
-                    { name: 'Nunito Sans', value: "'Nunito Sans', 'sans-serif'" },
-                    { name: 'Cormorant Garamond', value: "'Cormorant Garamond', 'serif'" },
+                    { name: 'Playfair Display', value: "'Playfair Display', serif" },
+                    { name: 'Merriweather', value: "'Merriweather', serif" },
+                    { name: 'Oswald', value: "'Oswald', sans-serif" },
+                    { name: 'Open Sans', value: "'Open Sans', sans-serif" },
+                    { name: 'Source Sans Pro', value: "'Source Sans Pro', sans-serif" },
+                    { name: 'Nunito Sans', value: "'Nunito Sans', sans-serif" },
+                    { name: 'Cormorant Garamond', value: "'Cormorant Garamond', serif" },
                 ];
                 const selects = [controls.fontFamilyH1Select, controls.fontFamilyH2Select, controls.fontFamilyBodySelect, controls.bannerNomFont];
                 selects.forEach(select => {
@@ -1756,27 +1670,180 @@
             // Load API key on startup
             loadApiKey();
             
-            // Event listeners for API key management
-            if (controls.saveApiKeyBtn) {
-                controls.saveApiKeyBtn.addEventListener('click', () => {
-                    saveApiKey();
-                    showNotification("Clé API sauvegardée avec succès.", "success");
+            function setDefaultRecruiterInfo() {
+                controls.bannerNom.value = "Lyes AMARA";
+                controls.bannerPoste.value = "Responsable d’activité recrutement – BTP – France";
+                controls.bannerEmail.value = "l.amara@ltd-international.com";
+                controls.bannerTel.value = "01 56 02 12 25 / 06 34 25 32 96";
+            }
+
+            function anonymizeCV() {
+                if (isAnonymized) {
+                    controls.nom.value = originalData.nom;
+                    controls.prenom.value = originalData.prenom;
+                    
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-secret"></i> Anonymiser le CV';
+                    isAnonymized = false;
+                    showNotification("CV désanonymisé.", "success");
+                } else {
+                    originalData = {
+                        nom: controls.nom.value,
+                        prenom: controls.prenom.value,
+                    };
+                    
+                    const firstLetter = originalData.nom ? originalData.nom.charAt(0) + '.' : '';
+                    controls.nom.value = firstLetter;
+                    controls.prenom.value = originalData.prenom;
+                    
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-check"></i> Désanonymiser le CV';
+                    isAnonymized = true;
+                    showNotification("CV anonymisé.", "success");
+                }
+                updatePreview('form');
+            }
+
+            async function summarizeAllExperiencesAI() {
+                const experienceItems = controls.experienceList.querySelectorAll('.data-desc');
+                if (experienceItems.length === 0) {
+                    showNotification("Aucune expérience à résumer.", "error");
+                    return;
+                }
+
+                showLoader("Synthèse des expériences...");
+                for (let i = 0; i < experienceItems.length; i++) {
+                    const textarea = experienceItems[i];
+                    const originalText = textarea.value;
+                    if (originalText) {
+                        const prompt = `Résume la description de cette mission professionnelle en 5 lignes maximum. Utilise des verbes d'action et un format de liste à puces (chaque point commençant par '• '). Ne retourne que le texte final formaté en liste à puces, sans aucune phrase d'introduction, de conclusion ou de commentaire. Voici la description : "${originalText}"`;
+                        const summary = await callGeminiAPI(prompt);
+                        if (summary) {
+                            textarea.value = summary;
+                        }
+                    }
+                }
+                hideLoader();
+                updatePreview('form');
+                showNotification("Toutes les expériences ont été synthétisées.", "success");
+            }
+
+            async function synthesizeSkillsWithAI() {
+                const currentSkills = controls.competences.value;
+                if (!currentSkills) {
+                    showNotification("La liste de compétences est vide.", "error");
+                    return;
+                }
+                const prompt = `Analyse cette liste de compétences de CV: "${currentSkills}". Regroupe-les par catégories pertinentes (ex: Langages, Frameworks, Outils, Logiciels, Langues, etc.). Retourne le résultat sous la forme "Catégorie 1: compétence A, compétence B\nCatégorie 2: compétence C, compétence D". Ne retourne que le texte final formaté, sans aucune phrase d'introduction, de conclusion ou de commentaire.`;
+
+                const organizedSkills = await callGeminiAPI(prompt);
+                if (organizedSkills) {
+                    controls.competences.value = organizedSkills;
+                    updatePreview('form');
+                    showNotification("Compétences organisées par l'IA.", "success");
+                }
+            }
+
+            async function limitSkillsWithAI() {
+                const currentSkills = controls.competences.value;
+                const jobTitle = controls.poste.value;
+                if (!currentSkills) {
+                    showNotification("La liste de compétences est vide.", "error");
+                    return;
+                }
+                if (!jobTitle) {
+                    showNotification("Veuillez renseigner le 'Poste recherché' pour de meilleurs résultats.", "error");
+                    return;
+                }
+                const prompt = `À partir de cette liste de compétences: "${currentSkills}", sélectionne les 10 compétences les plus importantes et pertinentes pour un poste de "${jobTitle}". Retourne uniquement la liste des 10 compétences, séparées par des virgules, sans aucune phrase d'introduction, de conclusion ou de commentaire.`;
+
+                const limitedSkills = await callGeminiAPI(prompt);
+                if (limitedSkills) {
+                    controls.competences.value = limitedSkills;
+                    updatePreview('form');
+                    showNotification("Compétences limitées à 10 par l'IA.", "success");
+                }
+            }
+            
+            function removeBannerBackground() {
+                preview.bannerBgImg.src = '';
+                controls.bannerBgImage.value = ''; // Reset file input
+                controls.bannerBgOpacity.value = 1;
+                controls.bannerBgBlur.value = 0;
+                controls.bannerBgGrayscale.checked = false;
+                updateBannerBackground();
+            }
+
+            // NEW: Progress Bar Update Function
+            function updateProgressBar() {
+                const checkboxes = document.querySelectorAll('.completion-checkbox');
+                const total = checkboxes.length;
+                const completed = document.querySelectorAll('.completion-checkbox:checked').length;
+                const percentage = total > 0 ? (completed / total) * 100 : 0;
+
+                const progressBar = document.getElementById('progress-bar');
+                const progressText = document.getElementById('progress-text');
+
+                if(progressBar) progressBar.style.width = `${percentage}%`;
+                if(progressText) progressText.textContent = `${completed}/${total} sections complétées`;
+            }
+
+            function populateLevelsFromText() {
+                const text = controls.competences.value;
+                const skills = text
+                    .replace(/.*:/g, '') // Remove category labels like "Langages:"
+                    .split(/,|\n/)
+                    .map(s => s.trim())
+                    .filter(Boolean);
+
+                controls.skillsLevelList.innerHTML = '';
+                skills.forEach(skill => createSkillLevelItem(skill, 3));
+            }
+
+            // --- INITIALIZATION FUNCTION ---
+            function initializeAll() {
+                console.log("Initializing UI components and event listeners...");
+                
+                reinitializePreviewSelectors();
+                initializeSortableForPage(1);
+                
+                populateFontSelectors();
+                populateIconPicker();
+
+                // --- EVENT LISTENERS ---
+
+                const tabNavigation = document.getElementById('tab-navigation');
+                const tabPanels = document.querySelectorAll('.tab-panel');
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                
+                tabNavigation.addEventListener('click', (e) => {
+                    const tabBtn = e.target.closest('.tab-btn');
+                    if (!tabBtn) return;
+                    tabPanels.forEach(panel => panel.classList.add('hidden'));
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('border-blue-600', 'text-blue-600');
+                        btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    });
+                    const targetPanelId = tabBtn.dataset.target;
+                    document.querySelector(targetPanelId).classList.remove('hidden');
+                    tabBtn.classList.add('border-blue-600', 'text-blue-600');
+                    tabBtn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                 });
-            }
-            
-            if (controls.toggleApiKeyVisibilityBtn) {
-                controls.toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
-            }
-            
-            if (controls.apiKeyInput) {
-                controls.apiKeyInput.addEventListener('input', () => {
-                    // Update status in real-time as user types
-                    const hasKey = controls.apiKeyInput.value.trim().length > 0;
-                    if (controls.apiKeyStatus) {
-                        if (hasKey) {
-                            controls.apiKeyStatus.textContent = 'Clé API prête à être sauvegardée';
-                            controls.apiKeyStatus.classList.remove('text-red-500');
-                            controls.apiKeyStatus.classList.add('text-yellow-600');
+                tabButtons[0].click();
+
+                controls.undoBtn.addEventListener('click', undo);
+                controls.redoBtn.addEventListener('click', redo);
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); }
+                    if (e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); }
+                });
+
+                controls.addExperienceBtn.addEventListener('click', () => createDynamicItem(controls.experienceList, [{ key: 'title', placeholder: 'Titre du poste' }, { key: 'meta', placeholder: 'Entreprise & Dates' }, { key: 'desc', placeholder: 'Description des missions', type: 'textarea' }]));
+                controls.addFormationBtn.addEventListener('click', () => createDynamicItem(controls.formationList, [{ key: 'title', placeholder: 'Nom du diplôme' }, { key: 'meta', placeholder: 'Établissement & Année' }]));
+                
+                const controlsPanel = document.getElementById('controls');
+                controlsPanel.addEventListener('input', (e) => {
+                    if (e.target.matches('.cv-input, .banner-input, .custom-section-input, #banner-bg-opacity, #banner-bg-blur, #banner-bg-grayscale')) {
+                        if (e.target.matches('#banner-bg-opacity, #banner-bg-blur, #banner-bg-grayscale')) {
+                             updateBannerBackground();
                         } else {
                             controls.apiKeyStatus.textContent = 'Clé API manquante';
                             controls.apiKeyStatus.classList.remove('text-yellow-600', 'text-green-600');
