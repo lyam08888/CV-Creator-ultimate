@@ -381,17 +381,6 @@
                 <!-- TAB: IA -->
                 <div id="panel-ia" class="tab-panel space-y-4">
                     <details class="control-group" open>
-                        <summary><span>Configuration IA</span></summary>
-                        <div class="control-group-content space-y-2">
-                            <label for="gemini-api-key" class="text-sm font-medium text-gray-700">Clé API Gemini</label>
-                            <div class="flex items-center gap-2">
-                                <input type="password" id="gemini-api-key" class="w-full p-2 border rounded-md" placeholder="Entrez votre clé API Gemini...">
-                                <button id="save-api-key-btn" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"><i class="fas fa-save"></i></button>
-                            </div>
-                            <p id="api-key-status" class="text-xs text-gray-500 mt-1"></p>
-                        </div>
-                    </details>
-                    <details class="control-group" open>
                         <summary><span>Analyse IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
@@ -707,7 +696,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // --- GLOBAL SELECTORS (STATIC) ---
             const controls = {
-                geminiApiKey: document.getElementById('gemini-api-key'), saveApiKeyBtn: document.getElementById('save-api-key-btn'), apiKeyStatus: document.getElementById('api-key-status'),
                 aiInput: document.getElementById('ai-input'), analyzeBtn: document.getElementById('analyze-btn'), loader: document.getElementById('loader-overlay'), loaderText: document.getElementById('loader-text'),
                 nom: document.getElementById('nom'), prenom: document.getElementById('prenom'), poste: document.getElementById('poste'),
                 description: document.getElementById('description'), competences: document.getElementById('competences'), aiSynthesizeSkillsBtn: document.getElementById('ai-synthesize-skills-btn'),
@@ -1443,46 +1431,10 @@
                 updateAllStyles();
             }
 
-            function saveApiKey() {
-                const apiKey = controls.geminiApiKey.value;
-                if (apiKey) {
-                    localStorage.setItem('geminiApiKey', apiKey);
-                    showNotification("Clé API Gemini sauvegardée.", "success");
-                } else {
-                    localStorage.removeItem('geminiApiKey');
-                    showNotification("Clé API Gemini supprimée.", "success");
-                }
-                updateApiKeyStatus();
-            }
-
-            function loadApiKey() {
-                const apiKey = localStorage.getItem('geminiApiKey');
-                if (apiKey) {
-                    controls.geminiApiKey.value = apiKey;
-                }
-                updateApiKeyStatus();
-            }
-
-            function updateApiKeyStatus() {
-                const apiKey = localStorage.getItem('geminiApiKey');
-                if (apiKey) {
-                    controls.apiKeyStatus.textContent = "Une clé API est sauvegardée localement.";
-                    controls.apiKeyStatus.classList.add('text-green-600');
-                    controls.apiKeyStatus.classList.remove('text-gray-500');
-                } else {
-                    controls.apiKeyStatus.textContent = "Aucune clé API sauvegardée.";
-                    controls.apiKeyStatus.classList.remove('text-green-600');
-                    controls.apiKeyStatus.classList.add('text-gray-500');
-                }
-            }
-
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
-                    const apiKey = localStorage.getItem('geminiApiKey');
-                    if (!apiKey) {
-                        throw new Error("Veuillez sauvegarder votre clé API Gemini dans l'onglet IA > Configuration IA.");
-                    }
+                    const apiKey = ""; // Provided automatically by the environment
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                     
                     const payload = {
@@ -1673,7 +1625,7 @@
                         const formations = getDynamicData(controls.formationList);
                         if (formations.length === 0) { showNotification("Aucune formation à améliorer.", "error"); return; }
                         const formationSchema = { type: "ARRAY", items: { type: "OBJECT", properties: { title: { type: "STRING" }, meta: { type: "STRING" } } } };
-                        const formationPrompt = `En tant qu'expert RH, améliore la formulation de ces entrées de formation pour un CV. Rends les titres plus percutants et les descriptions plus claires si nécessaire. Ne retourne que le résultat final sous forme de tableau JSON \\\`[{\"title\": \"...\", \"meta\": \"...\"}]\\` sans aucun commentaire ou texte additionnel. Voici les données actuelles : ${JSON.stringify(formations.map(f => ({ title: f.title, meta: f.meta })))}`;
+                        const formationPrompt = `En tant qu'expert RH, améliore la formulation de ces entrées de formation pour un CV. Rends les titres plus percutants et les descriptions plus claires si nécessaire. Ne retourne que le résultat final sous forme de tableau JSON \`[{"title": "...", "meta": "..."}]\` sans aucun commentaire ou texte additionnel. Voici les données actuelles : ${JSON.stringify(formations.map(f => ({ title: f.title, meta: f.meta })))}`;
                         const newFormations = await callGeminiAPI(formationPrompt, formationSchema);
                         if (newFormations && Array.isArray(newFormations)) {
                             controls.formationList.innerHTML = '';
@@ -1829,7 +1781,6 @@
                 populateIconPicker();
 
                 // --- EVENT LISTENERS ---
-                controls.saveApiKeyBtn.addEventListener('click', saveApiKey);
 
                 const tabNavigation = document.getElementById('tab-navigation');
                 const tabPanels = document.querySelectorAll('.tab-panel');
@@ -2136,10 +2087,10 @@
                         return;
                     }
 
-                    const prompt = `En tant que consultant en recrutement pour un cabinet, rédige un e-mail de vente percutant destiné à un client pour lui présenter un excellent candidat. 
+                    const prompt = `En tant que consultant en recrutement pour un cabinet, rédige un e-mail de vente percutant destiné à un client pour lui présenter un excellent candidat.
                     
                     **Ton Persona:** Tu es ${nomRecruteur}, ${posteRecruteur}. Tu es proactif, professionnel et tu connais bien ton marché.
-                    **Objectif:** Convaincre le client de l'adéquation du profil avec ses besoins potentiels et l'inciter à en savoir plus. 
+                    **Objectif:** Convaincre le client de l'adéquation du profil avec ses besoins potentiels et l'inciter à en savoir plus.
                     
                     **Informations sur le candidat à intégrer:**
                     - Nom du candidat: ${nomCandidat}
@@ -2289,7 +2240,6 @@
             
             // --- START THE APP ---
             initializeAll();
-            loadApiKey();
             resetCVToDefault(); // Start with a clean slate
         });
 
