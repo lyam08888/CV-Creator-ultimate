@@ -381,6 +381,17 @@
                 <!-- TAB: IA -->
                 <div id="panel-ia" class="tab-panel space-y-4">
                     <details class="control-group" open>
+                        <summary><span>Configuration IA</span></summary>
+                        <div class="control-group-content space-y-2">
+                            <label for="gemini-api-key" class="text-sm font-medium text-gray-700">Clé API Gemini</label>
+                            <div class="flex items-center gap-2">
+                                <input type="password" id="gemini-api-key" class="w-full p-2 border rounded-md" placeholder="Entrez votre clé API Gemini...">
+                                <button id="save-api-key-btn" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"><i class="fas fa-save"></i></button>
+                            </div>
+                            <p id="api-key-status" class="text-xs text-gray-500 mt-1"></p>
+                        </div>
+                    </details>
+                    <details class="control-group" open>
                         <summary><span>Analyse IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
