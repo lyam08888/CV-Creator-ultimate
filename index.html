@@ -697,6 +697,7 @@
             // --- GLOBAL SELECTORS (STATIC) ---
             const controls = {
                 aiInput: document.getElementById('ai-input'), analyzeBtn: document.getElementById('analyze-btn'), loader: document.getElementById('loader-overlay'), loaderText: document.getElementById('loader-text'),
+                apiKeyInput: document.getElementById('api-key-input'), saveApiKeyBtn: document.getElementById('save-api-key-btn'), apiKeyStatus: document.getElementById('api-key-status'),
                 nom: document.getElementById('nom'), prenom: document.getElementById('prenom'), poste: document.getElementById('poste'),
                 description: document.getElementById('description'), competences: document.getElementById('competences'), aiSynthesizeSkillsBtn: document.getElementById('ai-synthesize-skills-btn'),
                 experienceList: document.getElementById('experience-list'), addExperienceBtn: document.getElementById('add-experience'),
@@ -835,8 +836,9 @@
             const root = document.documentElement;
             let isAnonymized = false;
             let originalData = {};
-            let isRestoringState = false; 
+            let isRestoringState = false;
             let activeIconTarget = null;
+            let storedApiKey = '';
             
             // --- UI UTILITIES ---
             function showLoader(text = "Chargement...") {
@@ -1431,10 +1433,43 @@
                 updateAllStyles();
             }
 
+            function saveApiKey() {
+                storedApiKey = controls.apiKeyInput.value.trim();
+                if (storedApiKey) {
+                    localStorage.setItem('gemini_api_key', storedApiKey);
+                } else {
+                    localStorage.removeItem('gemini_api_key');
+                }
+                updateApiKeyStatus();
+            }
+
+            function loadApiKey() {
+                storedApiKey = localStorage.getItem('gemini_api_key') || '';
+                if (controls.apiKeyInput) {
+                    controls.apiKeyInput.value = storedApiKey;
+                }
+                updateApiKeyStatus();
+                return storedApiKey;
+            }
+
+            function updateApiKeyStatus() {
+                if (!controls.apiKeyStatus) return;
+                if (storedApiKey) {
+                    controls.apiKeyStatus.textContent = 'Clé API enregistrée';
+                    controls.apiKeyStatus.classList.remove('text-red-500');
+                    controls.apiKeyStatus.classList.add('text-green-600');
+                } else {
+                    controls.apiKeyStatus.textContent = 'Clé API manquante';
+                    controls.apiKeyStatus.classList.remove('text-green-600');
+                    controls.apiKeyStatus.classList.add('text-red-500');
+                }
+            }
+
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
-                    const apiKey = ""; // Provided automatically by the environment
+                    const apiKey = storedApiKey || '';
+                    if (!apiKey) throw new Error("Aucune clé API n'est enregistrée.");
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                     
                     const payload = {
@@ -1780,6 +1815,8 @@
                 populateFontSelectors();
                 populateIconPicker();
 
+                loadApiKey();
+
                 // --- EVENT LISTENERS ---
 
                 const tabNavigation = document.getElementById('tab-navigation');
@@ -1800,6 +1837,9 @@
                     tabBtn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                 });
                 tabButtons[0].click();
+
+                controls.saveApiKeyBtn.addEventListener('click', saveApiKey);
+                controls.apiKeyInput.addEventListener('input', updateApiKeyStatus);
 
                 controls.undoBtn.addEventListener('click', undo);
                 controls.redoBtn.addEventListener('click', redo);
