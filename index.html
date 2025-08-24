@@ -1621,6 +1621,57 @@
                 updateAllStyles();
             }
 
+            // Handle AI actions for sections
+            async function handleAIAction(action) {
+                const apiKey = localStorage.getItem('gemini-api-key') || '';
+                if (!apiKey) {
+                    showNotification("Clé API manquante. Enregistrez votre clé dans 'Configuration API Gemini'.", "error");
+                    return;
+                }
+                
+                let prompt = '';
+                let targetElement = null;
+                
+                switch(action) {
+                    case 'rewrite-profile':
+                        targetElement = controls.description;
+                        prompt = `Réécrivez ce profil professionnel de manière plus percutante et concise (maximum 3 lignes) : ${targetElement?.value || ''}`;
+                        break;
+                    case 'summarize-experience':
+                        // Get all experience data
+                        const experiences = Array.from(document.querySelectorAll('#experience-list .dynamic-item')).map(item => {
+                            const poste = item.querySelector('[id*="poste"]')?.value || '';
+                            const entreprise = item.querySelector('[id*="entreprise"]')?.value || '';
+                            const description = item.querySelector('[id*="description"]')?.value || '';
+                            return `${poste} chez ${entreprise}: ${description}`;
+                        }).join('\n');
+                        prompt = `Synthétisez ces expériences professionnelles en maximum 5 lignes percutantes : ${experiences}`;
+                        break;
+                    case 'rewrite-formation':
+                        // Get all formation data
+                        const formations = Array.from(document.querySelectorAll('#formation-list .dynamic-item')).map(item => {
+                            const diplome = item.querySelector('[id*="diplome"]')?.value || '';
+                            const ecole = item.querySelector('[id*="ecole"]')?.value || '';
+                            return `${diplome} - ${ecole}`;
+                        }).join('\n');
+                        prompt = `Améliorez la présentation de ces formations : ${formations}`;
+                        break;
+                    case 'rewrite-skills':
+                        targetElement = controls.competences;
+                        prompt = `Réorganisez et améliorez cette liste de compétences (gardez le format séparé par des virgules) : ${targetElement?.value || ''}`;
+                        break;
+                }
+                
+                if (prompt) {
+                    const result = await callGeminiAPI(prompt);
+                    if (result && targetElement) {
+                        targetElement.value = result;
+                        updatePreview('form');
+                        showNotification("Contenu amélioré par l'IA!", "success");
+                    }
+                }
+            }
+
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
@@ -1644,399 +1695,26 @@
                     });
 
                     if (!response.ok) {
-                        const errorBody = await response.text();
-                        throw new Error(`Erreur API: ${response.status} ${response.statusText} - ${errorBody}`);
+                        const errorData = await response.json();
+                        throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
                     }
 
-                    const result = await response.json();
+                    const data = await response.json();
+                    const result = data.candidates?.[0]?.content?.parts?.[0]?.text;
                     
-                    if (result.candidates && result.candidates.length > 0) {
-                        if (result.candidates[0].finishReason && !["STOP", "MAX_TOKENS"].includes(result.candidates[0].finishReason)) {
-                            throw new Error(`L'IA a été bloquée (raison: ${result.candidates[0].finishReason}). Veuillez reformuler votre demande.`);
-                        }
-                        if (result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            return schema ? JSON.parse(text) : text;
-                        }
+                    if (!result) {
+                        throw new Error("Réponse vide de l'API");
                     }
-                    
-                    throw new Error("Réponse invalide ou vide reçue de l'IA.");
+
+                    hideLoader();
+                    return result.trim();
 
                 } catch (error) {
-                    console.error("Erreur détaillée de l'IA:", error);
-                    showNotification(`Erreur de l'IA : ${error.message}`, 'error', 5000);
-                    return null;
-                } finally {
                     hideLoader();
+                    console.error('Gemini API Error:', error);
+                    showNotification(`Erreur IA: ${error.message}`, "error");
+                    return null;
                 }
-            }
-            
-            function updateAllStyles() {
-                // Update CSS variables from controls
-                root.style.setProperty('--primary-color', controls.primaryColorPicker.value);
-                root.style.setProperty('--secondary-color', controls.secondaryColorPicker.value);
-                root.style.setProperty('--body-text-color', controls.bodyTextColorPicker.value);
-                root.style.setProperty('--font-family-h1', controls.fontFamilyH1Select.value);
-                root.style.setProperty('--font-family-h2', controls.fontFamilyH2Select.value);
-                root.style.setProperty('--font-family-body', controls.fontFamilyBodySelect.value);
-
-                // Apply section title style
-                const activeStyle = document.querySelector('.section-title-style-btn.active')?.dataset.titleStyle || 'style-underline';
-                document.querySelectorAll('.section-title').forEach(title => {
-                    title.classList.remove('style-underline', 'style-side-line', 'style-background', 'style-boxed');
-                    title.classList.add(activeStyle);
-                });
-                
-                // Update banner style without changing its visibility
-                const banner = preview.banner;
-                const newBannerStyle = controls.bannerStyleSelect.value;
-                const newAlign = document.querySelector('.banner-align-btn.active')?.dataset.bannerAlign || 'left';
-                const isInverted = controls.bannerInvertBtn.classList.contains('active');
-
-                // Remove existing banner style classes and apply the new one
-                const classesToRemove = Array.from(banner.classList).filter(c => c.startsWith('banner-style-'));
-                if (classesToRemove.length > 0) banner.classList.remove(...classesToRemove);
-                if (newBannerStyle) banner.classList.add(newBannerStyle);
-                
-                // Realign content wrapper and inversion
-                const contentWrapper = banner.querySelector('.banner-content-wrapper');
-                if (contentWrapper) {
-                    contentWrapper.className = 'banner-content-wrapper'; // reset
-                    contentWrapper.classList.add(`banner-align-${newAlign}`);
-                    if (isInverted) contentWrapper.classList.add('banner-layout-inverted');
-                }
-                
-                checkAllPagesOverflow();
-            }
-            // --- MISSING FUNCTIONS ---
-            
-            function loadApiKey() {
-                const savedKey = localStorage.getItem('gemini-api-key');
-                if (savedKey) {
-                    controls.apiKeyInput.value = savedKey;
-                    updateApiKeyStatus();
-                }
-            }
-
-            function saveApiKey() {
-                const apiKey = controls.apiKeyInput.value.trim();
-                if (apiKey) {
-                    localStorage.setItem('gemini-api-key', apiKey);
-                    updateApiKeyStatus();
-                    return true;
-                }
-                return false;
-            }
-
-            function updateApiKeyStatus() {
-                const apiKey = controls.apiKeyInput.value.trim();
-                const status = controls.apiKeyStatus;
-                
-                if (!apiKey) {
-                    status.textContent = 'Aucune clé API configurée';
-                    status.className = 'api-key-status text-red-500';
-                } else if (apiKey.length < 20) {
-                    status.textContent = 'Clé API invalide (trop courte)';
-                    status.className = 'api-key-status text-yellow-600';
-                } else {
-                    status.textContent = 'Clé API configurée';
-                    status.className = 'api-key-status text-green-600';
-                }
-            }
-
-            function toggleApiKeyVisibility() {
-                const input = controls.apiKeyInput;
-                const icon = controls.toggleApiKeyVisibilityBtn.querySelector('i');
-                
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    input.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                }
-            }
-
-            function setDefaultRecruiterInfo() {
-                controls.bannerNom.value = "Lyes AMARA";
-                controls.bannerPoste.value = "Responsable d'activité recrutement – BTP – France";
-                controls.bannerEmail.value = "l.amara@ltd-international.com";
-                controls.bannerTel.value = "01 56 02 12 25 / 06 34 25 32 96";
-            }
-
-            function populateFontSelects() {
-                const fonts = [
-                    'Lato, sans-serif',
-                    'Montserrat, sans-serif',
-                    'Playfair Display, serif',
-                    'Roboto Mono, monospace',
-                    'Merriweather, serif',
-                    'Oswald, sans-serif',
-                    'Cormorant Garamond, serif',
-                    'Open Sans, sans-serif',
-                    'Source Sans Pro, sans-serif',
-                    'Nunito Sans, sans-serif'
-                ];
-
-                [controls.fontFamilyH1Select, controls.fontFamilyH2Select, controls.fontFamilyBodySelect].forEach(select => {
-                    if (select) {
-                        fonts.forEach(font => {
-                            const option = document.createElement('option');
-                            option.value = font;
-                            option.textContent = font.split(',')[0];
-                            select.appendChild(option);
-                        });
-                    }
-                });
-            }
-
-            function populateIconPicker() {
-                const icons = [
-                    'fas fa-user', 'fas fa-briefcase', 'fas fa-graduation-cap', 'fas fa-star',
-                    'fas fa-phone', 'fas fa-envelope', 'fas fa-map-marker-alt', 'fas fa-globe',
-                    'fas fa-linkedin', 'fas fa-github', 'fas fa-twitter', 'fas fa-facebook',
-                    'fas fa-code', 'fas fa-laptop', 'fas fa-mobile-alt', 'fas fa-database',
-                    'fas fa-chart-bar', 'fas fa-cog', 'fas fa-wrench', 'fas fa-paint-brush',
-                    'fas fa-camera', 'fas fa-music', 'fas fa-book', 'fas fa-pen',
-                    'fas fa-heart', 'fas fa-trophy', 'fas fa-medal', 'fas fa-award'
-                ];
-
-                if (controls.iconPickerGrid) {
-                    controls.iconPickerGrid.innerHTML = '';
-                    icons.forEach(iconClass => {
-                        const iconDiv = document.createElement('div');
-                        iconDiv.className = 'icon-option p-2 text-center cursor-pointer hover:bg-gray-100 rounded';
-                        iconDiv.innerHTML = `<i class="${iconClass}"></i>`;
-                        iconDiv.addEventListener('click', () => {
-                            if (window.currentIconTarget) {
-                                window.currentIconTarget.className = iconClass;
-                                controls.iconPickerModal.classList.add('hidden');
-                            }
-                        });
-                        controls.iconPickerGrid.appendChild(iconDiv);
-                    });
-                }
-            }
-
-            function applyTheme(theme) {
-                const themes = {
-                    professional: {
-                        primary: '#2563eb',
-                        secondary: '#334155',
-                        bodyText: '#334155'
-                    },
-                    creative: {
-                        primary: '#7c3aed',
-                        secondary: '#1f2937',
-                        bodyText: '#374151'
-                    },
-                    elegant: {
-                        primary: '#059669',
-                        secondary: '#1f2937',
-                        bodyText: '#374151'
-                    }
-                };
-
-                if (themes[theme]) {
-                    controls.primaryColorPicker.value = themes[theme].primary;
-                    controls.secondaryColorPicker.value = themes[theme].secondary;
-                    controls.bodyTextColorPicker.value = themes[theme].bodyText;
-                    updateAllStyles();
-                }
-            }
-
-            // --- EVENT LISTENERS ---
-            
-            // Tab navigation
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Remove active class from all tabs and panels
-                    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active', 'border-blue-500', 'text-blue-600'));
-                    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-                    
-                    // Add active class to clicked tab
-                    btn.classList.add('active', 'border-blue-500', 'text-blue-600');
-                    
-                    // Show corresponding panel
-                    const targetPanel = document.querySelector(btn.dataset.target);
-                    if (targetPanel) {
-                        targetPanel.classList.remove('hidden');
-                    }
-                });
-            });
-
-            // Initialize first tab as active
-            const firstTab = document.querySelector('.tab-btn');
-            if (firstTab) {
-                firstTab.click();
-            }
-
-            // API Key event listeners
-            if (controls.saveApiKeyBtn) {
-                controls.saveApiKeyBtn.addEventListener('click', () => {
-                    if (saveApiKey()) {
-                        showNotification("Clé API sauvegardée avec succès.", "success");
-                    }
-                });
-            }
-            
-            if (controls.toggleApiKeyVisibilityBtn) {
-                controls.toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
-            }
-            
-            // Save API key on Enter
-            if (controls.apiKeyInput) {
-                controls.apiKeyInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        if (saveApiKey()) {
-                            showNotification("Clé API sauvegardée avec succès.", "success");
-                        }
-                    }
-                });
-                
-                // Update status on input change
-                controls.apiKeyInput.addEventListener('input', updateApiKeyStatus);
-            }
-
-            // Form inputs event listeners
-            Object.values(controls).forEach(control => {
-                if (control && (control.tagName === 'INPUT' || control.tagName === 'TEXTAREA' || control.tagName === 'SELECT')) {
-                    control.addEventListener('input', () => updatePreview('form'));
-                }
-            });
-
-            // Layout buttons
-            document.querySelectorAll('.layout-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active', 'bg-blue-500', 'text-white'));
-                    btn.classList.add('active', 'bg-blue-500', 'text-white');
-                    
-                    const layout = btn.dataset.layout;
-                    document.querySelectorAll('.cv-body-container').forEach(container => {
-                        container.className = `cv-body-container ${layout}`;
-                    });
-                    
-                    updatePreview('layout');
-                });
-            });
-
-            // Theme buttons
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active', 'bg-blue-500', 'text-white'));
-                    btn.classList.add('active', 'bg-blue-500', 'text-white');
-                    
-                    const theme = btn.dataset.theme;
-                    applyTheme(theme);
-                });
-            });
-
-            // Skills style buttons
-            document.querySelectorAll('input[name="skills-style"]').forEach(radio => {
-                radio.addEventListener('change', () => {
-                    if (preview.cvCompetences) {
-                        preview.cvCompetences.dataset.style = radio.value;
-                        updatePreview('skills');
-                    }
-                });
-            });
-
-            // Banner controls
-            if (controls.toggleBanner) {
-                controls.toggleBanner.addEventListener('change', () => {
-                    updatePreview('banner-toggle');
-                });
-            }
-
-            // Banner style select
-            if (controls.bannerStyleSelect) {
-                controls.bannerStyleSelect.addEventListener('change', () => {
-                    updateAllStyles();
-                });
-            }
-
-            // Banner alignment buttons
-            document.querySelectorAll('.banner-align-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.banner-align-btn').forEach(b => b.classList.remove('active', 'bg-blue-500', 'text-white'));
-                    btn.classList.add('active', 'bg-blue-500', 'text-white');
-                    updateAllStyles();
-                });
-            });
-
-            // Banner invert button
-            if (controls.bannerInvertBtn) {
-                controls.bannerInvertBtn.addEventListener('click', () => {
-                    controls.bannerInvertBtn.classList.toggle('active');
-                    updateAllStyles();
-                });
-            }
-
-            // Add experience button
-            if (controls.addExperienceBtn) {
-                controls.addExperienceBtn.addEventListener('click', () => {
-                    addDynamicItem(controls.experienceList, 'experience');
-                });
-            }
-
-            // Add formation button
-            if (controls.addFormationBtn) {
-                controls.addFormationBtn.addEventListener('click', () => {
-                    addDynamicItem(controls.formationList, 'formation');
-                });
-            }
-
-            // Add custom section button
-            if (controls.addSectionBtn) {
-                controls.addSectionBtn.addEventListener('click', () => {
-                    const title = controls.newSectionTitleInput.value.trim() || 'Nouvelle Section';
-                    addCustomSection(title);
-                    controls.newSectionTitleInput.value = '';
-                });
-            }
-
-            // Color pickers
-            if (controls.primaryColorPicker) {
-                controls.primaryColorPicker.addEventListener('input', updateAllStyles);
-            }
-            if (controls.secondaryColorPicker) {
-                controls.secondaryColorPicker.addEventListener('input', updateAllStyles);
-            }
-            if (controls.bodyTextColorPicker) {
-                controls.bodyTextColorPicker.addEventListener('input', updateAllStyles);
-            }
-
-            // Font selects
-            if (controls.fontFamilyH1Select) {
-                controls.fontFamilyH1Select.addEventListener('change', updateAllStyles);
-            }
-            if (controls.fontFamilyH2Select) {
-                controls.fontFamilyH2Select.addEventListener('change', updateAllStyles);
-            }
-            if (controls.fontFamilyBodySelect) {
-                controls.fontFamilyBodySelect.addEventListener('change', updateAllStyles);
-            }
-
-            // Download PDF button
-            if (controls.downloadPdfBtn) {
-                controls.downloadPdfBtn.addEventListener('click', () => {
-                    const element = document.getElementById('cv-preview-wrapper');
-                    const opt = {
-                        margin: 0,
-                        filename: 'cv.pdf',
-                        image: { type: 'jpeg', quality: 0.98 },
-                        html2canvas: { scale: 2 },
-                        jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
-                    };
-                    html2pdf().set(opt).from(element).save();
-                });
-            }
-
-            // Add page button
-            if (controls.addPageBtn) {
-                controls.addPageBtn.addEventListener('click', addNewPage);
             }
 
             // AI buttons
@@ -2048,11 +1726,99 @@
                         return;
                     }
                     
-                    const prompt = `Analysez ce CV et extrayez les informations structurées : ${input}`;
+                    const prompt = `Analysez ce texte et extrayez les informations pour un CV. Répondez UNIQUEMENT au format JSON suivant :
+                    {
+                        "nom": "nom de famille",
+                        "prenom": "prénom",
+                        "poste": "poste recherché ou actuel",
+                        "description": "description/profil professionnel en 2-3 lignes",
+                        "competences": "liste des compétences séparées par des virgules",
+                        "experiences": [
+                            {
+                                "poste": "titre du poste",
+                                "entreprise": "nom de l'entreprise",
+                                "periode": "période (ex: 2020-2023)",
+                                "description": "description des missions"
+                            }
+                        ],
+                        "formations": [
+                            {
+                                "diplome": "nom du diplôme",
+                                "ecole": "nom de l'établissement",
+                                "annee": "année d'obtention"
+                            }
+                        ]
+                    }
+                    
+                    Texte à analyser : ${input}`;
+                    
                     const result = await callGeminiAPI(prompt);
                     if (result) {
-                        // Process AI result and update form
-                        showNotification("CV analysé avec succès!", "success");
+                        try {
+                            const data = JSON.parse(result);
+                            
+                            // Fill basic info
+                            if (data.nom && controls.nom) controls.nom.value = data.nom;
+                            if (data.prenom && controls.prenom) controls.prenom.value = data.prenom;
+                            if (data.poste && controls.poste) controls.poste.value = data.poste;
+                            if (data.description && controls.description) controls.description.value = data.description;
+                            if (data.competences && controls.competences) controls.competences.value = data.competences;
+                            
+                            // Fill banner info
+                            if (data.nom && data.prenom && controls.bannerNom) {
+                                controls.bannerNom.value = `${data.prenom} ${data.nom}`;
+                            }
+                            if (data.poste && controls.bannerPoste) {
+                                controls.bannerPoste.value = data.poste;
+                            }
+                            
+                            // Clear existing experiences and add new ones
+                            if (data.experiences && controls.experienceList) {
+                                controls.experienceList.innerHTML = '';
+                                data.experiences.forEach(exp => {
+                                    addDynamicItem(controls.experienceList, 'experience');
+                                    const lastItem = controls.experienceList.lastElementChild;
+                                    if (lastItem) {
+                                        const posteInput = lastItem.querySelector('[id*="poste"]');
+                                        const entrepriseInput = lastItem.querySelector('[id*="entreprise"]');
+                                        const periodeInput = lastItem.querySelector('[id*="periode"]');
+                                        const descriptionInput = lastItem.querySelector('[id*="description"]');
+                                        
+                                        if (posteInput) posteInput.value = exp.poste || '';
+                                        if (entrepriseInput) entrepriseInput.value = exp.entreprise || '';
+                                        if (periodeInput) periodeInput.value = exp.periode || '';
+                                        if (descriptionInput) descriptionInput.value = exp.description || '';
+                                    }
+                                });
+                            }
+                            
+                            // Clear existing formations and add new ones
+                            if (data.formations && controls.formationList) {
+                                controls.formationList.innerHTML = '';
+                                data.formations.forEach(form => {
+                                    addDynamicItem(controls.formationList, 'formation');
+                                    const lastItem = controls.formationList.lastElementChild;
+                                    if (lastItem) {
+                                        const diplomeInput = lastItem.querySelector('[id*="diplome"]');
+                                        const ecoleInput = lastItem.querySelector('[id*="ecole"]');
+                                        const anneeInput = lastItem.querySelector('[id*="annee"]');
+                                        
+                                        if (diplomeInput) diplomeInput.value = form.diplome || '';
+                                        if (ecoleInput) ecoleInput.value = form.ecole || '';
+                                        if (anneeInput) anneeInput.value = form.annee || '';
+                                    }
+                                });
+                            }
+                            
+                            // Update preview
+                            updatePreview('form');
+                            updateAllStyles();
+                            showNotification("CV analysé et rempli avec succès!", "success");
+                            
+                        } catch (error) {
+                            console.error("Erreur parsing JSON:", error);
+                            showNotification("Erreur lors de l'analyse. Réponse IA non valide.", "error");
+                        }
                     }
                 });
             }
@@ -2063,6 +1829,165 @@
             }
             if (controls.redoBtn) {
                 controls.redoBtn.addEventListener('click', redo);
+            }
+
+            // Share button
+            if (controls.shareBtn) {
+                controls.shareBtn.addEventListener('click', () => {
+                    const cvData = {
+                        nom: controls.nom?.value || '',
+                        prenom: controls.prenom?.value || '',
+                        poste: controls.poste?.value || '',
+                        description: controls.description?.value || '',
+                        competences: controls.competences?.value || ''
+                    };
+                    const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodeURIComponent(JSON.stringify(cvData))}`;
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        showNotification("Lien de partage copié dans le presse-papiers!", "success");
+                    }).catch(() => {
+                        showNotification("Impossible de copier le lien. Utilisez Ctrl+C.", "error");
+                    });
+                });
+            }
+
+            // Reset CV button
+            if (controls.resetCvBtn) {
+                controls.resetCvBtn.addEventListener('click', async () => {
+                    const confirmed = await showConfirmModal("Êtes-vous sûr de vouloir créer un nouveau CV ? Toutes les données actuelles seront perdues.");
+                    if (confirmed) {
+                        // Reset all form fields
+                        document.querySelectorAll('.cv-input').forEach(input => {
+                            if (input.type === 'checkbox') {
+                                input.checked = false;
+                            } else {
+                                input.value = '';
+                            }
+                        });
+                        // Clear dynamic lists
+                        if (controls.experienceList) controls.experienceList.innerHTML = '';
+                        if (controls.formationList) controls.formationList.innerHTML = '';
+                        // Reset preview
+                        updatePreview('form');
+                        updateAllStyles();
+                        showNotification("Nouveau CV créé avec succès!", "success");
+                    }
+                });
+            }
+
+            // Toggle overflow detection button
+            if (controls.toggleOverflowBtn) {
+                controls.toggleOverflowBtn.addEventListener('click', () => {
+                    document.body.classList.toggle('overflow-check-active');
+                    const isActive = document.body.classList.contains('overflow-check-active');
+                    controls.toggleOverflowBtn.innerHTML = isActive 
+                        ? '<i class="fa-solid fa-ruler-combined"></i> Désactiver Détection'
+                        : '<i class="fa-solid fa-ruler-combined"></i> Détection Dépassement';
+                    
+                    // Add CSS for overflow detection
+                    if (isActive) {
+                        const style = document.createElement('style');
+                        style.id = 'overflow-detection-style';
+                        style.textContent = `
+                            .a4-page.is-overflowing {
+                                border: 3px solid red !important;
+                                box-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
+                            }
+                            .a4-page.is-overflowing::after {
+                                content: "⚠️ DÉPASSEMENT DÉTECTÉ";
+                                position: absolute;
+                                top: 10px;
+                                right: 10px;
+                                background: red;
+                                color: white;
+                                padding: 5px;
+                                font-size: 12px;
+                                z-index: 1000;
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    } else {
+                        const style = document.getElementById('overflow-detection-style');
+                        if (style) style.remove();
+                    }
+                    
+                    // Check for overflow on all pages
+                    document.querySelectorAll('.a4-page').forEach(page => {
+                        const isOverflowing = page.scrollHeight > page.clientHeight;
+                        if (isOverflowing) {
+                            page.classList.add('is-overflowing');
+                        } else {
+                            page.classList.remove('is-overflowing');
+                        }
+                    });
+                    
+                    showNotification(isActive ? "Détection de dépassement activée" : "Détection de dépassement désactivée", "success");
+                });
+            }
+
+            // Toggle presentation mode button
+            if (controls.togglePresentationModeBtn) {
+                controls.togglePresentationModeBtn.addEventListener('click', () => {
+                    const controlPanel = document.querySelector('.flex.flex-col.lg\\:flex-row.min-h-screen > div:first-child');
+                    const isHidden = controlPanel.style.display === 'none';
+                    
+                    if (isHidden) {
+                        controlPanel.style.display = '';
+                        controls.togglePresentationModeBtn.innerHTML = '<i class="fa-solid fa-eye"></i> Mode Présentation';
+                        showNotification("Mode normal activé", "success");
+                    } else {
+                        controlPanel.style.display = 'none';
+                        controls.togglePresentationModeBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Mode Normal';
+                        showNotification("Mode présentation activé", "success");
+                    }
+                });
+            }
+
+            // Generate mail button
+            if (controls.generateMailBtn) {
+                controls.generateMailBtn.addEventListener('click', async () => {
+                    const dispo = controls.qualificationDispo?.value || '';
+                    const salaire = controls.qualificationSalaire?.value || '';
+                    const localisation = controls.qualificationLoc?.value || '';
+                    const nom = controls.nom?.value || '';
+                    const prenom = controls.prenom?.value || '';
+                    const poste = controls.poste?.value || '';
+                    
+                    if (!nom || !prenom || !poste) {
+                        showNotification("Veuillez remplir au minimum le nom, prénom et poste recherché.", "error");
+                        return;
+                    }
+                    
+                    const prompt = `Générez un email de présentation professionnel pour une candidature. 
+                    Candidat: ${prenom} ${nom}
+                    Poste recherché: ${poste}
+                    Disponibilité: ${dispo}
+                    Prétentions salariales: ${salaire}
+                    Localisation: ${localisation}
+                    
+                    L'email doit être courtois, professionnel et concis (maximum 150 mots).`;
+                    
+                    const result = await callGeminiAPI(prompt);
+                    if (result && controls.recruiterMailContent) {
+                        controls.recruiterMailContent.value = result;
+                        showNotification("Email généré avec succès!", "success");
+                    }
+                });
+            }
+
+            // Anonymize button
+            if (controls.anonymizeBtn) {
+                controls.anonymizeBtn.addEventListener('click', () => {
+                    // Anonymize personal data
+                    if (controls.nom) controls.nom.value = 'NOM';
+                    if (controls.prenom) controls.prenom.value = 'Prénom';
+                    if (controls.bannerNom) controls.bannerNom.value = 'Prénom NOM';
+                    if (controls.bannerEmail) controls.bannerEmail.value = 'email@exemple.com';
+                    if (controls.bannerTel) controls.bannerTel.value = '01 23 45 67 89';
+                    
+                    // Update preview
+                    updatePreview('form');
+                    showNotification("CV anonymisé avec succès!", "success");
+                });
             }
 
             // Event delegation for dynamic elements
@@ -2099,6 +2024,39 @@
                 if (e.target.closest('.close-modal') || (controls.iconPickerModal && e.target === controls.iconPickerModal)) {
                     if (controls.iconPickerModal) {
                         controls.iconPickerModal.classList.add('hidden');
+                    }
+                }
+                
+                // Logo size buttons
+                if (e.target.closest('.logo-size-btn')) {
+                    document.querySelectorAll('.logo-size-btn').forEach(btn => btn.classList.remove('active', 'bg-blue-500', 'text-white'));
+                    e.target.closest('.logo-size-btn').classList.add('active', 'bg-blue-500', 'text-white');
+                    updateAllStyles();
+                }
+                
+                // AI action buttons
+                if (e.target.closest('.ai-action-btn')) {
+                    const btn = e.target.closest('.ai-action-btn');
+                    const action = btn.getAttribute('data-action');
+                    
+                    if (action === 'rewrite-profile') {
+                        handleAIAction('rewrite-profile');
+                    } else if (action === 'summarize-experience') {
+                        handleAIAction('summarize-experience');
+                    } else if (action === 'rewrite-formation') {
+                        handleAIAction('rewrite-formation');
+                    } else if (action === 'rewrite-skills') {
+                        handleAIAction('rewrite-skills');
+                    }
+                }
+                
+                // Toggle visibility buttons
+                if (e.target.closest('.toggle-visibility-btn')) {
+                    const section = e.target.closest('.cv-module');
+                    if (section) {
+                        section.style.display = section.style.display === 'none' ? '' : 'none';
+                        const icon = e.target.closest('.toggle-visibility-btn').querySelector('i');
+                        icon.className = section.style.display === 'none' ? 'fas fa-eye-slash' : 'fas fa-eye';
                     }
                 }
             });
