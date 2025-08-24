@@ -1045,6 +1045,102 @@
                 if (col2) new Sortable(col2, { group: 'cv-modules', animation: 150, handle: '.drag-handle', ghostClass: 'sortable-ghost', onEnd });
             }
 
+            // Auto-init sortable, skills sorting, and resizers for the first page when the page loads
+            window.addEventListener('load', () => {
+                try { initializeSortableForPage(1); } catch (_) {}
+                try { initializeSkillSorting(); } catch (_) {}
+                try { setupAllResizers(); } catch (_) {}
+                try {
+                    const firstPage = document.getElementById('page-1');
+                    if (firstPage) setupOverflowObserver(firstPage);
+                } catch (_) {}
+
+                // Load stored state (API key) and set initial UI states
+                try { loadApiKey(); } catch (_) {}
+                if (controls.toggleBanner) controls.toggleBanner.checked = false; // hidden by default
+                try { updatePreview('state'); updateAllStyles(); } catch (_) {}
+
+                // API Key listeners
+                if (controls.saveApiKeyBtn) {
+                    controls.saveApiKeyBtn.addEventListener('click', () => {
+                        if (saveApiKey()) {
+                            showNotification('Clé API sauvegardée avec succès.', 'success');
+                        }
+                    });
+                }
+                if (controls.toggleApiKeyVisibilityBtn) {
+                    controls.toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
+                }
+                if (controls.apiKeyInput) {
+                    controls.apiKeyInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            if (saveApiKey()) {
+                                showNotification('Clé API sauvegardée avec succès.', 'success');
+                            }
+                        }
+                    });
+                }
+
+                // Banner visibility change
+                if (controls.toggleBanner) {
+                    controls.toggleBanner.addEventListener('change', () => updatePreview('state'));
+                }
+            });
+
+            // Robust API key helpers (override any earlier partial definitions)
+            function loadApiKey() {
+                const savedApiKey = localStorage.getItem('gemini-api-key');
+                if (savedApiKey) {
+                    if (controls.apiKeyInput) controls.apiKeyInput.value = savedApiKey;
+                    if (controls.apiKeyStatus) {
+                        controls.apiKeyStatus.textContent = 'Clé API configurée';
+                        controls.apiKeyStatus.classList.remove('text-red-500', 'text-yellow-600');
+                        controls.apiKeyStatus.classList.add('text-green-600');
+                    }
+                } else {
+                    if (controls.apiKeyStatus) {
+                        controls.apiKeyStatus.textContent = 'Clé API manquante';
+                        controls.apiKeyStatus.classList.remove('text-green-600', 'text-yellow-600');
+                        controls.apiKeyStatus.classList.add('text-red-500');
+                    }
+                }
+            }
+
+            function saveApiKey() {
+                const apiKey = (controls.apiKeyInput?.value || '').trim();
+                if (apiKey) {
+                    localStorage.setItem('gemini-api-key', apiKey);
+                    if (controls.apiKeyStatus) {
+                        controls.apiKeyStatus.textContent = 'Clé API sauvegardée';
+                        controls.apiKeyStatus.classList.remove('text-red-500', 'text-yellow-600');
+                        controls.apiKeyStatus.classList.add('text-green-600');
+                    }
+                    return true;
+                } else {
+                    if (controls.apiKeyStatus) {
+                        controls.apiKeyStatus.textContent = 'Clé API vide';
+                        controls.apiKeyStatus.classList.remove('text-green-600', 'text-yellow-600');
+                        controls.apiKeyStatus.classList.add('text-red-500');
+                    }
+                    return false;
+                }
+            }
+
+            function toggleApiKeyVisibility() {
+                const input = controls.apiKeyInput;
+                if (!input || !controls.toggleApiKeyVisibilityBtn) return;
+                const icon = controls.toggleApiKeyVisibilityBtn.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon?.classList.remove('fa-eye');
+                    icon?.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon?.classList.remove('fa-eye-slash');
+                    icon?.classList.add('fa-eye');
+                }
+            }
+
             function initializeSkillSorting() {
                 const skillLists = document.querySelectorAll('#cv-competences-preview ul');
                 skillLists.forEach(list => {
@@ -1528,8 +1624,13 @@
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
-                    const apiKey = ""; // Provided automatically by the environment
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                    // Read API key from localStorage, show actionable error if missing
+                    const apiKey = localStorage.getItem('gemini-api-key') || '';
+                    if (!apiKey) {
+                        throw new Error("Clé API manquante. Enregistrez votre clé dans 'Configuration API Gemini'.");
+                    }
+                    const model = 'gemini-2.5-flash-preview-05-20';
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
                     
                     const payload = {
                         contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -1550,9 +1651,9 @@
                     const result = await response.json();
                     
                     if (result.candidates && result.candidates.length > 0) {
-                         if (result.candidates[0].finishReason !== "STOP" && result.candidates[0].finishReason !== "MAX_TOKENS") {
-                               throw new Error(`L'IA a été bloquée (raison: ${result.candidates[0].finishReason}). Veuillez reformuler votre demande.`);
-                         }
+                        if (result.candidates[0].finishReason && !["STOP", "MAX_TOKENS"].includes(result.candidates[0].finishReason)) {
+                            throw new Error(`L'IA a été bloquée (raison: ${result.candidates[0].finishReason}). Veuillez reformuler votre demande.`);
+                        }
                         if (result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                             const text = result.candidates[0].content.parts[0].text;
                             return schema ? JSON.parse(text) : text;
@@ -1571,6 +1672,7 @@
             }
             
             function updateAllStyles() {
+                // Update CSS variables from controls
                 root.style.setProperty('--primary-color', controls.primaryColorPicker.value);
                 root.style.setProperty('--secondary-color', controls.secondaryColorPicker.value);
                 root.style.setProperty('--body-text-color', controls.bodyTextColorPicker.value);
@@ -1578,110 +1680,31 @@
                 root.style.setProperty('--font-family-h2', controls.fontFamilyH2Select.value);
                 root.style.setProperty('--font-family-body', controls.fontFamilyBodySelect.value);
 
+                // Apply section title style
                 const activeStyle = document.querySelector('.section-title-style-btn.active')?.dataset.titleStyle || 'style-underline';
                 document.querySelectorAll('.section-title').forEach(title => {
                     title.classList.remove('style-underline', 'style-side-line', 'style-background', 'style-boxed');
                     title.classList.add(activeStyle);
                 });
                 
+                // Update banner style without changing its visibility
                 const banner = preview.banner;
                 const newBannerStyle = controls.bannerStyleSelect.value;
                 const newAlign = document.querySelector('.banner-align-btn.active')?.dataset.bannerAlign || 'left';
                 const isInverted = controls.bannerInvertBtn.classList.contains('active');
 
+                // Remove existing banner style classes and apply the new one
                 const classesToRemove = Array.from(banner.classList).filter(c => c.startsWith('banner-style-'));
                 if (classesToRemove.length > 0) banner.classList.remove(...classesToRemove);
-
                 if (newBannerStyle) banner.classList.add(newBannerStyle);
                 
+                // Realign content wrapper and inversion
                 const contentWrapper = banner.querySelector('.banner-content-wrapper');
-                contentWrapper.className = 'banner-content-wrapper'; // Reset classes
-                contentWrapper.classList.add(`banner-align-${newAlign}`);
-                if (isInverted) contentWrapper.classList.add('banner-layout-inverted');
+                if (contentWrapper) {
+                    contentWrapper.className = 'banner-content-wrapper'; // reset
+                    contentWrapper.classList.add(`banner-align-${newAlign}`);
+                    if (isInverted) contentWrapper.classList.add('banner-layout-inverted');
+                }
                 
                 checkAllPagesOverflow();
             }
-
-            function populateFontSelectors() {
-                const fonts = [
-                    { name: 'Lato', value: "'Lato', sans-serif" },
-                    { name: 'Montserrat', value: "'Montserrat', sans-serif" },
-                    { name: 'Roboto Mono', value: "'Roboto Mono', monospace" },
-                    { name: 'Playfair Display', value: "'Playfair Display', serif" },
-                    { name: 'Merriweather', value: "'Merriweather', serif" },
-                    { name: 'Oswald', value: "'Oswald', sans-serif" },
-                    { name: 'Open Sans', value: "'Open Sans', sans-serif" },
-                    { name: 'Source Sans Pro', value: "'Source Sans Pro', sans-serif" },
-                    { name: 'Nunito Sans', value: "'Nunito Sans', sans-serif" },
-                    { name: 'Cormorant Garamond', value: "'Cormorant Garamond', serif" },
-                ];
-                const selects = [controls.fontFamilyH1Select, controls.fontFamilyH2Select, controls.fontFamilyBodySelect, controls.bannerNomFont];
-                selects.forEach(select => {
-                    if (!select) return;
-                    select.innerHTML = '';
-                    fonts.forEach(font => {
-                        const option = document.createElement('option');
-                        option.value = font.value;
-                        option.textContent = font.name;
-                        select.appendChild(option);
-                    });
-                });
-            }
-            
-            function populateIconPicker() {
-                const icons = ["fa-user-circle", "fa-briefcase", "fa-graduation-cap", "fa-star", "fa-puzzle-piece", "fa-globe", "fa-paint-brush", "fa-certificate", "fa-lightbulb", "fa-heart", "fa-cogs", "fa-code", "fa-chart-line", "fa-comments", "fa-bullhorn", "fa-trophy", "fa-book", "fa-wrench", "fa-users", "fa-award", "fa-phone", "fa-envelope", "fa-map-marker-alt", "fa-linkedin", "fa-github"];
-                controls.iconPickerGrid.innerHTML = '';
-                icons.forEach(iconClass => {
-                    const iconEl = document.createElement('i');
-                    iconEl.className = `fas ${iconClass}`;
-                    iconEl.dataset.icon = `fas ${iconClass}`;
-                    controls.iconPickerGrid.appendChild(iconEl);
-                });
-            }
-
-            function resetCVToDefault() {
-                document.querySelectorAll('.cv-input, .banner-input, .custom-section-input').forEach(input => {
-                    if(input.type === 'checkbox') input.checked = false;
-                    else if (input.type !== 'range' && input.type !== 'color') input.value = '';
-                });
-                
-                controls.experienceList.innerHTML = '';
-                controls.formationList.innerHTML = '';
-                controls.customSectionsList.innerHTML = '';
-                controls.skillsLevelList.innerHTML = '';
-                
-                document.querySelectorAll('.custom-module-preview').forEach(m => m.remove());
-                
-                setDefaultRecruiterInfo();
-                applyTheme('professional');
-                document.querySelector('.layout-btn[data-layout="layout-1-col"]')?.click();
-                document.querySelector('.skill-style-btn[data-skill-style="tags"]')?.click();
-                
-                Object.values(sliders).forEach(config => {
-                    const defaultValue = config.el.defaultValue;
-                    config.el.value = defaultValue;
-                    config.valueEl.textContent = defaultValue;
-                    root.style.setProperty(config.property, `${defaultValue}${config.unit}`);
-                });
-                
-                moveBannerTo('modular');
-                removeBannerBackground();
-
-                document.querySelectorAll('.completion-checkbox').forEach(cb => {
-                    cb.checked = false;
-                    cb.closest('details').open = true;
-                });
-                updateProgressBar();
-                
-                updatePreview('form');
-                updateAllStyles();
-                showNotification("Le CV a été réinitialisé.", "success");
-            }
-
-            // --- API KEY MANAGEMENT ---
-            function loadApiKey() {
-                const savedApiKey = localStorage.getItem('gemini-api-key');
-                if (savedApiKey) {
-                    controls.apiKeyInput.value = savedApiKey;
-                    controls.apiKeyStatus.textContent = 'Clé API configurée';
-                    controls.apiKeyStatus.classList.remove('te
