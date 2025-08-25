@@ -904,7 +904,111 @@
             animation: tooltipFadeIn 0.2s forwards;
         }
 
-        /* Icon-only buttons styling */
+        /* Unified button system - all buttons become icon-only with consistent sizing */
+        .btn-unified {
+            width: 36px !important;
+            height: 36px !important;
+            padding: 0 !important;
+            min-width: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 8px !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            position: relative !important;
+        }
+
+        .btn-unified:hover {
+            transform: scale(1.1) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+
+        /* Hide all text in unified buttons */
+        .btn-unified .btn-text,
+        .btn-unified span:not(.fa):not(.fas):not(.fab):not(.far) {
+            display: none !important;
+        }
+
+        /* Apply unified styling to all button types */
+        .ai-btn-enhanced,
+        .ai-btn-compact,
+        .theme-btn,
+        .skill-style-btn,
+        .layout-btn,
+        .gauge-style-btn,
+        .color-palette-btn,
+        .skill-template-btn,
+        .section-template-btn,
+        .font-suggestion-btn {
+            width: 36px !important;
+            height: 36px !important;
+            padding: 0 !important;
+            min-width: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 8px !important;
+            border: 1px solid rgba(0,0,0,0.1) !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            position: relative !important;
+        }
+
+        .ai-btn-enhanced:hover,
+        .ai-btn-compact:hover,
+        .theme-btn:hover,
+        .skill-style-btn:hover,
+        .layout-btn:hover,
+        .gauge-style-btn:hover,
+        .color-palette-btn:hover,
+        .skill-template-btn:hover,
+        .section-template-btn:hover,
+        .font-suggestion-btn:hover {
+            transform: scale(1.1) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+
+        /* Hide text in all buttons */
+        .ai-btn-enhanced .btn-text,
+        .ai-btn-compact .btn-text,
+        .theme-btn .btn-text,
+        .skill-style-btn .btn-text,
+        .layout-btn .btn-text,
+        .gauge-style-btn .btn-text,
+        .color-palette-btn .btn-text,
+        .skill-template-btn .btn-text,
+        .section-template-btn .btn-text,
+        .font-suggestion-btn .btn-text,
+        .ai-btn-enhanced span:not(.fa):not(.fas):not(.fab):not(.far),
+        .ai-btn-compact span:not(.fa):not(.fas):not(.fab):not(.far),
+        .theme-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .skill-style-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .layout-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .gauge-style-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .color-palette-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .skill-template-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .section-template-btn span:not(.fa):not(.fas):not(.fab):not(.far),
+        .font-suggestion-btn span:not(.fa):not(.fas):not(.fab):not(.far) {
+            display: none !important;
+        }
+
+        /* Special handling for action buttons that should keep some text but be more compact */
+        .action-btn-compact {
+            height: 32px !important;
+            padding: 0 8px !important;
+            font-size: 14px !important;
+            gap: 4px !important;
+        }
+
+        .action-btn-compact i {
+            font-size: 14px !important;
+        }
+
+        /* Icon-only buttons styling - legacy support */
         .icon-only-btn {
             padding: 0.5rem !important;
             min-width: auto !important;
@@ -1428,6 +1532,191 @@
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Compact tab system */
+        #tab-navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            padding: 6px 12px !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 6px !important;
+            background: #f9fafb !important;
+            color: #6b7280 !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            white-space: nowrap !important;
+            position: relative !important;
+            margin-bottom: 0 !important;
+            border-bottom: none !important;
+            min-height: 32px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+        }
+
+        .tab-btn.active {
+            background: #3b82f6 !important;
+            color: white !important;
+            border-color: #3b82f6 !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2) !important;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #e5e7eb !important;
+            border-color: #9ca3af !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .tab-btn i {
+            font-size: 12px !important;
+        }
+
+        /* Collapsible sections with compact styling */
+        .control-group {
+            border: 1px solid #e5e7eb !important;
+            border-radius: 8px !important;
+            margin-bottom: 12px !important;
+            background: white !important;
+            overflow: hidden !important;
+        }
+
+        .control-group summary {
+            padding: 8px 12px !important;
+            background: #f8fafc !important;
+            cursor: pointer !important;
+            font-weight: 500 !important;
+            font-size: 13px !important;
+            color: #374151 !important;
+            border-bottom: 1px solid #e5e7eb !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            transition: background 0.2s ease !important;
+        }
+
+        .control-group summary:hover {
+            background: #e2e8f0 !important;
+        }
+
+        .control-group[open] summary {
+            background: #dbeafe !important;
+            color: #1d4ed8 !important;
+        }
+
+        .control-group summary::marker {
+            display: none !important;
+        }
+
+        .control-group summary::before {
+            content: '▶' !important;
+            font-size: 10px !important;
+            transition: transform 0.2s ease !important;
+            margin-right: 8px !important;
+        }
+
+        .control-group[open] summary::before {
+            transform: rotate(90deg) !important;
+        }
+
+        .control-group-content {
+            padding: 12px !important;
+            border-top: none !important;
+        }
+
+        /* Compact completion labels */
+        .completion-label {
+            font-size: 11px !important;
+            color: #6b7280 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+        }
+
+        .completion-checkbox {
+            width: 14px !important;
+            height: 14px !important;
+        }
+
+        /* New badges styling */
+        .new-badge {
+            background: linear-gradient(45deg, #f59e0b, #d97706) !important;
+            color: white !important;
+            font-size: 9px !important;
+            padding: 2px 6px !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            margin-left: 6px !important;
+            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3) !important;
+        }
+
+        /* Enhanced tooltips for small buttons */
+        .small-tooltip[data-tooltip]:hover::after {
+            bottom: 130% !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            max-width: 180px !important;
+            font-size: 11px !important;
+            z-index: 1002 !important;
+        }
+
+        .small-tooltip[data-tooltip]:hover::before {
+            bottom: 122% !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            z-index: 1002 !important;
+        }
+
+        /* Progress bar in header */
+        #progress-bar-container {
+            transition: all 0.3s ease !important;
+        }
+
+        /* Compact action buttons section */
+        #controls .space-y-2.mb-4 {
+            padding: 8px !important;
+            margin-bottom: 16px !important;
+        }
+
+        #controls .grid.grid-cols-2 {
+            gap: 6px !important;
+        }
+
+        /* Scrollable content optimization */
+        #tab-content {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        #tab-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #tab-content::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        #tab-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        #tab-content::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
     </style>
@@ -6803,6 +7092,86 @@ Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
             </button>
         </div>
     </div>
+
+    <script>
+        // Compact Interface Initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close all details elements except the first one in each tab for cleaner interface
+            const allDetails = document.querySelectorAll('.control-group');
+            allDetails.forEach((detail, index) => {
+                // Keep the first detail in each tab open, close others
+                if (index % 4 !== 0) { // Keep every 4th element open (roughly first in each tab)
+                    detail.removeAttribute('open');
+                }
+            });
+
+            // Add compact mode toggle button
+            const controlsHeader = document.querySelector('#controls .flex.justify-between');
+            if (controlsHeader) {
+                const compactToggle = document.createElement('button');
+                compactToggle.innerHTML = '<i class="fas fa-compress-alt"></i>';
+                compactToggle.className = 'ai-btn-compact text-gray-600 hover:text-gray-900';
+                compactToggle.title = 'Mode Compact: Fermer/Ouvrir toutes les sections';
+                compactToggle.style.cssText = 'width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;';
+                
+                compactToggle.addEventListener('click', function() {
+                    const allDetails = document.querySelectorAll('.control-group');
+                    const areAnyOpen = Array.from(allDetails).some(detail => detail.hasAttribute('open'));
+                    
+                    allDetails.forEach(detail => {
+                        if (areAnyOpen) {
+                            detail.removeAttribute('open');
+                        } else {
+                            detail.setAttribute('open', '');
+                        }
+                    });
+                    
+                    // Update icon
+                    this.innerHTML = areAnyOpen ? '<i class="fas fa-expand-alt"></i>' : '<i class="fas fa-compress-alt"></i>';
+                });
+                
+                controlsHeader.appendChild(compactToggle);
+            }
+
+            // Add quick section opener for active tab
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(tabBtn => {
+                tabBtn.addEventListener('click', function() {
+                    // Small delay to let tab switch complete
+                    setTimeout(() => {
+                        const activePanel = document.querySelector('.tab-panel:not(.hidden)');
+                        if (activePanel) {
+                            const firstDetail = activePanel.querySelector('.control-group');
+                            if (firstDetail && !firstDetail.hasAttribute('open')) {
+                                firstDetail.setAttribute('open', '');
+                            }
+                        }
+                    }, 100);
+                });
+            });
+
+            // Enhanced tooltips for unified buttons
+            const allButtons = document.querySelectorAll('.ai-btn-enhanced, .ai-btn-compact, .theme-btn, .skill-style-btn, .layout-btn, .gauge-style-btn');
+            allButtons.forEach(btn => {
+                // Make sure tooltip positioning is correct for small buttons
+                if (btn.offsetWidth <= 40) {
+                    btn.classList.add('small-tooltip');
+                }
+            });
+
+            // Add compact grid controls
+            const grids = document.querySelectorAll('.grid');
+            grids.forEach(grid => {
+                if (grid.children.length > 6) {
+                    grid.style.maxHeight = '200px';
+                    grid.style.overflowY = 'auto';
+                    grid.style.padding = '4px';
+                }
+            });
+
+            console.log('Interface compacte initialisée - boutons uniformisés et sections optimisées');
+        });
+    </script>
 
 </body>
 </html>
