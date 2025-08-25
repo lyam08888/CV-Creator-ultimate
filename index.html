@@ -12,28 +12,104 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
-            <!-- Harmonisation et fonctionnement universel des tooltips -->
+            <!-- Système de Tooltips Moderne Ultra-Avancé -->
             <script>
             document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('button[title]').forEach(function(btn) {
-                    // Ajout data-tooltip pour le système universel
-                    btn.setAttribute('data-tooltip', btn.getAttribute('title'));
-                    // Accessibilité : aria-label
-                    if (!btn.hasAttribute('aria-label')) {
-                        btn.setAttribute('aria-label', btn.getAttribute('title'));
+                // Créer le conteneur de tooltip moderne
+                const tooltipContainer = document.createElement('div');
+                tooltipContainer.id = 'modern-tooltip-container';
+                tooltipContainer.innerHTML = `
+                    <div class="tooltip-content">
+                        <div class="tooltip-header">
+                            <span class="tooltip-icon"></span>
+                            <span class="tooltip-title"></span>
+                        </div>
+                        <div class="tooltip-description"></div>
+                        <div class="tooltip-arrow"></div>
+                    </div>
+                `;
+                document.body.appendChild(tooltipContainer);
+
+                let tooltipTimeout;
+                let activeElement = null;
+
+                function showTooltip(element, event) {
+                    clearTimeout(tooltipTimeout);
+                    
+                    const title = element.getAttribute('title') || element.getAttribute('data-tooltip') || '';
+                    if (!title) return;
+
+                    // Extraire l'emoji et le texte
+                    const emojiMatch = title.match(/^([🎨🤖📝⭐🧩📐👔🔮🕵️👁️💾🔍🧠🏭📊🔑💡🎯🎪🌟🚀✨🎬🎮🎭🎨🎪🔥💎⚡🌈🦄]+)\s*(.*)/);
+                    const emoji = emojiMatch ? emojiMatch[1] : '💡';
+                    const description = emojiMatch ? emojiMatch[2] : title;
+
+                    // Mise à jour du contenu
+                    tooltipContainer.querySelector('.tooltip-icon').textContent = emoji;
+                    tooltipContainer.querySelector('.tooltip-title').textContent = element.querySelector('.btn-text')?.textContent || 'Action';
+                    tooltipContainer.querySelector('.tooltip-description').textContent = description;
+
+                    // Positionnement intelligent
+                    const rect = element.getBoundingClientRect();
+                    const tooltipRect = tooltipContainer.getBoundingClientRect();
+                    
+                    let top = rect.top - tooltipRect.height - 15;
+                    let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                    
+                    // Ajustements pour rester dans la fenêtre
+                    if (top < 10) {
+                        top = rect.bottom + 15;
+                        tooltipContainer.classList.add('bottom');
+                    } else {
+                        tooltipContainer.classList.remove('bottom');
                     }
-                    // Tabindex pour navigation clavier
-                    if (!btn.hasAttribute('tabindex')) {
-                        btn.setAttribute('tabindex', '0');
+                    
+                    if (left < 10) left = 10;
+                    if (left + tooltipRect.width > window.innerWidth - 10) {
+                        left = window.innerWidth - tooltipRect.width - 10;
                     }
-                    // Affichage du tooltip au focus
-                    btn.addEventListener('focus', function() {
-                        btn.classList.add('show-tooltip');
-                    });
-                    btn.addEventListener('blur', function() {
-                        btn.classList.remove('show-tooltip');
-                    });
+
+                    tooltipContainer.style.top = top + 'px';
+                    tooltipContainer.style.left = left + 'px';
+                    tooltipContainer.classList.add('visible');
+                    
+                    activeElement = element;
+                }
+
+                function hideTooltip() {
+                    tooltipTimeout = setTimeout(() => {
+                        tooltipContainer.classList.remove('visible', 'bottom');
+                        activeElement = null;
+                    }, 100);
+                }
+
+                // Application sur tous les boutons avec des tooltips
+                document.querySelectorAll('button[title], button[data-tooltip], .tab-btn').forEach(function(btn) {
+                    // Préparation des attributs
+                    const title = btn.getAttribute('title') || btn.getAttribute('data-tooltip') || '';
+                    if (title) {
+                        btn.setAttribute('data-tooltip', title);
+                        btn.removeAttribute('title'); // Supprimer le titre natif
+                    }
+                    
+                    // Accessibilité
+                    if (!btn.hasAttribute('aria-label') && title) {
+                        btn.setAttribute('aria-label', title);
+                    }
+                    
+                    // Events modernes
+                    btn.addEventListener('mouseenter', (e) => showTooltip(btn, e));
+                    btn.addEventListener('mouseleave', hideTooltip);
+                    btn.addEventListener('focus', (e) => showTooltip(btn, e));
+                    btn.addEventListener('blur', hideTooltip);
+                    
+                    // Suppression du système old-school
+                    btn.classList.remove('show-tooltip');
                 });
+
+                // Gestion du survol du tooltip lui-même
+                tooltipContainer.addEventListener('mouseenter', () => clearTimeout(tooltipTimeout));
+                tooltipContainer.addEventListener('mouseleave', hideTooltip);
             });
             </script>
     
@@ -132,6 +208,126 @@
             --text-tertiary: var(--gray-500);
             --border-color: var(--gray-200);
             --border-color-light: var(--gray-100);
+        }
+
+        /* ===== SYSTÈME DE TOOLTIPS ULTRA-MODERNE ===== */
+        #modern-tooltip-container {
+            position: fixed;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            max-width: 320px;
+            min-width: 200px;
+        }
+        
+        #modern-tooltip-container.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        
+        .tooltip-content {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(248, 250, 255, 0.98) 50%, 
+                rgba(255, 255, 255, 0.95) 100%);
+            backdrop-filter: blur(30px) saturate(1.2);
+            border-radius: 16px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.15),
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tooltip-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(0, 122, 255, 0.03) 0%, 
+                rgba(88, 86, 214, 0.03) 50%, 
+                rgba(255, 45, 85, 0.03) 100%);
+            pointer-events: none;
+        }
+        
+        .tooltip-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .tooltip-icon {
+            font-size: 20px;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        .tooltip-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1D1D1F;
+            letter-spacing: -0.01em;
+        }
+        
+        .tooltip-description {
+            font-size: 12px;
+            color: #515154;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+        
+        .tooltip-arrow {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: inherit;
+            border: inherit;
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+        
+        #modern-tooltip-container:not(.bottom) .tooltip-arrow {
+            bottom: -8px;
+            left: 50%;
+            margin-left: -8px;
+        }
+        
+        #modern-tooltip-container.bottom .tooltip-arrow {
+            top: -8px;
+            left: 50%;
+            margin-left: -8px;
+        }
+        
+        /* Animation d'entrée sophistiquée */
+        @keyframes tooltip-appear {
+            0% {
+                opacity: 0;
+                transform: translateY(15px) scale(0.8);
+                filter: blur(4px);
+            }
+            60% {
+                transform: translateY(-2px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+        }
+        
+        #modern-tooltip-container.visible .tooltip-content {
+            animation: tooltip-appear 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         /* ===== STYLE DU SIDEBAR APPLE-LIKE ===== */
@@ -996,70 +1192,232 @@
             border-radius: 9999px;
         }
 
-        /* Boutons icon-only avec style Apple */
+        /* Boutons icon-only avec style Apple Pro Ultra */
         .icon-only-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            transition: all var(--transition);
-        }
-
-        .icon-only-btn i {
-            flex-shrink: 0;
-        }
-
-        .icon-only-btn .btn-text {
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        /* Boutons AI avec style Apple amélioré */
-        .ai-btn-enhanced {
+            gap: 8px;
+            padding: 12px 16px;
+            min-height: 44px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(248, 250, 255, 0.95) 100%);
+            backdrop-filter: blur(20px) saturate(1.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.08),
+                0 1px 4px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
-
-        .ai-btn-enhanced::after {
+        
+        .icon-only-btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
+            background: linear-gradient(45deg, 
+                rgba(0, 122, 255, 0.02) 0%, 
+                rgba(88, 86, 214, 0.02) 50%, 
+                rgba(255, 45, 85, 0.02) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .icon-only-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.12),
+                0 3px 12px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            border-color: rgba(0, 122, 255, 0.2);
+        }
+        
+        .icon-only-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .icon-only-btn:active {
+            transform: translateY(0) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        .icon-only-btn i {
+            flex-shrink: 0;
+            font-size: 16px;
+            color: #1D1D1F;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+            transition: all 0.3s ease;
+        }
+        
+        .icon-only-btn:hover i {
+            color: #007AFF;
+            transform: scale(1.1);
+        }
+
+        .icon-only-btn .btn-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1D1D1F;
+            letter-spacing: -0.01em;
+            transition: color 0.3s ease;
+        }
+        
+        .icon-only-btn:hover .btn-text {
+            color: #007AFF;
+        }
+
+        /* Boutons AI avec style Apple Pro Ultra */
+        .ai-btn-enhanced {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, 
+                rgba(0, 122, 255, 0.9) 0%, 
+                rgba(88, 86, 214, 0.9) 50%, 
+                rgba(0, 122, 255, 0.9) 100%) !important;
+            backdrop-filter: blur(20px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 
+                0 4px 20px rgba(0, 122, 255, 0.25),
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .ai-btn-enhanced:hover {
+            transform: translateY(-3px) scale(1.03) !important;
+            box-shadow: 
+                0 8px 35px rgba(0, 122, 255, 0.4),
+                0 4px 16px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .ai-btn-enhanced i {
+            color: white !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        
+        .ai-btn-enhanced .btn-text {
+            color: white !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .ai-btn-enhanced::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 100%);
+            transition: left 0.6s ease;
         }
 
         .ai-btn-enhanced:hover::after {
-            transform: translateX(100%);
+            left: 100%;
+        }
+        
+        /* Animation de pulsation pour les boutons AI */
+        @keyframes ai-pulse {
+            0%, 100% {
+                box-shadow: 
+                    0 4px 20px rgba(0, 122, 255, 0.25),
+                    0 2px 8px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 6px 30px rgba(0, 122, 255, 0.35),
+                    0 3px 12px rgba(0, 0, 0, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+            }
+        }
+        
+        .ai-btn-enhanced {
+            animation: ai-pulse 3s ease-in-out infinite;
         }
 
-        /* Grilles responsives pour boutons */
+        /* Grilles responsives pour boutons modernisées */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            gap: 12px;
+            align-items: stretch;
         }
 
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
+            gap: 10px;
+            align-items: stretch;
+        }
+        
+        .grid-2 .icon-only-btn,
+        .grid-3 .icon-only-btn,
+        .grid-2 .ai-btn-enhanced,
+        .grid-3 .ai-btn-enhanced {
+            min-height: 50px;
+            padding: 14px 12px;
+        }
+        
+        .grid-3 .icon-only-btn i,
+        .grid-3 .ai-btn-enhanced i {
+            font-size: 18px;
+        }
+        
+        .grid-3 .icon-only-btn .btn-text,
+        .grid-3 .ai-btn-enhanced .btn-text {
+            font-size: 11px;
+            line-height: 1.2;
         }
 
         @media (max-width: 640px) {
-            .grid-2 {
+            .grid-2, .grid-3 {
                 grid-template-columns: 1fr;
-                gap: 0.5rem;
+                gap: 8px;
+            }
+            
+            .icon-only-btn, .ai-btn-enhanced {
+                min-height: 48px;
+                padding: 12px 16px;
+                justify-content: flex-start;
+                text-align: left;
+            }
+            
+            .icon-only-btn .btn-text,
+            .ai-btn-enhanced .btn-text {
+                display: block !important;
+                font-size: 13px;
             }
             
             .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-3 {
                 grid-template-columns: 1fr;
-                gap: 0.5rem;
+            }
+            
+            .icon-only-btn, .ai-btn-enhanced {
+                padding: 16px 20px;
+                gap: 12px;
             }
         }
 
@@ -3640,13 +3998,66 @@
             50% { background-position: 100% 50%; }
         }
         
-        /* Hover effects pour les éléments de navigation */
-        #tab-navigation {
-            background: linear-gradient(145deg, var(--gray-50), white);
-            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
-            padding: 0.5rem;
-            margin: 0 -1.5rem;
-            box-shadow: var(--shadow-sm);
+        /* Amélioration spéciale des onglets de navigation */
+        .tab-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Indicateur de progression visuel pour les onglets */
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%, 
+                var(--primary-light) 100%);
+            transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 2px 2px 0 0;
+        }
+        
+        .tab-btn:hover::after {
+            width: 50%;
+        }
+        
+        .tab-btn.active::after {
+            width: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.8) 0%, 
+                rgba(255, 255, 255, 0.9) 100%);
+        }
+        
+        /* Effet de rebond pour les icônes des onglets */
+        @keyframes tab-icon-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .tab-btn:hover i {
+            animation: tab-icon-bounce 0.6s ease-in-out;
+        }
+        
+        /* Badge de notification pour les nouveautés */
+        .tab-btn[data-new="true"]::before {
+            content: '•';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(45deg, #FF3B30, #FF6B6B);
+            border-radius: 50%;
+            font-size: 0;
+            box-shadow: 0 0 6px rgba(255, 59, 48, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
         }
         
         /* Amélioration des scrollbars */
