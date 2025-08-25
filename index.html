@@ -1809,7 +1809,10 @@
 
             function initializeAllSortable() {
                 // Initialize drag and drop for all existing pages
-                document.querySelectorAll('.a4-page').forEach((page) => {
+                const pages = document.querySelectorAll('.a4-page');
+                if (!pages || pages.length === 0) return; // Protection contre les éléments manquants
+                
+                pages.forEach((page) => {
                     const pageId = page.id.replace('page-', '');
                     if (pageId) {
                         initializeSortableForPage(pageId);
@@ -1844,7 +1847,10 @@
             }
 
             function checkAllPagesOverflow() {
-                document.querySelectorAll('.a4-page').forEach(checkPageOverflow);
+                const pages = document.querySelectorAll('.a4-page');
+                if (!pages || pages.length === 0) return; // Protection contre les éléments manquants
+                
+                pages.forEach(checkPageOverflow);
             }
 
             function setupOverflowObserver(pageElement) {

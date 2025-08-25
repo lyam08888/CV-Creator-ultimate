@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test JS Errors</title>
+</head>
+<body>
+    <h1>Test des erreurs JavaScript</h1>
+    <div id="result"></div>
+
+    <script>
+        // Rediriger les erreurs vers la console
+        window.addEventListener('error', function(e) {
+            console.error('Erreur JavaScript:', e.message, 'à la ligne', e.lineno);
+            document.getElementById('result').innerHTML += `<p style="color: red;">ERREUR: ${e.message} (ligne ${e.lineno})</p>`;
+        });
+
+        // Test de querySelectorAll sur un élément qui n'existe pas
+        try {
+            const nonExistent = document.getElementById('does-not-exist');
+            if (nonExistent) {
+                const elements = nonExistent.querySelectorAll('.test');
+                console.log('Test 1 OK: Élément trouvé');
+            } else {
+                console.log('Test 1 OK: Élément non trouvé, pas d\'erreur');
+            }
+        } catch (e) {
+            console.error('Test 1 ECHEC:', e.message);
+        }
+
+        // Test de querySelectorAll sur null
+        try {
+            const nullElement = null;
+            const elements = nullElement.querySelectorAll('.test'); // Ceci devrait causer une erreur
+        } catch (e) {
+            console.log('Test 2 OK: Erreur capturée comme prévu:', e.message);
+            document.getElementById('result').innerHTML += `<p style="color: green;">Test 2 OK: ${e.message}</p>`;
+        }
+
+        document.getElementById('result').innerHTML += '<p style="color: blue;">Tests terminés. Vérifiez la console pour plus de détails.</p>';
+    </script>
+</body>
+</html>
