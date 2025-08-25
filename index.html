@@ -411,7 +411,6 @@
                       <button id="download-pdf-btn" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-900 flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> PDF</button>
                       <button id="share-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fa-solid fa-share-alt"></i> Partager</button>
                  </div>
-                 <button id="anonymize-btn" class="w-full bg-slate-500 text-white py-2 px-4 rounded-md hover:bg-slate-600 flex items-center justify-center gap-2"><i class="fa-solid fa-user-secret"></i>Anonymiser le CV</button>
                  <button id="reset-cv-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 flex items-center justify-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> Nouveau CV</button>
                  <button id="toggle-overflow-btn" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 flex items-center justify-center gap-2"><i class="fa-solid fa-ruler-combined"></i> Détection Dépassement</button>
                  <button id="toggle-presentation-mode-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-eye"></i> Mode Présentation</button>
@@ -692,7 +691,11 @@
         </div>
 
         <!-- PREVIEW PANEL -->
-        <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex justify-center items-start overflow-auto" id="preview-area">
+        <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex flex-col justify-center items-center overflow-auto" id="preview-area">
+            <!-- Anonymize button around CV preview -->
+            <div class="mb-4">
+                <button id="anonymize-btn" class="bg-slate-500 text-white py-2 px-4 rounded-md hover:bg-slate-600 flex items-center justify-center gap-2 shadow-lg"><i class="fa-solid fa-user-secret"></i>Anonymiser le CV</button>
+            </div>
             <div id="cv-preview-wrapper">
                 <div class="a4-page-container">
                     <div id="page-1" class="a4-page">
@@ -1802,23 +1805,37 @@
 
             function anonymizeCV() {
                 if (isAnonymized) {
+                    // Restore original data
                     controls.nom.value = originalData.nom;
                     controls.prenom.value = originalData.prenom;
+                    controls.qualificationLoc.value = originalData.qualificationLoc;
+                    controls.bannerEmail.value = originalData.bannerEmail;
+                    controls.bannerTel.value = originalData.bannerTel;
                     
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-secret"></i>Anonymiser le CV';
                     isAnonymized = false;
                     showNotification("CV désanonymisé.", "success");
                 } else {
+                    // Store original data
                     originalData = {
                         nom: controls.nom.value,
                         prenom: controls.prenom.value,
+                        qualificationLoc: controls.qualificationLoc.value,
+                        bannerEmail: controls.bannerEmail.value,
+                        bannerTel: controls.bannerTel.value,
                     };
                     
+                    // Anonymize: Keep first name, change last name to first letter + dot
                     const firstLetter = originalData.nom ? originalData.nom.charAt(0) + '.' : '';
                     controls.nom.value = firstLetter;
-                    controls.prenom.value = 'Candidat';
+                    // Keep the prenom unchanged as per requirements
                     
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
+                    // Anonymize contact information
+                    controls.qualificationLoc.value = '***';
+                    controls.bannerEmail.value = '***@***.***';
+                    controls.bannerTel.value = '** ** ** ** **';
+                    
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i>Désanonymiser le CV';
                     isAnonymized = true;
                     showNotification("CV anonymisé.", "success");
                 }
