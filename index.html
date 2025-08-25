@@ -449,7 +449,7 @@
             margin-bottom: 1.5rem;
         }
         
-        /* Navigation des onglets avec style Apple Pro Ultra */
+        /* Navigation des onglets avec style Apple Pro Ultra - Version Agrandie */
         #tab-navigation {
             background: linear-gradient(135deg, 
                 rgba(255, 255, 255, 0.95) 0%, 
@@ -457,17 +457,17 @@
                 rgba(255, 255, 255, 0.95) 100%);
             backdrop-filter: blur(30px) saturate(1.2);
             border-radius: 20px;
-            padding: 8px;
+            padding: 12px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.1),
                 0 2px 8px rgba(0, 0, 0, 0.05),
                 inset 0 1px 0 rgba(255, 255, 255, 0.6),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-            margin-bottom: 24px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 8px;
             position: relative;
             overflow: hidden;
         }
@@ -486,23 +486,24 @@
             pointer-events: none;
         }
         
-        /* Onglets avec effet de pilule Apple Pro */
+        /* Onglets avec effet de pilule Apple Pro - Version Agrandie */
         .tab-btn {
             background: transparent;
             border: none;
-            border-radius: 14px;
-            padding: 12px 16px;
-            font-size: 14px;
+            border-radius: 16px;
+            padding: 16px 12px;
+            font-size: 13px;
             font-weight: 600;
             color: #666;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: pointer;
             position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            min-width: 0;
-            flex: 1;
+            gap: 6px;
+            min-width: 120px;
+            min-height: 80px;
             justify-content: center;
             overflow: hidden;
             z-index: 1;
@@ -521,7 +522,7 @@
                 rgba(0, 122, 255, 0) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
-            border-radius: 14px;
+            border-radius: 16px;
         }
         
         .tab-btn:hover::before {
@@ -530,10 +531,10 @@
         
         .tab-btn:hover {
             color: #007AFF;
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-3px) scale(1.03);
             box-shadow: 
-                0 4px 20px rgba(0, 122, 255, 0.15),
-                0 2px 8px rgba(0, 0, 0, 0.1);
+                0 6px 25px rgba(0, 122, 255, 0.15),
+                0 3px 12px rgba(0, 0, 0, 0.1);
         }
         
         .tab-btn.active {
@@ -543,11 +544,11 @@
                 #007AFF 100%);
             color: white;
             box-shadow: 
-                0 6px 25px rgba(0, 122, 255, 0.3),
-                0 2px 12px rgba(0, 0, 0, 0.15),
+                0 8px 30px rgba(0, 122, 255, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.15),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
         
         .tab-btn.active::before {
@@ -565,18 +566,18 @@
                 rgba(255, 255, 255, 0.2) 0%, 
                 transparent 50%, 
                 rgba(255, 255, 255, 0.1) 100%);
-            border-radius: 14px;
+            border-radius: 16px;
         }
         
         .tab-btn i {
-            font-size: 16px;
+            font-size: 20px;
             flex-shrink: 0;
             filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
             transition: all 0.3s ease;
         }
         
         .tab-btn:hover i {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
         
         .tab-btn.active i {
@@ -584,17 +585,36 @@
         }
         
         .tab-btn .btn-text {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             letter-spacing: 0.3px;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            line-height: 1.2;
         }
         
-        .tab-btn.active .btn-text {
+        .tab-btn .btn-subtitle {
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 0.7;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            line-height: 1;
+            margin-top: -2px;
+        }
+        
+        .tab-btn.active .btn-text,
+        .tab-btn.active .btn-subtitle {
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-btn.active .btn-subtitle {
+            opacity: 0.9;
         }
         
         /* Animations de pulsation pour les onglets actifs */
@@ -663,18 +683,25 @@
         /* Responsive amélioré avec animations fluides */
         @media (max-width: 1024px) {
             #tab-navigation {
-                padding: 6px;
+                padding: 8px;
                 border-radius: 16px;
-                gap: 3px;
+                gap: 4px;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
             
             .tab-btn {
-                padding: 10px 12px;
+                padding: 12px 8px;
                 border-radius: 12px;
+                min-height: 70px;
+                min-width: 90px;
             }
             
             .tab-btn .btn-text {
-                display: none;
+                font-size: 11px;
+            }
+            
+            .tab-btn .btn-subtitle {
+                font-size: 9px;
             }
             
             .tab-btn i {
@@ -684,10 +711,31 @@
         
         @media (max-width: 768px) {
             #tab-navigation {
-                padding: 4px;
+                padding: 6px;
                 border-radius: 14px;
-                gap: 2px;
+                gap: 3px;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
             }
+            
+            .tab-btn {
+                padding: 10px 6px;
+                border-radius: 10px;
+                min-height: 60px;
+                min-width: 70px;
+            }
+            
+            .tab-btn .btn-text {
+                font-size: 10px;
+            }
+            
+            .tab-btn .btn-subtitle {
+                display: none;
+            }
+            
+            .tab-btn i {
+                font-size: 16px;
+            }
+        }
             
             .tab-btn {
                 padding: 8px 10px;
@@ -4447,7 +4495,7 @@
             </div>
 
             <!-- Actions Rapides -->
-            <div class="space-y-2 mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
+            <div class="space-y-2 mb-3 p-3 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
                  <div class="grid-2">
                       <button id="download-pdf-btn" class="btn-base icon-only-btn btn-secondary btn-lg w-full" title="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download"></i><span class="btn-text"> PDF</span></button>
                       <button id="share-btn" class="btn-base icon-only-btn btn-success btn-lg w-full" title="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt"></i><span class="btn-text"> Partager</span></button>
@@ -4459,18 +4507,46 @@
 
             <!-- TABS -->
             <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
-                <button class="tab-btn icon-only-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV"><i class="fa-solid fa-robot"></i><span class="btn-text"> IA</span></button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" title="📝 Gérez le contenu principal de votre CV : expériences et formations"><i class="fa-solid fa-file-lines"></i><span class="btn-text"> Contenu</span></button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" title="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles"><i class="fa-solid fa-star"></i><span class="btn-text"> Compétences</span></button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" title="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications"><i class="fa-solid fa-puzzle-piece"></i><span class="btn-text"> Sections</span></button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" title="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale"><i class="fa-solid fa-columns"></i><span class="btn-text"> Mise en Page</span></button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" title="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV"><i class="fa-solid fa-palette"></i><span class="btn-text"> Styles</span></button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" title="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact"><i class="fa-solid fa-user-tie"></i><span class="btn-text"> Bannière</span></button>
+                <button class="tab-btn icon-only-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV">
+                    <i class="fa-solid fa-robot"></i>
+                    <span class="btn-text">IA</span>
+                    <span class="btn-subtitle">Intelligence Artificielle</span>
+                </button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" title="📝 Gérez le contenu principal de votre CV : expériences et formations">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span class="btn-text">Contenu</span>
+                    <span class="btn-subtitle">Expériences & Formations</span>
+                </button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" title="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles">
+                    <i class="fa-solid fa-star"></i>
+                    <span class="btn-text">Compétences</span>
+                    <span class="btn-subtitle">Savoir-faire & Talents</span>
+                </button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" title="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                    <span class="btn-text">Sections</span>
+                    <span class="btn-subtitle">Langues & Loisirs</span>
+                </button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" title="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale">
+                    <i class="fa-solid fa-columns"></i>
+                    <span class="btn-text">Mise en Page</span>
+                    <span class="btn-subtitle">Colonnes & Espacement</span>
+                </button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" title="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV">
+                    <i class="fa-solid fa-palette"></i>
+                    <span class="btn-text">Styles</span>
+                    <span class="btn-subtitle">Thèmes & Couleurs</span>
+                </button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" title="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span class="btn-text">Bannière</span>
+                    <span class="btn-subtitle">En-tête & Contact</span>
+                </button>
             </div>
 
-            <div id="tab-content" class="py-4 flex-grow overflow-y-auto">
+            <div id="tab-content" class="py-3 flex-grow overflow-y-auto">
                 <!-- TAB: IA -->
-                <div id="panel-ia" class="tab-panel space-y-4">
+                <div id="panel-ia" class="tab-panel space-y-3">
                     <details class="control-group">
                         <summary><span>Actions Rapides IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-actions" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
@@ -4681,8 +4757,8 @@
                             <button id="ai-suggest-sections-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" title="L'IA suggère les sections les plus adaptées à votre profil"><i class="fa-solid fa-magic-wand-sparkles"></i> IA : Sections Suggérées</button>
                             <div class="grid grid-cols-2 gap-2">
                                 <button data-section-template="startup" class="section-template-btn bg-orange-100 text-orange-800 p-2 rounded-md text-sm hover:bg-orange-200" title="Sections spécialisées pour les profils startup et entrepreneuriat">Startup</button>
-                                <button data-section-template="academic" class="section-template-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200" title="Sections adaptées au monde académique et à la recherche">Académique</button>
-                                <button data-section-template="creative" class="section-template-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200" title="Sections pour les métiers créatifs et artistiques">Créatif</button>
+                                <button data-section-template="academic" class="section-template-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200 flex items-center gap-2" title="Sections adaptées au monde académique et à la recherche"><i class="fas fa-graduation-cap"></i> Académique</button>
+                                <button data-section-template="creative" class="section-template-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200 flex items-center gap-2" title="Sections pour les métiers créatifs et artistiques"><i class="fas fa-palette"></i> Créatif</button>
                                 <button data-section-template="executive" class="section-template-btn bg-gray-100 text-gray-800 p-2 rounded-md text-sm hover:bg-gray-200" title="Sections pour les postes de direction et management">Cadre</button>
                                 <button data-section-template="international" class="section-template-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200" title="Sections pour les profils internationaux et multilingues">International</button>
                                 <button data-section-template="freelance" class="section-template-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200" title="Sections adaptées aux consultants et freelances">Freelance</button>
@@ -4750,8 +4826,8 @@
                                 <button data-theme="tech" class="theme-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Style tech avec couleurs tech"><i class="fas fa-microchip"></i><span class="btn-text"> Tech</span></button>
                                 <button data-theme="luxury" class="theme-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Thème luxueux et premium"><i class="fas fa-gem"></i><span class="btn-text"> Luxe</span></button>
                                 <button data-theme="startup" class="theme-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Dynamique et innovant pour startups"><i class="fas fa-lightbulb"></i><span class="btn-text"> Startup</span></button>
-                                <button data-theme="academic" class="theme-btn bg-gray-200 p-2 rounded-md text-sm" title="Style académique et sérieux">Académique</button>
-                                <button data-theme="artistic" class="theme-btn bg-gray-200 p-2 rounded-md text-sm" title="Thème artistique et créatif">Artistique</button>
+                                <button data-theme="academic" class="theme-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Style académique et sérieux"><i class="fas fa-graduation-cap"></i><span class="btn-text"> Académique</span></button>
+                                <button data-theme="artistic" class="theme-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Thème artistique et créatif"><i class="fas fa-palette"></i><span class="btn-text"> Artistique</span></button>
                             </div>
                             <button id="random-theme-btn" class="w-full mt-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 flex items-center justify-center gap-2" title="Appliquer un thème au hasard pour l'inspiration"><i class="fa-solid fa-dice"></i> Thème Aléatoire</button>
                         </div>
