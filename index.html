@@ -617,6 +617,40 @@
             opacity: 0.9;
         }
         
+        /* Styles spéciaux pour les boutons d'actions intégrés */
+        .tab-btn.action-btn {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            margin-left: 8px;
+        }
+        
+        .tab-btn.action-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 
+                0 6px 25px rgba(0, 0, 0, 0.15),
+                0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-btn.action-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        /* Séparateur visuel pour les actions */
+        .tab-btn.action-btn:first-of-type {
+            position: relative;
+        }
+        
+        .tab-btn.action-btn:first-of-type::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 20%;
+            bottom: 20%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
+            border-radius: 1px;
+        }
+        
         /* Animations de pulsation pour les onglets actifs */
         @keyframes pulse-glow {
             0%, 100% {
@@ -686,14 +720,14 @@
                 padding: 8px;
                 border-radius: 16px;
                 gap: 4px;
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
             }
             
             .tab-btn {
                 padding: 12px 8px;
                 border-radius: 12px;
                 min-height: 70px;
-                min-width: 90px;
+                min-width: 80px;
             }
             
             .tab-btn .btn-text {
@@ -707,6 +741,16 @@
             .tab-btn i {
                 font-size: 18px;
             }
+            
+            /* Actions sur une ligne séparée sur tablette */
+            .tab-btn.action-btn {
+                margin-left: 0;
+                grid-column: span 1;
+            }
+            
+            .tab-btn.action-btn:first-of-type::before {
+                display: none;
+            }
         }
         
         @media (max-width: 768px) {
@@ -714,14 +758,14 @@
                 padding: 6px;
                 border-radius: 14px;
                 gap: 3px;
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
             }
             
             .tab-btn {
                 padding: 10px 6px;
                 border-radius: 10px;
                 min-height: 60px;
-                min-width: 70px;
+                min-width: 60px;
             }
             
             .tab-btn .btn-text {
@@ -734,6 +778,11 @@
             
             .tab-btn i {
                 font-size: 16px;
+            }
+            
+            /* Actions encore plus compactes sur mobile */
+            .tab-btn.action-btn .btn-text {
+                font-size: 9px;
             }
         }
             
@@ -4494,19 +4543,9 @@
                 <p id="progress-text" class="text-xs text-right text-gray-500 mt-1">0/X sections complétées</p>
             </div>
 
-            <!-- Actions Rapides -->
-            <div class="space-y-2 mb-3 p-3 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
-                 <div class="grid-2">
-                      <button id="download-pdf-btn" class="btn-base icon-only-btn btn-secondary btn-lg w-full" title="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download"></i><span class="btn-text"> PDF</span></button>
-                      <button id="share-btn" class="btn-base icon-only-btn btn-success btn-lg w-full" title="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt"></i><span class="btn-text"> Partager</span></button>
-                 </div>
-                 <button id="reset-cv-btn" class="btn-base icon-only-btn btn-danger btn-lg w-full" title="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus"></i><span class="btn-text"> Nouveau CV</span></button>
-                 <button id="toggle-overflow-btn" class="btn-base icon-only-btn btn-warning btn-lg w-full" title="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined"></i><span class="btn-text"> Détection Dépassement</span></button>
-            </div>
-
-
-            <!-- TABS -->
+            <!-- TABS UNIFIÉS AVEC ACTIONS -->
             <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
+                <!-- Onglets de navigation -->
                 <button class="tab-btn icon-only-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV">
                     <i class="fa-solid fa-robot"></i>
                     <span class="btn-text">IA</span>
@@ -4541,6 +4580,28 @@
                     <i class="fa-solid fa-user-tie"></i>
                     <span class="btn-text">Bannière</span>
                     <span class="btn-subtitle">En-tête & Contact</span>
+                </button>
+
+                <!-- Actions rapides intégrées -->
+                <button id="download-pdf-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-blue-50 hover:bg-blue-100" title="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression">
+                    <i class="fa-solid fa-download text-blue-600"></i>
+                    <span class="btn-text text-blue-600">PDF</span>
+                    <span class="btn-subtitle text-blue-500">Télécharger</span>
+                </button>
+                <button id="share-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-green-50 hover:bg-green-100" title="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau">
+                    <i class="fa-solid fa-share-alt text-green-600"></i>
+                    <span class="btn-text text-green-600">Partager</span>
+                    <span class="btn-subtitle text-green-500">Lien unique</span>
+                </button>
+                <button id="reset-cv-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-red-50 hover:bg-red-100" title="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)">
+                    <i class="fa-solid fa-file-circle-plus text-red-600"></i>
+                    <span class="btn-text text-red-600">Nouveau</span>
+                    <span class="btn-subtitle text-red-500">CV vierge</span>
+                </button>
+                <button id="toggle-overflow-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-orange-50 hover:bg-orange-100" title="📏 Activer la détection visuelle des débordements de contenu">
+                    <i class="fa-solid fa-ruler-combined text-orange-600"></i>
+                    <span class="btn-text text-orange-600">Détection</span>
+                    <span class="btn-subtitle text-orange-500">Dépassement</span>
                 </button>
             </div>
 
