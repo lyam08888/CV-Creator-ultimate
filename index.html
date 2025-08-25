@@ -1713,7 +1713,11 @@
                 e.preventDefault();
                 activeResizer = e.target;
                 activeContainer = activeResizer.parentElement;
+                if (!activeContainer) return; // Protection contre les éléments manquants
+                
                 const columns = activeContainer.querySelectorAll('.cv-column');
+                if (columns.length === 0) return; // Protection contre les colonnes manquantes
+                
                 activeCol1 = columns[0];
                 initialX = e.clientX;
                 initialCol1Width = activeCol1.offsetWidth;
@@ -1751,6 +1755,8 @@
             function setupAllResizers() {
                 document.querySelectorAll('.a4-page').forEach(page => {
                     const container = page.querySelector('.cv-body-container');
+                    if (!container) return; // Protection contre les éléments manquants
+                    
                     const oldResizer = container.querySelector('.column-resizer');
                     if (oldResizer) oldResizer.remove();
 
@@ -1816,6 +1822,8 @@
 
             function initializeSkillSorting() {
                 const skillLists = document.querySelectorAll('#cv-competences-preview ul');
+                if (!skillLists || skillLists.length === 0) return; // Protection contre les éléments manquants
+                
                 skillLists.forEach(list => {
                     new Sortable(list, {
                         group: 'skills', animation: 150, ghostClass: 'skills-ghost',
@@ -4542,6 +4550,7 @@ ${controls.competences.value}`;
             }
 
             init() {
+                // Vérification de l'existence des éléments DOM
                 this.floatBtn = document.getElementById('ai-chat-float-btn');
                 this.chatContainer = document.getElementById('ai-chat-container');
                 this.closeBtn = document.getElementById('ai-chat-close-btn');
@@ -4553,21 +4562,34 @@ ${controls.competences.value}`;
                 this.smartSuggestBtn = document.getElementById('ai-smart-suggest-btn');
                 this.quickFixBtn = document.getElementById('ai-quick-fix-btn');
 
+                // Vérification que tous les éléments essentiels sont présents
+                if (!this.floatBtn || !this.chatContainer || !this.input || !this.sendBtn) {
+                    console.error('Chat IA : Éléments DOM manquants pour l\'initialisation');
+                    return;
+                }
+
                 this.setupEventListeners();
                 this.loadChatPosition();
                 this.initializeVoiceRecognition();
             }
 
             setupEventListeners() {
+                // Protection contre les éléments manquants
+                if (!this.floatBtn || !this.chatContainer || !this.input || !this.sendBtn) return;
+                
                 // Float button drag functionality
                 this.floatBtn.addEventListener('mousedown', this.startDragFloatBtn.bind(this));
                 this.floatBtn.addEventListener('click', this.toggleChat.bind(this));
                 
                 // Chat window drag functionality
-                this.header.addEventListener('mousedown', this.startDragChat.bind(this));
+                if (this.header) {
+                    this.header.addEventListener('mousedown', this.startDragChat.bind(this));
+                }
                 
                 // Close button
-                this.closeBtn.addEventListener('click', this.closeChat.bind(this));
+                if (this.closeBtn) {
+                    this.closeBtn.addEventListener('click', this.closeChat.bind(this));
+                }
                 
                 // Send message functionality
                 this.sendBtn.addEventListener('click', this.sendMessage.bind(this));
@@ -4579,13 +4601,19 @@ ${controls.competences.value}`;
                 });
 
                 // Voice recognition
-                this.voiceBtn.addEventListener('click', this.toggleVoiceRecognition.bind(this));
+                if (this.voiceBtn) {
+                    this.voiceBtn.addEventListener('click', this.toggleVoiceRecognition.bind(this));
+                }
                 
                 // Smart suggestions
-                this.smartSuggestBtn.addEventListener('click', this.generateSmartSuggestions.bind(this));
+                if (this.smartSuggestBtn) {
+                    this.smartSuggestBtn.addEventListener('click', this.generateSmartSuggestions.bind(this));
+                }
                 
                 // Quick fix
-                this.quickFixBtn.addEventListener('click', this.performQuickFix.bind(this));
+                if (this.quickFixBtn) {
+                    this.quickFixBtn.addEventListener('click', this.performQuickFix.bind(this));
+                }
 
                 // Auto-resize textarea
                 this.input.addEventListener('input', this.autoResizeTextarea.bind(this));
@@ -4691,6 +4719,11 @@ ${controls.competences.value}`;
             }
 
             addMessage(content, isUser = false, isThinking = false) {
+                if (!this.messagesContainer) {
+                    console.error('Chat IA : Container de messages manquant');
+                    return null;
+                }
+                
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `chat-message ${isUser ? 'user' : 'ai'}${isThinking ? ' thinking' : ''}`;
                 
@@ -4736,6 +4769,12 @@ ${controls.competences.value}`;
             }
 
             async processAIRequest(userMessage) {
+                // Vérifier d'abord si l'API Gemini est configurée
+                const apiKey = localStorage.getItem('gemini-api-key');
+                if (!apiKey) {
+                    throw new Error('Clé API Gemini non configurée. Allez dans l\'onglet "IA" > "Configuration API Gemini" pour configurer votre clé API.');
+                }
+                
                 const cvData = this.extractCVData();
                 const analysisData = this.performDeepAnalysis();
                 
@@ -4789,7 +4828,7 @@ Réponds de manière proactive et applique directement les modifications nécess
                     await this.parseAndApplyAdvancedSuggestions(result, userMessage);
                     return result;
                 } else {
-                    throw new Error("Impossible de générer une réponse IA");
+                    throw new Error("Impossible de générer une réponse IA. Vérifiez votre clé API Gemini.");
                 }
             }
 
@@ -5566,6 +5605,39 @@ Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
         // Initialize the AI Chat when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             window.aiChat = new AdvancedAIChat();
+            
+            // Vérifier et mettre à jour le statut de l'API
+            function updateAPIStatus() {
+                const apiKey = localStorage.getItem('gemini-api-key');
+                const statusMessage = document.getElementById('api-status-message');
+                
+                if (statusMessage) {
+                    if (apiKey && apiKey.trim() !== '') {
+                        statusMessage.innerHTML = `
+                            ✅ <strong>API Gemini configurée</strong><br>
+                            Toutes mes fonctionnalités sont disponibles !<br><br>
+                        `;
+                        statusMessage.style.color = '#10b981';
+                    } else {
+                        statusMessage.innerHTML = `
+                            ⚠️ <strong>Clé API Gemini non configurée</strong><br>
+                            Pour utiliser toutes mes fonctionnalités, configurez votre clé API dans l'onglet "IA" > "Configuration API Gemini".<br>
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #667eea;">Obtenir une clé API gratuite ici</a>
+                            <br><br>
+                        `;
+                        statusMessage.style.color = '#f59e0b';
+                    }
+                }
+            }
+            
+            // Mettre à jour le statut initialement
+            updateAPIStatus();
+            
+            // Écouter les changements dans le localStorage pour mettre à jour le statut
+            window.addEventListener('storage', updateAPIStatus);
+            
+            // Vérifier périodiquement le statut (au cas où il changerait dans la même fenêtre)
+            setInterval(updateAPIStatus, 5000);
         });
     </script>
 
@@ -5583,9 +5655,15 @@ Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
         </div>
         
         <div id="ai-chat-messages">
-            <div class="chat-message ai">
+            <div class="chat-message ai" id="initial-ai-message">
                 🤖 <strong>Assistant IA Ultra-Intelligent</strong>
                 <br><br>
+                <div id="api-status-message">
+                    ⚠️ <strong>Clé API Gemini non configurée</strong><br>
+                    Pour utiliser toutes mes fonctionnalités, configurez votre clé API dans l'onglet "IA" > "Configuration API Gemini".<br>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #667eea;">Obtenir une clé API gratuite ici</a>
+                    <br><br>
+                </div>
                 Je peux <strong>modifier directement</strong> votre CV en temps réel ! Voici mes super-pouvoirs :
                 
                 <div class="chat-suggestions">
@@ -5613,15 +5691,15 @@ Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
         </div>
         
         <div id="ai-chat-input-container">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <button id="ai-voice-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
+                <button id="ai-voice-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px;">
                     <i class="fas fa-microphone"></i>
                 </button>
-                <button id="ai-smart-suggest-btn" style="background: #10b981; border: none; color: white; padding: 4px 8px; border-radius: 12px; cursor: pointer; font-size: 12px;">
-                    💡 Suggestions intelligentes
+                <button id="ai-smart-suggest-btn" style="background: #10b981; border: none; color: white; padding: 2px 6px; border-radius: 8px; cursor: pointer; font-size: 10px;">
+                    💡 Suggestions
                 </button>
-                <button id="ai-quick-fix-btn" style="background: #f59e0b; border: none; color: white; padding: 4px 8px; border-radius: 12px; cursor: pointer; font-size: 12px;">
-                    ⚡ Correction rapide
+                <button id="ai-quick-fix-btn" style="background: #f59e0b; border: none; color: white; padding: 2px 6px; border-radius: 8px; cursor: pointer; font-size: 10px;">
+                    ⚡ Correction
                 </button>
             </div>
             <textarea id="ai-chat-input" placeholder="Ex: 'Change les couleurs en bleu moderne' ou 'Optimise pour un poste de marketing'..." rows="1"></textarea>
