@@ -1042,8 +1042,47 @@
                 const col1 = document.getElementById(`cv-col-${pageId}-1`);
                 const col2 = document.getElementById(`cv-col-${pageId}-2`);
                 const onEnd = () => { checkAllPagesOverflow(); };
-                if (col1) new Sortable(col1, { group: 'cv-modules', animation: 150, handle: '.drag-handle', ghostClass: 'sortable-ghost', onEnd });
-                if (col2) new Sortable(col2, { group: 'cv-modules', animation: 150, handle: '.drag-handle', ghostClass: 'sortable-ghost', onEnd });
+                
+                // Destroy existing Sortable instances to avoid conflicts
+                if (col1 && col1.sortable) {
+                    col1.sortable.destroy();
+                }
+                if (col2 && col2.sortable) {
+                    col2.sortable.destroy();
+                }
+                
+                // Create new Sortable instances
+                if (col1) {
+                    col1.sortable = new Sortable(col1, { 
+                        group: 'cv-modules', 
+                        animation: 150, 
+                        handle: '.drag-handle', 
+                        ghostClass: 'sortable-ghost', 
+                        onEnd 
+                    });
+                }
+                if (col2) {
+                    col2.sortable = new Sortable(col2, { 
+                        group: 'cv-modules', 
+                        animation: 150, 
+                        handle: '.drag-handle', 
+                        ghostClass: 'sortable-ghost', 
+                        onEnd 
+                    });
+                }
+            }
+
+            function initializeAllSortable() {
+                // Initialize drag and drop for all existing pages
+                document.querySelectorAll('.a4-page').forEach((page) => {
+                    const pageId = page.id.replace('page-', '');
+                    if (pageId) {
+                        initializeSortableForPage(pageId);
+                    } else {
+                        // For the first page that might not have an ID
+                        initializeSortableForPage(1);
+                    }
+                });
             }
 
             function initializeSkillSorting() {
@@ -1342,6 +1381,7 @@
                     }
 
                     document.querySelectorAll('.custom-module-preview').forEach(m => m.remove());
+                    const hasCustomSections = controls.customSectionsList.children.length > 0;
                     Array.from(controls.customSectionsList.children).forEach(div => {
                         const sectionId = div.dataset.sectionId;
                         const title = div.querySelector('input').value;
@@ -1367,6 +1407,11 @@
                             lastModule.parentElement.insertBefore(moduleDiv, lastModule.nextSibling);
                         }
                     });
+                    
+                    // Reinitialize drag and drop after adding custom modules
+                    if (hasCustomSections || document.querySelectorAll('.custom-module-preview').length > 0) {
+                        setTimeout(() => initializeAllSortable(), 100);
+                    }
                     
                     preview.bannerNom.textContent = controls.bannerNom.value || "Nom Prénom Recruteur";
                     preview.bannerPoste.textContent = controls.bannerPoste.value || "Poste du Recruteur";
@@ -2550,6 +2595,10 @@ ${controls.competences.value}`;
             setDefaultRecruiterInfo();
             updatePreview('form');
             updateAllStyles();
+            
+            // Initialize drag & drop for all pages
+            initializeAllSortable();
+            setupAllResizers();
             
         });
     </script>
