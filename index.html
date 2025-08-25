@@ -983,6 +983,22 @@
             box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4) !important;
         }
         
+        /* Style spécifique pour le bouton "Rendre modulaire" - correction du fond blanc */
+        #modular-banner-btn {
+            background-color: #f97316 !important; /* Orange-500 avec !important */
+            color: white !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3) !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+        }
+        
+        #modular-banner-btn:hover {
+            background-color: #ea580c !important; /* Orange-600 avec !important */
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4) !important;
+        }
+        
         /* Contrôle de l'image de fond de bannière */
         #banner-fix-controls {
             background-color: #f8fafc;
@@ -1889,7 +1905,7 @@
                                 </button>
                             </div>
                             
-                            <button id="modular-banner-btn" class="cv-input w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 flex items-center justify-center gap-2 hidden" title="Rendre la bannière déplaçable dans les colonnes">
+                            <button id="modular-banner-btn" class="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 flex items-center justify-center gap-2 hidden" title="Rendre la bannière déplaçable dans les colonnes">
                                 <i class="fas fa-arrows-up-down-left-right"></i>Rendre modulaire
                             </button>
                             
