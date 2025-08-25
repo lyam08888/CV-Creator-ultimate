@@ -4580,6 +4580,11 @@ ${controls.competences.value}`;
                 this.setupEventListeners();
                 this.loadChatPosition();
                 this.initializeVoiceRecognition();
+                
+                // S'assurer que le bouton est visible après l'initialisation
+                setTimeout(() => {
+                    this.adjustPositionsOnResize();
+                }, 100);
             }
 
             setupEventListeners() {
@@ -4638,6 +4643,9 @@ ${controls.competences.value}`;
                 // Global mouse events for dragging
                 document.addEventListener('mousemove', this.handleDrag.bind(this));
                 document.addEventListener('mouseup', this.stopDrag.bind(this));
+                
+                // Window resize event to keep elements in screen
+                window.addEventListener('resize', this.adjustPositionsOnResize.bind(this));
             }
 
             startDragFloatBtn(e) {
@@ -5595,18 +5603,64 @@ Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
                     const positions = JSON.parse(saved);
                     
                     if (positions.floatBtn) {
-                        this.floatBtn.style.left = positions.floatBtn.left + 'px';
-                        this.floatBtn.style.top = positions.floatBtn.top + 'px';
+                        // S'assurer que le bouton reste dans l'écran visible
+                        const maxX = window.innerWidth - this.floatBtn.offsetWidth;
+                        const maxY = window.innerHeight - this.floatBtn.offsetHeight;
+                        
+                        const left = Math.max(0, Math.min(positions.floatBtn.left, maxX));
+                        const top = Math.max(0, Math.min(positions.floatBtn.top, maxY));
+                        
+                        this.floatBtn.style.left = left + 'px';
+                        this.floatBtn.style.top = top + 'px';
                         this.floatBtn.style.right = 'auto';
                         this.floatBtn.style.bottom = 'auto';
                     }
                     
                     if (positions.chat) {
-                        this.chatContainer.style.left = positions.chat.left + 'px';
-                        this.chatContainer.style.top = positions.chat.top + 'px';
+                        // S'assurer que le chat reste dans l'écran visible
+                        const maxX = window.innerWidth - this.chatContainer.offsetWidth;
+                        const maxY = window.innerHeight - this.chatContainer.offsetHeight;
+                        
+                        const left = Math.max(0, Math.min(positions.chat.left, maxX));
+                        const top = Math.max(0, Math.min(positions.chat.top, maxY));
+                        
+                        this.chatContainer.style.left = left + 'px';
+                        this.chatContainer.style.top = top + 'px';
                         this.chatContainer.style.right = 'auto';
                         this.chatContainer.style.bottom = 'auto';
                     }
+                }
+            }
+            
+            adjustPositionsOnResize() {
+                // Repositionner le bouton flottant s'il est hors écran
+                const floatBtnRect = this.floatBtn.getBoundingClientRect();
+                if (floatBtnRect.right > window.innerWidth || floatBtnRect.bottom > window.innerHeight || floatBtnRect.left < 0 || floatBtnRect.top < 0) {
+                    const maxX = window.innerWidth - this.floatBtn.offsetWidth;
+                    const maxY = window.innerHeight - this.floatBtn.offsetHeight;
+                    
+                    const left = Math.max(0, Math.min(floatBtnRect.left, maxX));
+                    const top = Math.max(0, Math.min(floatBtnRect.top, maxY));
+                    
+                    this.floatBtn.style.left = left + 'px';
+                    this.floatBtn.style.top = top + 'px';
+                    this.floatBtn.style.right = 'auto';
+                    this.floatBtn.style.bottom = 'auto';
+                }
+                
+                // Repositionner le chat s'il est hors écran
+                const chatRect = this.chatContainer.getBoundingClientRect();
+                if (chatRect.right > window.innerWidth || chatRect.bottom > window.innerHeight || chatRect.left < 0 || chatRect.top < 0) {
+                    const maxX = window.innerWidth - this.chatContainer.offsetWidth;
+                    const maxY = window.innerHeight - this.chatContainer.offsetHeight;
+                    
+                    const left = Math.max(0, Math.min(chatRect.left, maxX));
+                    const top = Math.max(0, Math.min(chatRect.top, maxY));
+                    
+                    this.chatContainer.style.left = left + 'px';
+                    this.chatContainer.style.top = top + 'px';
+                    this.chatContainer.style.right = 'auto';
+                    this.chatContainer.style.bottom = 'auto';
                 }
             }
         }
