@@ -4631,82 +4631,51 @@
                 <p id="progress-text" class="text-xs text-right text-gray-500 mt-1">0/X sections complétées</p>
             </div>
 
-            <!-- TABS UNIFIÉS AVEC ACTIONS -->
-            <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
-                <!-- Onglets de navigation -->
-                <button class="tab-btn icon-only-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" data-tooltip="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV">
-                    <i class="fa-solid fa-robot"></i>
-                    <div class="text-container">
-                        <span class="btn-text">IA</span>
-                        <span class="btn-subtitle">Intelligence Artificielle</span>
-                    </div>
-                </button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" data-tooltip="📝 Gérez le contenu principal de votre CV : expériences et formations">
-                    <i class="fa-solid fa-file-lines"></i>
-                    <div class="text-container">
-                        <span class="btn-text">Contenu</span>
-                        <span class="btn-subtitle">Expériences & Formations</span>
-                    </div>
-                </button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" data-tooltip="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles">
-                    <i class="fa-solid fa-star"></i>
-                    <div class="text-container">
-                        <span class="btn-text">Compétences</span>
-                        <span class="btn-subtitle">Savoir-faire & Talents</span>
-                    </div>
-                </button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" data-tooltip="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications">
-                    <i class="fa-solid fa-puzzle-piece"></i>
-                    <div class="text-container">
-                        <span class="btn-text">Sections</span>
-                        <span class="btn-subtitle">Langues & Loisirs</span>
-                    </div>
-                </button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" data-tooltip="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale">
-                    <i class="fa-solid fa-columns"></i>
-                    <div class="text-container">
-                        <span class="btn-text">Mise en Page</span>
-                        <span class="btn-subtitle">Colonnes & Espacement</span>
-                    </div>
-                </button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" data-tooltip="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV">
-                    <i class="fa-solid fa-palette"></i>
-                    <div class="text-container">
-                        <span class="btn-text">Styles</span>
-                        <span class="btn-subtitle">Thèmes & Couleurs</span>
-                    </div>
-                </button>
-                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" data-tooltip="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact">
-                    <i class="fa-solid fa-user-tie"></i>
-                    <div class="text-container">
-                        <span class="btn-text">Bannière</span>
-                        <span class="btn-subtitle">En-tête & Contact</span>
-                    </div>
-                </button>
-
-                <!-- Actions rapides intégrées -->
-                <button id="download-pdf-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-blue-50 hover:bg-blue-100" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression">
+            <!-- Actions Rapides -->
+            <div class="quick-actions-bar bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 justify-center">
+                <button id="download-pdf-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-blue-50 hover:bg-blue-100" data-tooltip="� Télécharge votre CV au format PDF avec une mise en page professionnelle">
                     <i class="fa-solid fa-download text-blue-600"></i>
                     <div class="text-container">
                         <span class="btn-text text-blue-600">PDF</span>
                         <span class="btn-subtitle text-blue-500">Télécharger</span>
                     </div>
                 </button>
-                <button id="share-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-green-50 hover:bg-green-100" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau">
+                <button id="share-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-green-50 hover:bg-green-100" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV">
                     <i class="fa-solid fa-share-alt text-green-600"></i>
                     <div class="text-container">
                         <span class="btn-text text-green-600">Partager</span>
                         <span class="btn-subtitle text-green-500">Lien unique</span>
                     </div>
                 </button>
-                <button id="reset-cv-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-red-50 hover:bg-red-100" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)">
+                <button id="reset-cv-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-red-50 hover:bg-red-100" data-tooltip="🗂️ Créer un nouveau CV vierge">
                     <i class="fa-solid fa-file-circle-plus text-red-600"></i>
                     <div class="text-container">
                         <span class="btn-text text-red-600">Nouveau</span>
                         <span class="btn-subtitle text-red-500">CV vierge</span>
                     </div>
                 </button>
-                <button id="toggle-overflow-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-orange-50 hover:bg-orange-100" data-tooltip="📏 Activer la détection visuelle des débordements de contenu">
+                <button id="ai-optimize-one-page-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-purple-50 hover:bg-purple-100" data-tooltip="🔮 L'IA optimise automatiquement votre CV pour qu'il tienne sur une seule page">
+                    <i class="fas fa-magic-wand-sparkles text-purple-600"></i>
+                    <div class="text-container">
+                        <span class="btn-text text-purple-600">IA</span>
+                        <span class="btn-subtitle text-purple-500">1 Page</span>
+                    </div>
+                </button>
+                <button id="anonymize-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-slate-50 hover:bg-slate-100" data-tooltip="�️ Masquer vos informations personnelles">
+                    <i class="fa-solid fa-user-secret text-slate-600"></i>
+                    <div class="text-container">
+                        <span class="btn-text text-slate-600">Anonyme</span>
+                        <span class="btn-subtitle text-slate-500">Mode</span>
+                    </div>
+                </button>
+                <button id="toggle-presentation-mode-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-indigo-50 hover:bg-indigo-100" data-tooltip="�️ Mode présentation">
+                    <i class="fa-solid fa-eye text-indigo-600"></i>
+                    <div class="text-container">
+                        <span class="btn-text text-indigo-600">Présentation</span>
+                        <span class="btn-subtitle text-indigo-500">Mode</span>
+                    </div>
+                </button>
+                <button id="toggle-overflow-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-orange-50 hover:bg-orange-100" data-tooltip="� Détection des débordements">
                     <i class="fa-solid fa-ruler-combined text-orange-600"></i>
                     <div class="text-container">
                         <span class="btn-text text-orange-600">Détection</span>
@@ -4715,239 +4684,152 @@
                 </button>
             </div>
 
-            <div id="tab-content" class="py-3 flex-grow overflow-y-auto">
-                <!-- TAB: IA -->
-                <div id="panel-ia" class="tab-panel space-y-3">
-                    <details class="control-group">
-                        <summary><span>Actions Rapides IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-actions" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <div class="grid grid-cols-3 gap-2">
-                                <button id="ai-optimize-one-page-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="🔮 L'IA optimise automatiquement votre CV pour qu'il tienne sur une seule page tout en gardant l'essentiel">
-                                    <i class="fas fa-magic-wand-sparkles text-xl"></i>
-                                </button>
-                                <button id="anonymize-btn" class="ai-btn-enhanced icon-only-btn bg-slate-600 text-white p-3 rounded-lg hover:bg-slate-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="🕵️ Masquer vos informations personnelles pour créer une version anonyme de votre CV">
-                                    <i class="fa-solid fa-user-secret text-xl"></i>
-                                </button>
-                                <button id="toggle-presentation-mode-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="👁️ Mode présentation : masquer tous les éléments d'édition pour une vue propre">
-                                    <i class="fa-solid fa-eye text-xl"></i>
-                                </button>
-                            </div>
+            <!-- Contenu Principal - Toutes les sections regroupées -->
+            <div id="main-content" class="py-3 flex-grow overflow-y-auto space-y-3">
+                    <div class="text-container">
+                        <span class="btn-text text-orange-600">Détection</span>
+                        <span class="btn-subtitle text-orange-500">Dépassement</span>
+                    </div>
+                </button>
+            </div>
+
+                <!-- ✨ INTELLIGENCE ARTIFICIELLE -->
+                <details class="control-group">
+                    <summary><span>🤖 Actions Rapides IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-actions" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <textarea id="ai-input" rows="4" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="analyze-btn" class="ai-btn-enhanced bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔍 Analyse automatique de vos données"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i><span class="btn-text">Analyser</span></button>
+                            <button id="smart-analyze-btn" class="ai-btn-enhanced bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🧠 Analyse intelligente avancée"><i class="fa-solid fa-brain text-lg"></i><span class="btn-text">Smart</span></button>
                         </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Configuration API Gemini</span><label class="completion-label"><input type="checkbox" id="completion-ia-config" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <div class="space-y-2">
-                                <label for="api-key-input" class="block text-sm font-medium text-gray-700">Clé API Gemini</label>
+                        <button id="industry-match-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🏭 Adapte au secteur"><i class="fa-solid fa-industry text-lg"></i><span class="btn-text">Adapter au Secteur</span></button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="ai-score-cv-btn" class="ai-btn-enhanced bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📊 Score ATS"><i class="fa-solid fa-chart-line text-lg"></i><span class="btn-text">Score</span></button>
+                            <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔑 Mots-clés"><i class="fa-solid fa-key text-lg"></i><span class="btn-text">Mots-clés</span></button>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="control-group">
+                    <summary><span>🔧 Configuration API Gemini</span><label class="completion-label"><input type="checkbox" id="completion-ia-config" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <div class="flex gap-2">
+                            <input type="password" id="api-key-input" placeholder="Clé API Gemini..." class="flex-1 p-2 border rounded-md text-sm">
+                            <button id="save-api-key-btn" class="ai-btn-enhanced bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm flex items-center gap-1" title="💾 Sauvegarder"><i class="fas fa-save"></i></button>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+                            <p class="text-xs text-blue-800">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Obtenez votre clé sur <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline">Google AI Studio</a>
+                            </p>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- 📝 CONTENU PRINCIPAL -->
+                <details class="control-group">
+                    <summary><span>📝 Informations Principales</span><label class="completion-label"><input type="checkbox" id="completion-content-infos" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <input type="text" id="nom" placeholder="Nom" class="cv-input w-full p-2 border rounded-md">
+                        <input type="text" id="prenom" placeholder="Prénom" class="cv-input w-full p-2 border rounded-md">
+                        <input type="text" id="poste" placeholder="Poste recherché" class="cv-input w-full p-2 border rounded-md">
+                        <textarea id="description" placeholder="Description du profil" rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
+                    </div>
+                </details>
+
+                <details class="control-group">
+                    <summary><span>💼 Expériences</span><label class="completion-label"><input type="checkbox" id="completion-content-exp" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-2">
+                        <div class="flex justify-end mb-2">
+                            <button id="add-experience" class="ai-btn-compact text-sm text-blue-600 hover:text-blue-800 font-medium" title="➕ Ajouter une expérience"><i class="fas fa-circle-plus"></i><span class="btn-text"> Ajouter</span></button>
+                        </div>
+                        <div id="experience-list" class="space-y-2"></div>
+                    </div>
+                </details>
+
+                <details class="control-group">
+                    <summary><span>🎓 Formations</span><label class="completion-label"><input type="checkbox" id="completion-content-form" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-2">
+                        <div class="flex justify-end mb-2">
+                            <button id="add-formation" class="ai-btn-compact text-sm text-blue-600 hover:text-blue-800 font-medium" title="🎓 Ajouter une formation"><i class="fas fa-circle-plus"></i><span class="btn-text"> Ajouter</span></button>
+                        </div>
+                        <div id="formation-list" class="space-y-2"></div>
+                    </div>
+                </details>
+
+                <!-- ⭐ COMPÉTENCES -->
+                <details class="control-group">
+                    <summary><span>⭐ Compétences</span><label class="completion-label"><input type="checkbox" id="completion-skills" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <p class="text-sm font-medium">Style de Présentation</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button data-skill-style="tags" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm active" title="Étiquettes"><i class="fas fa-tags"></i><span class="btn-text">Tags</span></button>
+                            <button data-skill-style="levels" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Niveaux"><i class="fas fa-chart-bar"></i><span class="btn-text">Niveaux</span></button>
+                            <button data-skill-style="simple" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Simple"><i class="fas fa-list"></i><span class="btn-text">Simple</span></button>
+                        </div>
+                        <div id="skills-text-controls">
+                            <div class="flex justify-between items-center">
+                                <label for="competences" class="font-medium">Liste des compétences</label>
                                 <div class="flex gap-2">
-                                    <input type="password" id="api-key-input" placeholder="Entrez votre clé API Gemini..." class="flex-1 p-2 border rounded-md text-sm">
-                                    <button id="save-api-key-btn" class="ai-btn-enhanced icon-only-btn bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm flex items-center gap-1 transition-all duration-200 hover:scale-105" title="💾 Sauvegarder votre clé API Gemini pour les fonctionnalités IA">
-                                        <i class="fas fa-save text-lg"></i><span class="btn-text"> Sauver</span>
-                                    </button>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span id="api-key-status" class="api-key-status text-sm text-red-500">Clé API manquante</span>
-                                    <button id="toggle-api-key-visibility" class="text-gray-500 hover:text-gray-700 text-sm" title="Afficher/Masquer la clé">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </div>
-                                <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
-                                    <p class="text-xs text-blue-800">
-                                        <i class="fas fa-info-circle mr-1"></i>
-                                        <strong>Comment obtenir votre clé API :</strong><br>
-                                        1. Allez sur <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 underline">Google AI Studio</a><br>
-                                        2. Créez une nouvelle clé API<br>
-                                        3. Copiez-la et collez-la ci-dessus<br>
-                                        <em>La clé est stockée localement dans votre navigateur.</em>
-                                    </p>
+                                    <button id="ai-limit-skills-btn" class="ai-btn-compact text-blue-600 hover:text-blue-800" title="🎯 Top 10"><i class="fas fa-filter"></i></button>
+                                    <button id="ai-synthesize-skills-btn" class="ai-btn-compact text-blue-600 hover:text-blue-800" title="🧠 Synthèse"><i class="fas fa-brain"></i></button>
                                 </div>
                             </div>
+                            <textarea id="competences" placeholder="Compétences (séparées par des virgules)..." rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
                         </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Analyse IA Avancée</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button id="analyze-btn" class="ai-btn-enhanced icon-only-btn bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i><span class="btn-text"> Analyser & Remplir</span></button>
-                                <button id="smart-analyze-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain text-xl"></i><span class="btn-text"> Analyse Smart</span></button>
-                            </div>
-                            <button id="industry-match-btn" class="ai-btn-enhanced icon-only-btn w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-xl"></i><span class="btn-text"> Adapter au Secteur</span></button>
+                        <div id="skills-level-controls" class="hidden space-y-3">
+                            <div id="skills-level-list" class="space-y-2"></div>
+                            <button id="add-skill-level-btn" class="ai-btn-enhanced w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700" title="➕ Ajouter compétence"><i class="fas fa-plus-circle"></i><span class="btn-text"> Ajouter</span></button>
                         </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Optimisations IA <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-optimizations" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <div class="grid grid-cols-2 gap-2">
-                                <button id="ai-score-cv-btn" class="ai-btn-enhanced icon-only-btn bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line text-xl"></i><span class="btn-text"> Score ATS</span></button>
-                                <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced icon-only-btn bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key text-xl"></i><span class="btn-text"> Mots-clés</span></button>
-                            </div>
-                            <button id="ai-create-variants-btn" class="ai-btn-enhanced icon-only-btn w-full bg-orange-600 text-white p-3 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy text-xl"></i><span class="btn-text"> Créer 3 Variantes</span></button>
-                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced icon-only-btn w-full bg-rose-600 text-white p-3 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-xl"></i><span class="btn-text"> Personnaliser pour Poste</span></button>
-                        </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Présentation Recruteur</span><label class="completion-label"><input type="checkbox" id="completion-ia-presentation" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <input type="text" id="qualification-dispo" placeholder="Disponibilité" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
-                            <div class="grid grid-cols-2 gap-2">
-                                <button id="generate-mail-btn" class="ai-btn-enhanced icon-only-btn bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles text-xl"></i><span class="btn-text"> Mail Présentation</span></button>
-                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced icon-only-btn bg-blue-700 text-white p-3 rounded-lg hover:bg-blue-800 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin text-xl"></i><span class="btn-text"> Message LinkedIn</span></button>
-                            </div>
-                            <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le message généré apparaîtra ici..."></textarea>
-                        </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>IA Créative <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-creative" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced icon-only-btn w-full bg-violet-600 text-white p-3 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-xl"></i><span class="btn-text"> Générer Devise/Slogan</span></button>
-                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced icon-only-btn w-full bg-amber-600 text-white p-3 rounded-lg hover:bg-amber-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb text-xl"></i><span class="btn-text"> Suggestions d'Amélioration</span></button>
-                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced icon-only-btn w-full bg-cyan-600 text-white p-3 rounded-lg hover:bg-cyan-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language text-xl"></i><span class="btn-text"> Traduire CV</span></button>
-                        </div>
-                    </details>
-                </div>
+                    </div>
+                </details>
 
-                <!-- TAB: Contenu -->
-                <div id="panel-content" class="tab-panel hidden space-y-4">
-                    <details class="control-group">
-                        <summary><span>Informations Principales</span><label class="completion-label"><input type="checkbox" id="completion-content-infos" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <input type="text" id="nom" placeholder="Nom" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="prenom" placeholder="Prénom" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="poste" placeholder="Poste recherché" class="cv-input w-full p-2 border rounded-md">
-                            <textarea id="description" placeholder="Description du profil" rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
+                <!-- 🧩 SECTIONS PERSONNALISÉES -->
+                <details class="control-group">
+                    <summary><span>🧩 Sections Personnalisées</span><label class="completion-label"><input type="checkbox" id="completion-custom" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <div class="flex gap-2">
+                            <input type="text" id="new-section-title-input" class="flex-grow p-2 border rounded-md text-sm" placeholder="Titre de section...">
+                            <button id="add-section-btn" class="ai-btn-enhanced bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700" title="➕ Créer section"><i class="fas fa-plus"></i></button>
                         </div>
-                    </details>
-                     <details class="control-group">
-                        <summary><span>Expériences</span><label class="completion-label"><input type="checkbox" id="completion-content-exp" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <div class="flex justify-end mb-2"><button id="add-experience" class="ai-btn-compact icon-only-btn text-sm text-blue-600 hover:text-blue-800 font-medium" title="➕ Ajoute une nouvelle expérience professionnelle avec tous les détails : poste, entreprise, dates, missions"><i class="fas fa-circle-plus"></i><span class="btn-text"> Ajouter un bloc</span></button></div>
-                            <div id="experience-list" class="space-y-2"></div>
-                        </div>
-                    </details>
-                     <details class="control-group">
-                        <summary><span>Formations</span><label class="completion-label"><input type="checkbox" id="completion-content-form" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <div class="flex justify-end mb-2"><button id="add-formation" class="ai-btn-compact icon-only-btn text-sm text-blue-600 hover:text-blue-800 font-medium" title="🎓 Ajoute une nouvelle formation, diplôme ou certification avec l'établissement et les dates"><i class="fas fa-circle-plus"></i><span class="btn-text"> Ajouter un bloc</span></button></div>
-                            <div id="formation-list" class="space-y-2"></div>
-                        </div>
-                    </details>
-                </div>
-                
-                <!-- TAB: Compétences -->
-                <div id="panel-skills" class="tab-panel hidden space-y-4">
-                     <details class="control-group">
-                        <summary><span>Compétences</span><label class="completion-label"><input type="checkbox" id="completion-skills" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <p class="text-sm font-medium">Style de Présentation</p>
-                            <div class="grid grid-cols-3 gap-2">
-                                <button data-skill-style="tags" class="skill-style-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm active" title="Afficher les compétences sous forme d'étiquettes colorées"><i class="fas fa-tags"></i><span class="btn-text"> Tags</span></button>
-                                <button data-skill-style="levels" class="skill-style-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Présenter les compétences avec des niveaux de maîtrise"><i class="fas fa-chart-bar"></i><span class="btn-text"> Niveaux</span></button>
-                                <button data-skill-style="simple" class="skill-style-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Liste simple des compétences sans niveau"><i class="fas fa-list"></i><span class="btn-text"> Simple</span></button>
-                                <button data-skill-style="circular" class="skill-style-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Affichage circulaire avec jauges visuelles"><i class="fas fa-circle-notch"></i><span class="btn-text"> Circulaire</span></button>
-                                <button data-skill-style="categories" class="skill-style-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Organiser les compétences par catégories"><i class="fas fa-folder"></i><span class="btn-text"> Catégories</span></button>
-                                <button data-skill-style="timeline" class="skill-style-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Présentation chronologique des compétences acquises"><i class="fas fa-timeline"></i><span class="btn-text"> Timeline</span></button>
-                            </div>
-                            
-                            <div id="skills-text-controls">
-                                <div class="flex justify-between items-center"><label for="competences" class="font-medium">Liste des compétences</label><div class="flex gap-2"><button id="ai-limit-skills-btn" class="ai-btn-compact icon-only-btn text-blue-600 hover:text-blue-800" title="🎯 Utilise l'IA pour sélectionner automatiquement les 10 compétences les plus pertinentes et impactantes"><i class="fas fa-filter"></i><span class="btn-text"> 10</span></button><button id="ai-synthesize-skills-btn" class="ai-btn-compact icon-only-btn text-blue-600 hover:text-blue-800" title="🧠 Organise et synthétise intelligemment vos compétences par catégories et importance"><i class="fas fa-brain"></i></button><button id="ai-skills-from-job-btn" class="ai-btn-compact icon-only-btn text-purple-600 hover:text-purple-800" title="⚡ Génère automatiquement une liste de compétences optimales basée sur une offre d'emploi"><i class="fas fa-magic-wand-sparkles"></i><span class="btn-text"> Job</span></button></div></div>
-                                <textarea id="competences" placeholder="Compétences (séparées par des virgules)..." rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
-                            </div>
+                        <div id="custom-sections-list" class="space-y-2"></div>
+                    </div>
+                </details>
 
-                            <div id="skills-level-controls" class="hidden space-y-3">
-                                <p class="text-sm font-medium">Style de Jauge</p>
-                                <div class="grid grid-cols-6 gap-2 text-center">
-                                    <button data-gauge-style="bar" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm active" title="Barre"><i class="fas fa-bars"></i></button>
-                                    <button data-gauge-style="dots" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Points"><i class="fas fa-circle"></i></button>
-                                    <button data-gauge-style="stars" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Étoiles"><i class="fas fa-star"></i></button>
-                                    <button data-gauge-style="squares" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Carrés"><i class="fas fa-square"></i></button>
-                                    <button data-gauge-style="number" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm font-bold" title="Chiffres">⅗</button>
-                                    <button data-gauge-style="percentage" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Pourcentage">%</button>
-                                </div>
-                                <div id="skills-level-list" class="space-y-2 border-t pt-3"></div>
-                                <button id="add-skill-level-btn" class="ai-btn-enhanced icon-only-btn w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm transition-all duration-200 hover:scale-105" title="➕ Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle text-xl"></i><span class="btn-text"> Ajouter une compétence</span></button>
-                            </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button data-layout="1-column" class="layout-btn bg-gray-200 p-2 rounded-md text-sm active" title="Une colonne"><i class="fas fa-align-justify"></i><span class="btn-text">1 Col</span></button>
+                            <button data-layout="2-column" class="layout-btn bg-gray-200 p-2 rounded-md text-sm" title="Deux colonnes"><i class="fas fa-columns"></i><span class="btn-text">2 Col</span></button>
                         </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Compétences Avancées <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-skills-advanced" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <button id="skill-matcher-btn" class="ai-btn-enhanced icon-only-btn w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2" title="🎯 Analyse en profondeur la correspondance entre vos compétences et celles demandées dans l'offre d'emploi"><i class="fa-solid fa-search"></i><span class="btn-text"> Analyse Compétences vs Poste</span></button>
-                            <button id="suggest-missing-skills-btn" class="ai-btn-enhanced icon-only-btn w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2" title="🔍 Identifie intelligemment les compétences clés manquantes pour le poste que vous visez"><i class="fa-solid fa-plus-circle"></i><span class="btn-text"> Compétences Manquantes</span></button>
-                            <button id="skill-trend-analysis-btn" class="ai-btn-enhanced icon-only-btn w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" title="📈 Découvre les compétences les plus demandées et tendances dans votre secteur d'activité"><i class="fa-solid fa-trending-up"></i><span class="btn-text"> Tendances du Marché</span></button>
-                            <div class="border-t pt-3">
-                                <label class="text-sm font-medium mb-2 block">Templates de Compétences</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button data-skill-template="tech" class="skill-template-btn icon-only-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200" title="Compétences techniques et informatiques"><i class="fas fa-code"></i><span class="btn-text">Tech</span></button>
-                                    <button data-skill-template="marketing" class="skill-template-btn icon-only-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200" title="Compétences en marketing et communication"><i class="fas fa-bullhorn"></i><span class="btn-text">Marketing</span></button>
-                                    <button data-skill-template="finance" class="skill-template-btn icon-only-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200" title="Compétences financières et comptables"><i class="fas fa-calculator"></i><span class="btn-text">Finance</span></button>
-                                    <button data-skill-template="design" class="skill-template-btn icon-only-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200" title="Compétences créatives et de design"><i class="fas fa-palette"></i><span class="btn-text">Design</span></button>
-                                    <button data-skill-template="management" class="skill-template-btn icon-only-btn bg-red-100 text-red-800 p-2 rounded-md text-sm hover:bg-red-200" title="Compétences de management et leadership"><i class="fas fa-users"></i><span class="btn-text">Management</span></button>
-                                    <button data-skill-template="sales" class="skill-template-btn icon-only-btn bg-indigo-100 text-indigo-800 p-2 rounded-md text-sm hover:bg-indigo-200" title="Compétences commerciales et de vente"><i class="fas fa-handshake"></i><span class="btn-text">Ventes</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </details>
-                </div>
+                    </div>
+                </details>
 
-                <!-- TAB: Sections Perso -->
-                <div id="panel-custom" class="tab-panel hidden space-y-4">
-                    <details class="control-group">
-                        <summary><span>Sections Personnalisées</span><label class="completion-label"><input type="checkbox" id="completion-custom" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <div class="space-y-2">
-                                <label class="text-sm font-medium">Ajouter une nouvelle section</label>
-                                <select id="section-suggestion-select" class="w-full p-2 border rounded-md text-sm">
-                                    <option value="">-- Choisir une suggestion --</option>
-                                    <option value="Langues 🌐">Langues 🌐</option>
-                                    <option value="Centres d'intérêt 🎨">Centres d'intérêt 🎨</option>
-                                    <option value="Certifications 📜">Certifications 📜</option>
-                                    <option value="Projets Personnels 💡">Projets Personnels 💡</option>
-                                    <option value="Bénévolat ❤️">Bénévolat ❤️</option>
-                                    <option value="Publications 📚">Publications 📚</option>
-                                    <option value="Récompenses 🏆">Récompenses 🏆</option>
-                                    <option value="Références 👥">Références 👥</option>
-                                    <option value="Portfolio 🎨">Portfolio 🎨</option>
-                                    <option value="Réseaux Sociaux 📱">Réseaux Sociaux 📱</option>
-                                    <option value="Objectifs de Carrière 🎯">Objectifs de Carrière 🎯</option>
-                                    <option value="Soft Skills 💭">Soft Skills 💭</option>
-                                </select>
-                                <div class="flex gap-2">
-                                    <input type="text" id="new-section-title-input" class="flex-grow p-2 border rounded-md text-sm" placeholder="Ou tapez un titre personnalisé...">
-                                    <button id="add-section-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105" title="➕ Créer une nouvelle section personnalisée"><i class="fas fa-plus text-xl"></i></button>
-                                </div>
-                            </div>
-                            <div id="custom-sections-list" class="space-y-2 mt-2 border-t pt-2"></div>
+                <!-- 🎨 STYLES -->
+                <details class="control-group">
+                    <summary><span>🎨 Styles & Thèmes</span><label class="completion-label"><input type="checkbox" id="completion-styles" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <div class="grid grid-cols-3 gap-2">
+                            <button data-theme="modern" class="theme-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm" title="Moderne"><i class="fas fa-desktop"></i><span class="btn-text">Moderne</span></button>
+                            <button data-theme="classic" class="theme-btn bg-gray-100 text-gray-800 p-2 rounded-md text-sm active" title="Classique"><i class="fas fa-file-alt"></i><span class="btn-text">Classique</span></button>
+                            <button data-theme="creative" class="theme-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm" title="Créatif"><i class="fas fa-palette"></i><span class="btn-text">Créatif</span></button>
                         </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Templates de Sections <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-custom-templates" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <button id="ai-suggest-sections-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" title="L'IA suggère les sections les plus adaptées à votre profil"><i class="fa-solid fa-magic-wand-sparkles"></i> IA : Sections Suggérées</button>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button data-section-template="startup" class="section-template-btn bg-orange-100 text-orange-800 p-2 rounded-md text-sm hover:bg-orange-200" title="Sections spécialisées pour les profils startup et entrepreneuriat">Startup</button>
-                                <button data-section-template="academic" class="section-template-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200 flex items-center gap-2" title="Sections adaptées au monde académique et à la recherche"><i class="fas fa-graduation-cap"></i> Académique</button>
-                                <button data-section-template="creative" class="section-template-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200 flex items-center gap-2" title="Sections pour les métiers créatifs et artistiques"><i class="fas fa-palette"></i> Créatif</button>
-                                <button data-section-template="executive" class="section-template-btn bg-gray-100 text-gray-800 p-2 rounded-md text-sm hover:bg-gray-200" title="Sections pour les postes de direction et management">Cadre</button>
-                                <button data-section-template="international" class="section-template-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200" title="Sections pour les profils internationaux et multilingues">International</button>
-                                <button data-section-template="freelance" class="section-template-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200" title="Sections adaptées aux consultants et freelances">Freelance</button>
-                            </div>
+                        <div class="space-y-2">
+                            <label for="primary-color" class="text-sm font-medium">Couleur principale</label>
+                            <input type="color" id="primary-color" value="#2563eb" class="w-full h-10 border rounded-md">
                         </div>
-                    </details>
-                    <details class="control-group">
-                        <summary><span>Import/Export Sections <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-custom-import" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <button id="export-sections-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2" title="Sauvegarder vos sections personnalisées dans un fichier"><i class="fa-solid fa-download"></i> Exporter Sections</button>
-                            <button id="import-sections-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2" title="Charger des sections personnalisées depuis un fichier"><i class="fa-solid fa-upload"></i> Importer Sections</button>
-                            <input type="file" id="import-sections-file" accept=".json" class="hidden">
-                        </div>
-                    </details>
-                </div>
+                    </div>
+                </details>
 
-                <!-- TAB: Mise en Page -->
-                <div id="panel-layout" class="tab-panel hidden space-y-4">
+                <!-- 👔 BANNIÈRE -->
+                <details class="control-group">
+                    <summary><span>👔 Bannière & Contact</span><label class="completion-label"><input type="checkbox" id="completion-banner" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                    <div class="control-group-content space-y-3">
+                        <input type="email" id="banner-email" placeholder="Email" class="cv-input w-full p-2 border rounded-md">
+                        <input type="tel" id="banner-tel" placeholder="Téléphone" class="cv-input w-full p-2 border rounded-md">
+                        <input type="text" id="banner-address" placeholder="Adresse" class="cv-input w-full p-2 border rounded-md">
+                        <input type="url" id="banner-linkedin" placeholder="LinkedIn" class="cv-input w-full p-2 border rounded-md">
+                    </div>
+                </details>
+            </div>
                     <details class="control-group">
                         <summary><span>Mise en Colonnes</span><label class="completion-label"><input type="checkbox" id="completion-layout-cols" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
