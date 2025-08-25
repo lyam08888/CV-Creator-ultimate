@@ -11,6 +11,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+            <!-- Harmonisation et fonctionnement universel des tooltips -->
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('button[title]').forEach(function(btn) {
+                    // Ajout data-tooltip pour le système universel
+                    btn.setAttribute('data-tooltip', btn.getAttribute('title'));
+                    // Accessibilité : aria-label
+                    if (!btn.hasAttribute('aria-label')) {
+                        btn.setAttribute('aria-label', btn.getAttribute('title'));
+                    }
+                    // Tabindex pour navigation clavier
+                    if (!btn.hasAttribute('tabindex')) {
+                        btn.setAttribute('tabindex', '0');
+                    }
+                    // Affichage du tooltip au focus
+                    btn.addEventListener('focus', function() {
+                        btn.classList.add('show-tooltip');
+                    });
+                    btn.addEventListener('blur', function() {
+                        btn.classList.remove('show-tooltip');
+                    });
+                });
+            });
+            </script>
     
     <style>
         /* ===== SYSTÈME D'HARMONISATION MODERNE - STYLE APPLE ===== */
