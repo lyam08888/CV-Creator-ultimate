@@ -1255,10 +1255,22 @@
             }
 
             function updatePreview(source = 'form') {
+                // Réinitialiser les sélecteurs si nécessaire
+                if (!preview.cvNomPrenom || !preview.cvPoste || !preview.cvDescription) {
+                    reinitializePreviewSelectors();
+                }
+                
                 if (source === 'form' || source === 'banner-style' || source === 'theme' || source === 'state') {
-                    preview.cvNomPrenom.textContent = `${controls.prenom.value} ${controls.nom.value}`.trim() || 'Prénom NOM';
-                    preview.cvPoste.textContent = controls.poste.value || 'Poste Recherché';
-                    preview.cvDescription.innerHTML = `<div class="editable-wrapper"><p contenteditable="true">${controls.description.value.replace(/\n/g, '<br>') || '&nbsp;'}</p><span class="delete-line-btn"><i class="fas fa-times"></i></span></div>`;
+                    // Vérification de sécurité pour chaque élément
+                    if (preview.cvNomPrenom) {
+                        preview.cvNomPrenom.textContent = `${controls.prenom.value} ${controls.nom.value}`.trim() || 'Prénom NOM';
+                    }
+                    if (preview.cvPoste) {
+                        preview.cvPoste.textContent = controls.poste.value || 'Poste Recherché';
+                    }
+                    if (preview.cvDescription) {
+                        preview.cvDescription.innerHTML = `<div class="editable-wrapper"><p contenteditable="true">${controls.description.value.replace(/\n/g, '<br>') || '&nbsp;'}</p><span class="delete-line-btn"><i class="fas fa-times"></i></span></div>`;
+                    }
                     
                     const renderDynamicList = (previewContainer, controlContainer, type) => {
                         previewContainer.innerHTML = '';
@@ -1307,19 +1319,26 @@
                         previewContainer.appendChild(finalButtonWrapper);
                     };
 
-                    renderDynamicList(preview.cvExperience, controls.experienceList, 'experience');
-                    renderDynamicList(preview.cvFormation, controls.formationList, 'formation');
+                    // Vérifications de sécurité pour les éléments de preview
+                    if (preview.cvExperience) {
+                        renderDynamicList(preview.cvExperience, controls.experienceList, 'experience');
+                    }
+                    if (preview.cvFormation) {
+                        renderDynamicList(preview.cvFormation, controls.formationList, 'formation');
+                    }
 
                     const skillStyle = document.querySelector('.skill-style-btn.active')?.dataset.skillStyle || 'tags';
-                    preview.cvCompetences.dataset.style = skillStyle;
-                    
-                    if (skillStyle === 'tags') {
-                        preview.cvCompetences.innerHTML = renderSkillsAsTags(controls.competences.value);
-                        initializeSkillSorting(); 
-                    } else if (skillStyle === 'levels') {
-                        preview.cvCompetences.innerHTML = renderSkillsAsLevels();
-                    } else { // simple
-                        preview.cvCompetences.innerHTML = renderSkillsAsSimple(controls.competences.value);
+                    if (preview.cvCompetences) {
+                        preview.cvCompetences.dataset.style = skillStyle;
+                        
+                        if (skillStyle === 'tags') {
+                            preview.cvCompetences.innerHTML = renderSkillsAsTags(controls.competences.value);
+                            initializeSkillSorting(); 
+                        } else if (skillStyle === 'levels') {
+                            preview.cvCompetences.innerHTML = renderSkillsAsLevels();
+                        } else { // simple
+                            preview.cvCompetences.innerHTML = renderSkillsAsSimple(controls.competences.value);
+                        }
                     }
 
                     document.querySelectorAll('.custom-module-preview').forEach(m => m.remove());
@@ -2525,6 +2544,7 @@ ${controls.competences.value}`;
             }
 
             // Initialize everything
+            reinitializePreviewSelectors(); // Initialize preview selectors first
             populateFontSelects();
             populateIconPicker();
             setDefaultRecruiterInfo();
