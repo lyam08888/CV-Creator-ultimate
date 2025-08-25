@@ -1519,7 +1519,10 @@
             async function callGeminiAPI(prompt, schema) {
                 showLoader("L'IA réfléchit...");
                 try {
-                    const apiKey = ""; // Provided automatically by the environment
+                    const apiKey = localStorage.getItem('gemini-api-key') || "";
+                    if (!apiKey) {
+                        throw new Error("Clé API Gemini non configurée. Veuillez saisir votre clé API dans les paramètres.");
+                    }
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
                     
                     const payload = {
@@ -1619,6 +1622,11 @@
                 });
             }
             
+            // Alias for backward compatibility
+            function populateFontSelects() {
+                return populateFontSelectors();
+            }
+            
             function populateIconPicker() {
                 const icons = ["fa-user-circle", "fa-briefcase", "fa-graduation-cap", "fa-star", "fa-puzzle-piece", "fa-globe", "fa-paint-brush", "fa-certificate", "fa-lightbulb", "fa-heart", "fa-cogs", "fa-code", "fa-chart-line", "fa-comments", "fa-bullhorn", "fa-trophy", "fa-book", "fa-wrench", "fa-users", "fa-award", "fa-phone", "fa-envelope", "fa-map-marker-alt", "fa-linkedin", "fa-github"];
                 controls.iconPickerGrid.innerHTML = '';
@@ -1679,230 +1687,4 @@
                     controls.apiKeyStatus.classList.add('text-green-600');
                 } else {
                     controls.apiKeyStatus.textContent = 'Clé API manquante';
-                    controls.apiKeyStatus.classList.remove('text-green-600', 'text-yellow-600');
-                    controls.apiKeyStatus.classList.add('text-red-500');
-                }
-            }
-
-            function saveApiKey() {
-                const apiKey = controls.apiKeyInput.value.trim();
-                if (apiKey) {
-                    localStorage.setItem('gemini-api-key', apiKey);
-                    controls.apiKeyStatus.textContent = 'Clé API sauvegardée';
-                    controls.apiKeyStatus.classList.remove('text-red-500', 'text-yellow-600');
-                    controls.apiKeyStatus.classList.add('text-green-600');
-                    return true;
-                } else {
-                    controls.apiKeyStatus.textContent = 'Clé API vide';
-                    controls.apiKeyStatus.classList.remove('text-green-600', 'text-yellow-600');
-                    controls.apiKeyStatus.classList.add('text-red-500');
-                    return false;
-                }
-            }
-
-            function toggleApiKeyVisibility() {
-                const input = controls.apiKeyInput;
-                const icon = controls.toggleApiKeyVisibilityBtn.querySelector('i');
-                
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                } else {
-                    input.type = 'password';
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                }
-            }
-
-            // --- INITIALIZATION ---
-            
-            // Load API key on startup
-            loadApiKey();
-            
-            function setDefaultRecruiterInfo() {
-                controls.bannerNom.value = "Lyes AMARA";
-                controls.bannerPoste.value = "Responsable d'activité recrutement – BTP – France";
-                controls.bannerEmail.value = "l.amara@ltd-international.com";
-                controls.bannerTel.value = "01 56 02 12 25 / 06 34 25 32 96";
-            }
-
-            function anonymizeCV() {
-                if (isAnonymized) {
-                    controls.nom.value = originalData.nom;
-                    controls.prenom.value = originalData.prenom;
-                    
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-secret"></i> Anonymiser le CV';
-                    isAnonymized = false;
-                    showNotification("CV désanonymisé.", "success");
-                } else {
-                    originalData = {
-                        nom: controls.nom.value,
-                        prenom: controls.prenom.value,
-                    };
-                    
-                    const firstLetter = originalData.nom ? originalData.nom.charAt(0) + '.' : '';
-                    controls.nom.value = firstLetter;
-                    controls.prenom.value = 'Candidat';
-                    
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
-                    isAnonymized = true;
-                    showNotification("CV anonymisé.", "success");
-                }
-                updatePreview('form');
-            }
-
-            // --- EVENT LISTENERS ---            
-            // Setup event listeners for all cv-input elements
-            document.querySelectorAll('.cv-input').forEach(input => {
-                const eventType = input.type === 'range' || input.type === 'color' ? 'input' : 'change';
-                input.addEventListener(eventType, () => updatePreview('form'));
-            });
-
-            // Setup event listeners for banner inputs
-            document.querySelectorAll('.banner-input').forEach(input => {
-                const eventType = input.type === 'file' ? 'change' : 'input';
-                input.addEventListener(eventType, () => updatePreview('banner-style'));
-            });
-
-            // Setup banner toggle checkbox
-            controls.toggleBanner.addEventListener('change', () => updatePreview('banner-style'));
-
-            // Setup banner style controls
-            controls.bannerStyleSelect.addEventListener('change', () => updatePreview('banner-style'));
-            
-            // Setup banner alignment buttons
-            document.querySelectorAll('.banner-align-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.banner-align-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    updatePreview('banner-style');
-                });
-            });
-
-            // Setup logo size buttons
-            document.querySelectorAll('.logo-size-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.logo-size-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    updatePreview('banner-style');
-                });
-            });
-
-            // Setup banner invert button
-            controls.bannerInvertBtn.addEventListener('click', () => {
-                controls.bannerInvertBtn.classList.toggle('active');
-                updatePreview('banner-style');
-            });
-
-            // Setup style toggle buttons
-            document.querySelectorAll('.style-toggle-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    btn.classList.toggle('active');
-                    updatePreview('banner-style');
-                });
-            });
-            
-            // API Key event listeners
-            controls.saveApiKeyBtn.addEventListener('click', () => {
-                if (saveApiKey()) {
-                    showNotification("Clé API sauvegardée avec succès.", "success");
-                }
-            });
-            
-            controls.toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
-            
-            // Save API key on Enter
-            controls.apiKeyInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    if (saveApiKey()) {
-                        showNotification("Clé API sauvegardée avec succès.", "success");
-                    }
-                }
-            });
-            // Setup banner positioning buttons
-            controls.fixBannerTopBtn.addEventListener('click', () => {
-                moveBannerTo('top');
-            });
-
-            controls.fixBannerBottomBtn.addEventListener('click', () => {
-                moveBannerTo('bottom');
-            });
-
-            controls.modularBannerBtn.addEventListener('click', () => {
-                moveBannerTo('modular');
-            });
-            // Setup add buttons for dynamic content
-            controls.addExperienceBtn.addEventListener('click', () => {
-                const experienceFields = [
-                    { key: 'poste', placeholder: 'Poste occup�', type: 'text' },
-                    { key: 'entreprise', placeholder: 'Entreprise', type: 'text' },
-                    { key: 'periode', placeholder: 'P�riode (ex: 2020-2023)', type: 'text' },
-                    { key: 'description', placeholder: 'Description des missions', type: 'textarea' }
-                ];
-                createDynamicItem(controls.experienceList, experienceFields);
-                updatePreview('form');
-            });
-
-            controls.addFormationBtn.addEventListener('click', () => {
-                const formationFields = [
-                    { key: 'diplome', placeholder: 'Dipl�me/Formation', type: 'text' },
-                    { key: 'etablissement', placeholder: '�tablissement', type: 'text' },
-                    { key: 'periode', placeholder: 'P�riode (ex: 2018-2020)', type: 'text' },
-                    { key: 'description', placeholder: 'Description (optionnel)', type: 'textarea' }
-                ];
-                createDynamicItem(controls.formationList, formationFields);
-                updatePreview('form');
-            });
-            // Setup tab functionality
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    // Remove active class from all tabs
-                    document.querySelectorAll('.tab-btn').forEach(tab => {
-                        tab.classList.remove('border-blue-500', 'text-blue-600');
-                        tab.classList.add('border-transparent', 'text-gray-500');
-                    });
-                    
-                    // Add active class to clicked tab
-                    btn.classList.remove('border-transparent', 'text-gray-500');
-                    btn.classList.add('border-blue-500', 'text-blue-600');
-                    
-                    // Hide all panels
-                    document.querySelectorAll('.tab-panel').forEach(panel => {
-                        panel.classList.add('hidden');
-                    });
-                    
-                    // Show target panel
-                    const targetPanel = document.querySelector(btn.dataset.target);
-                    if (targetPanel) {
-                        targetPanel.classList.remove('hidden');
-                    }
-                });
-            });
-
-            // Initialize first tab as active
-            const firstTab = document.querySelector('.tab-btn');
-            if (firstTab) {
-                firstTab.click();
-            }
-            // Initialize banner state (hidden by default)
-            controls.toggleBanner.checked = false;
-
-            // Initialize everything
-            populateFontSelectors();
-            populateIconPicker();
-            setDefaultRecruiterInfo();
-            updatePreview('form');
-            updateAllStyles();
-            
-        });
-    </script>
-</body>
-</html>
-
-
-
-
-
+                    controls.apiKeyStatus.classList.remove('text-gr
