@@ -342,21 +342,48 @@
         
         /* Container principal avec design Apple */
         .main-container {
-            display: flex;
+            display: flex !important;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            overflow: hidden;
         }
         
         /* Sidebar principal avec effet glassmorphism */
         #controls {
-            width: var(--sidebar-width) !important;
+            width: 400px !important;
+            min-width: 400px !important;
+            max-width: 400px !important;
+            flex-shrink: 0 !important;
             background: var(--sidebar-bg);
             backdrop-filter: var(--sidebar-backdrop);
             -webkit-backdrop-filter: var(--sidebar-backdrop);
             border-right: 1px solid var(--border-color-light);
             box-shadow: var(--shadow-xl);
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        /* Zone de prévisualisation */
+        #preview-area {
+            flex: 1 !important;
+            min-width: 0 !important;
+            background: #f9fafb !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }
+        
+        /* Responsive fixes */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            #controls {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                max-height: 50vh;
+            }
         }
         
         /* Effet de gradient subtil sur le sidebar */
@@ -5099,15 +5126,8 @@
                             </button>
                         </div>
                     </details>
-                     <details class="control-group">
-                        <summary><span>Style du Texte</span><label class="completion-label"><input type="checkbox" id="completion-banner-text" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-4">
-                            <button id="randomize-banner-style-btn" class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 flex items-center justify-center gap-2" title="Appliquer un style de bannière aléatoire pour l'inspiration"><i class="fas fa-dice"></i> Style Aléatoire</button><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Nom & Prénom</h4><label class="text-xs">Police</label><select id="banner-nom-font" class="cv-input w-full p-1 border text-sm rounded-md"><option value="'Montserrat', sans-serif">Montserrat</option><option value="'Playfair Display', serif">Playfair Display</option><option value="'Oswald', sans-serif">Oswald</option><option value="'Cormorant Garamond', serif">Cormorant Garamond</option><option value="'Merriweather', serif">Merriweather</option><option value="'Lato', sans-serif">Lato</option></select><label class="text-xs mt-2 block">Taille: <span id="banner-nom-size-value">24</span>pt</label><input type="range" id="banner-nom-size" min="14" max="40" step="1" value="24" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-nom-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-nom-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le nom en gras"><i class="fas fa-bold"></i></button><button id="banner-nom-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le nom en italique"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Poste</h4><label class="text-xs mt-2 block">Taille: <span id="banner-poste-size-value">12</span>pt</label><input type="range" id="banner-poste-size" min="8" max="20" step="0.5" value="12" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-poste-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-poste-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le poste en gras"><i class="fas fa-bold"></i></button><button id="banner-poste-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le poste en italique"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Coordonnées</h4><label class="text-xs mt-2 block">Taille: <span id="banner-contact-size-value">9</span>pt</label><input type="range" id="banner-contact-size" min="7" max="14" step="0.5" value="9" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-contact-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-contact-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre les coordonnées en gras"><i class="fas fa-bold"></i></button><button id="banner-contact-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre les coordonnées en italique"><i class="fas fa-italic"></i></button></div></div>
-                        </div>
-                    </details>
                 </div>
             </div>
-
         </div>
 
         <!-- PREVIEW PANEL -->
@@ -10289,6 +10309,9 @@ Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
+    </div>
+    
+    <!-- Fin du main-container -->
     </div>
 
     <script>
