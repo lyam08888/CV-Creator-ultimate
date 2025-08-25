@@ -1687,4 +1687,112 @@
                     controls.apiKeyStatus.classList.add('text-green-600');
                 } else {
                     controls.apiKeyStatus.textContent = 'Clé API manquante';
-                    controls.apiKeyStatus.classList.remove('text-gr
+                    controls.apiKeyStatus.classList.remove('text-green-600', 'text-yellow-600');
+                    controls.apiKeyStatus.classList.add('text-red-500');
+                }
+            }
+
+            function saveApiKey() {
+                const apiKey = controls.apiKeyInput.value.trim();
+                if (apiKey) {
+                    localStorage.setItem('gemini-api-key', apiKey);
+                    controls.apiKeyStatus.textContent = 'Clé API sauvegardée';
+                    controls.apiKeyStatus.classList.remove('text-red-500', 'text-yellow-600');
+                    controls.apiKeyStatus.classList.add('text-green-600');
+                    return true;
+                } else {
+                    controls.apiKeyStatus.textContent = 'Clé API vide';
+                    controls.apiKeyStatus.classList.remove('text-green-600', 'text-yellow-600');
+                    controls.apiKeyStatus.classList.add('text-red-500');
+                    return false;
+                }
+            }
+
+            function toggleApiKeyVisibility() {
+                const input = controls.apiKeyInput;
+                const icon = controls.toggleApiKeyVisibilityBtn.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+
+            // --- INITIALIZATION ---
+            
+            // Load API key on startup
+            loadApiKey();
+            
+            function setDefaultRecruiterInfo() {
+                controls.bannerNom.value = "Lyes AMARA";
+                controls.bannerPoste.value = "Responsable d'activité recrutement – BTP – France";
+                controls.bannerEmail.value = "l.amara@ltd-international.com";
+                controls.bannerTel.value = "01 56 02 12 25 / 06 34 25 32 96";
+            }
+
+            function anonymizeCV() {
+                if (isAnonymized) {
+                    controls.nom.value = originalData.nom;
+                    controls.prenom.value = originalData.prenom;
+                    
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
+                    isAnonymized = false;
+                    showNotification("CV désanonymisé.", "success");
+                } else {
+                    originalData = {
+                        nom: controls.nom.value,
+                        prenom: controls.prenom.value,
+                    };
+                    
+                    const firstLetter = originalData.nom ? originalData.nom.charAt(0) + '.' : '';
+                    controls.nom.value = firstLetter;
+                    controls.prenom.value = 'Candidat';
+                    
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
+                    isAnonymized = true;
+                    showNotification("CV anonymisé.", "success");
+                }
+                updatePreview('form');
+            }
+
+            // --- EVENT LISTENERS ---
+            
+            // API Key event listeners
+            controls.saveApiKeyBtn.addEventListener('click', () => {
+                if (saveApiKey()) {
+                    showNotification("Clé API sauvegardée avec succès.", "success");
+                }
+            });
+            
+            controls.toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
+            
+            // Save API key on Enter
+            controls.apiKeyInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    if (saveApiKey()) {
+                        showNotification("Clé API sauvegardée avec succès.", "success");
+                    }
+                }
+            });
+
+            // Alias function for backward compatibility
+            function populateFontSelects() {
+                populateFontSelectors();
+            }
+
+            // Initialize everything
+            populateFontSelects();
+            populateIconPicker();
+            setDefaultRecruiterInfo();
+            updatePreview('form');
+            updateAllStyles();
+            
+        });
+    </script>
+</body>
+</html>
