@@ -788,6 +788,36 @@
             position: relative !important;
         }
 
+        /* Base class for all action buttons - unified styling */
+        .action-btn-base {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .action-btn-base:hover {
+            transform: scale(1.05);
+        }
+
+        .action-btn-base i {
+            font-size: 1.125rem;
+        }
+
+        /* Apply base styling to all ai-btn-enhanced buttons */
+        .ai-btn-enhanced {
+            position: relative !important;
+        }
+
         .ai-btn-enhanced[data-tooltip]:hover::after {
             content: attr(data-tooltip);
             position: absolute;
@@ -1410,11 +1440,11 @@
             <!-- Actions Rapides -->
             <div class="space-y-2 mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
                  <div class="grid grid-cols-2 gap-2">
-                      <button id="download-pdf-btn" class="ai-btn-enhanced w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-900 flex items-center justify-center gap-2" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download"></i> PDF</button>
-                      <button id="share-btn" class="ai-btn-enhanced w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt"></i> Partager</button>
+                      <button id="download-pdf-btn" class="ai-btn-enhanced w-full bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download text-lg"></i> PDF</button>
+                      <button id="share-btn" class="ai-btn-enhanced w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt text-lg"></i> Partager</button>
                  </div>
-                 <button id="reset-cv-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 flex items-center justify-center gap-2" title="Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus"></i> Nouveau CV</button>
-                 <button id="toggle-overflow-btn" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 flex items-center justify-center gap-2" title="Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined"></i> Détection Dépassement</button>
+                 <button id="reset-cv-btn" class="ai-btn-enhanced w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus text-lg"></i> Nouveau CV</button>
+                 <button id="toggle-overflow-btn" class="ai-btn-enhanced w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined text-lg"></i> Détection Dépassement</button>
             </div>
 
 
@@ -1455,8 +1485,8 @@
                                 <label for="api-key-input" class="block text-sm font-medium text-gray-700">Clé API Gemini</label>
                                 <div class="flex gap-2">
                                     <input type="password" id="api-key-input" placeholder="Entrez votre clé API Gemini..." class="flex-1 p-2 border rounded-md text-sm">
-                                    <button id="save-api-key-btn" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm flex items-center gap-1" title="Sauvegarder votre clé API Gemini pour les fonctionnalités IA">
-                                        <i class="fas fa-save"></i> Sauver
+                                    <button id="save-api-key-btn" class="ai-btn-enhanced bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm flex items-center gap-1 transition-all duration-200 hover:scale-105" data-tooltip="💾 Sauvegarder votre clé API Gemini pour les fonctionnalités IA">
+                                        <i class="fas fa-save text-lg"></i> Sauver
                                     </button>
                                 </div>
                                 <div class="flex items-center gap-2">
@@ -1483,21 +1513,21 @@
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="analyze-btn" class="ai-btn-enhanced bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2" data-tooltip="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyser & Remplir</button>
-                                <button id="smart-analyze-btn" class="ai-btn-enhanced bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" data-tooltip="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain"></i> Analyse Smart</button>
+                                <button id="analyze-btn" class="ai-btn-enhanced bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i> Analyser & Remplir</button>
+                                <button id="smart-analyze-btn" class="ai-btn-enhanced bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain text-lg"></i> Analyse Smart</button>
                             </div>
-                            <button id="industry-match-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2" data-tooltip="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry"></i> Adapter au Secteur</button>
+                            <button id="industry-match-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-lg"></i> Adapter au Secteur</button>
                         </div>
                     </details>
                     <details class="control-group" open>
                         <summary><span>Optimisations IA <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-optimizations" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="ai-score-cv-btn" class="ai-btn-compact bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2" data-tooltip="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line"></i> Score ATS</button>
-                                <button id="ai-keyword-optimize-btn" class="ai-btn-compact bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 flex items-center justify-center gap-2" data-tooltip="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key"></i> Mots-clés</button>
+                                <button id="ai-score-cv-btn" class="ai-btn-enhanced bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line text-lg"></i> Score ATS</button>
+                                <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key text-lg"></i> Mots-clés</button>
                             </div>
-                            <button id="ai-create-variants-btn" class="ai-btn-enhanced w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2" data-tooltip="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy"></i> Créer 3 Variantes</button>
-                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced w-full bg-rose-600 text-white py-2 px-4 rounded-md hover:bg-rose-700 flex items-center justify-center gap-2" data-tooltip="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye"></i> Personnaliser pour Poste</button>
+                            <button id="ai-create-variants-btn" class="ai-btn-enhanced w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy text-lg"></i> Créer 3 Variantes</button>
+                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced w-full bg-rose-600 text-white py-2 px-4 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-lg"></i> Personnaliser pour Poste</button>
                         </div>
                     </details>
                     <details class="control-group" open>
@@ -1507,8 +1537,8 @@
                             <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
                             <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="generate-mail-btn" class="ai-btn-enhanced bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2" data-tooltip="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles"></i> Mail Présentation</button>
-                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-800 flex items-center justify-center gap-2" data-tooltip="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin"></i> Message LinkedIn</button>
+                                <button id="generate-mail-btn" class="ai-btn-enhanced bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles text-lg"></i> Mail Présentation</button>
+                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin text-lg"></i> Message LinkedIn</button>
                             </div>
                             <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le message généré apparaîtra ici..."></textarea>
                         </div>
@@ -1516,9 +1546,9 @@
                     <details class="control-group" open>
                         <summary><span>IA Créative <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-creative" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
-                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced w-full bg-violet-600 text-white py-2 px-4 rounded-md hover:bg-violet-700 flex items-center justify-center gap-2" data-tooltip="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left"></i> Générer Devise/Slogan</button>
-                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced w-full bg-amber-600 text-white py-2 px-4 rounded-md hover:bg-amber-700 flex items-center justify-center gap-2" data-tooltip="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb"></i> Suggestions d'Amélioration</button>
-                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700 flex items-center justify-center gap-2" data-tooltip="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language"></i> Traduire CV</button>
+                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced w-full bg-violet-600 text-white py-2 px-4 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-lg"></i> Générer Devise/Slogan</button>
+                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced w-full bg-amber-600 text-white py-2 px-4 rounded-lg hover:bg-amber-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb text-lg"></i> Suggestions d'Amélioration</button>
+                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced w-full bg-cyan-600 text-white py-2 px-4 rounded-lg hover:bg-cyan-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language text-lg"></i> Traduire CV</button>
                         </div>
                     </details>
                 </div>
@@ -1581,7 +1611,7 @@
                                     <button data-gauge-style="percentage" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Pourcentage">%</button>
                                 </div>
                                 <div id="skills-level-list" class="space-y-2 border-t pt-3"></div>
-                                <button id="add-skill-level-btn" class="w-full bg-blue-100 text-blue-800 py-2 px-4 rounded-md hover:bg-blue-200 flex items-center justify-center gap-2 text-sm" title="Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle"></i> Ajouter une compétence</button>
+                                <button id="add-skill-level-btn" class="ai-btn-enhanced w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm transition-all duration-200 hover:scale-105" data-tooltip="➕ Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle text-lg"></i> Ajouter une compétence</button>
                             </div>
                         </div>
                     </details>
@@ -1630,7 +1660,7 @@
                                 </select>
                                 <div class="flex gap-2">
                                     <input type="text" id="new-section-title-input" class="flex-grow p-2 border rounded-md text-sm" placeholder="Ou tapez un titre personnalisé...">
-                                    <button id="add-section-btn" class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600" title="Créer une nouvelle section personnalisée"><i class="fas fa-plus"></i></button>
+                                    <button id="add-section-btn" class="ai-btn-enhanced bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105" data-tooltip="➕ Créer une nouvelle section personnalisée"><i class="fas fa-plus text-lg"></i></button>
                                 </div>
                             </div>
                             <div id="custom-sections-list" class="space-y-2 mt-2 border-t pt-2"></div>
@@ -1831,7 +1861,7 @@
                                 <input type="range" id="banner-bg-blur" min="0" max="20" step="1" value="0" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
                             </div>
                             <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="banner-bg-grayscale" class="cv-input">Image en noir et blanc</label>
-                            <button id="remove-banner-bg-btn" class="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 flex items-center justify-center gap-2" title="Supprimer l'image de fond de la bannière"><i class="fas fa-trash"></i> Supprimer l'image de fond</button>
+                            <button id="remove-banner-bg-btn" class="ai-btn-enhanced w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🗑️ Supprimer l'image de fond de la bannière"><i class="fas fa-trash text-lg"></i> Supprimer l'image de fond</button>
                         </div>
                     </details>
                      <details class="control-group" open>
