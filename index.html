@@ -2444,6 +2444,7 @@
             // Rendre la fonction globalement accessible
             window.callGeminiAPI = callGeminiAPI;
             window.updatePreview = updatePreview;
+            window.updatePreviewStyles = updatePreviewStyles;
             window.createDynamicItem = createDynamicItem;
             window.showNotification = showNotification;
             
@@ -2482,36 +2483,8 @@
             // Rendre updateAllStyles globalement accessible
             window.updateAllStyles = updateAllStyles;
             
-            function updatePreview(source = 'form') {
-                root.style.setProperty('--primary-color', controls.primaryColorPicker.value);
-                root.style.setProperty('--secondary-color', controls.secondaryColorPicker.value);
-                root.style.setProperty('--body-text-color', controls.bodyTextColorPicker.value);
-                root.style.setProperty('--font-family-h1', controls.fontFamilyH1Select.value);
-                root.style.setProperty('--font-family-h2', controls.fontFamilyH2Select.value);
-                root.style.setProperty('--font-family-body', controls.fontFamilyBodySelect.value);
-
-                const activeStyle = document.querySelector('.section-title-style-btn.active')?.dataset.titleStyle || 'style-underline';
-                document.querySelectorAll('.section-title').forEach(title => {
-                    title.classList.remove('style-underline', 'style-side-line', 'style-background', 'style-boxed');
-                    title.classList.add(activeStyle);
-                });
-                
-                const banner = preview.banner;
-                const newBannerStyle = controls.bannerStyleSelect.value;
-                const newAlign = document.querySelector('.banner-align-btn.active')?.dataset.bannerAlign || 'left';
-                const isInverted = controls.bannerInvertBtn.classList.contains('active');
-
-                const classesToRemove = Array.from(banner.classList).filter(c => c.startsWith('banner-style-'));
-                if (classesToRemove.length > 0) banner.classList.remove(...classesToRemove);
-
-                if (newBannerStyle) banner.classList.add(newBannerStyle);
-                
-                const contentWrapper = banner.querySelector('.banner-content-wrapper');
-                contentWrapper.className = 'banner-content-wrapper'; // Reset classes
-                contentWrapper.classList.add(`banner-align-${newAlign}`);
-                if (isInverted) contentWrapper.classList.add('banner-layout-inverted');
-                
-                checkAllPagesOverflow();
+            function updatePreviewStyles(source = 'form') {
+                updateAllStyles();
             }
 
             function populateFontSelectors() {
@@ -3781,7 +3754,7 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
                 controls.bannerContactColor.value = colors[Math.floor(Math.random() * colors.length)];
 
                 updateAllStyles();
-                updatePreview('banner-style');
+                updatePreviewStyles('banner-style');
                 showNotification("Style aléatoire appliqué !", "success");
             });
 
@@ -3859,7 +3832,7 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
                     if (config.toggle) {
                         config.el.classList.toggle('active');
                     }
-                    updatePreview('banner-style');
+                    updatePreviewStyles('banner-style');
                 });
             });
 
