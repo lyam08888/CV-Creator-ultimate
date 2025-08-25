@@ -99,6 +99,180 @@
         [title] {
             position: relative;
         }
+
+        /* Animation de reconstruction IA */
+        .ai-reconstruction-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            backdrop-filter: blur(2px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .ai-reconstruction-content {
+            text-align: center;
+            color: var(--primary-color);
+            padding: 2rem;
+        }
+
+        .ai-reconstruction-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: ai-spin 2s linear infinite;
+        }
+
+        .ai-reconstruction-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            animation: ai-pulse 1.5s ease-in-out infinite;
+        }
+
+        .ai-reconstruction-subtext {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            animation: ai-fade 2s ease-in-out infinite;
+        }
+
+        .ai-reconstruction-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 2px;
+            margin: 1rem auto 0;
+            overflow: hidden;
+        }
+
+        .ai-reconstruction-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06d6a0);
+            background-size: 200% 100%;
+            animation: ai-progress 3s ease-in-out infinite, ai-gradient-shift 2s linear infinite;
+            border-radius: 2px;
+        }
+
+        /* Animations clés */
+        @keyframes ai-spin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes ai-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes ai-fade {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes ai-progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes ai-gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animation de particules */
+        .ai-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ai-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: ai-float 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes ai-float {
+            0% {
+                transform: translateY(100%) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100%) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animation de "reconstruction" des sections */
+        .ai-rebuilding {
+            animation: ai-rebuild 0.8s ease-in-out;
+            transform-origin: left center;
+        }
+
+        @keyframes ai-rebuild {
+            0% { 
+                transform: scaleX(0.8) skewX(-5deg);
+                opacity: 0.5;
+                filter: blur(1px);
+            }
+            50% { 
+                transform: scaleX(1.05) skewX(2deg);
+                opacity: 0.8;
+                filter: blur(0.5px);
+            }
+            100% { 
+                transform: scaleX(1) skewX(0deg);
+                opacity: 1;
+                filter: blur(0px);
+            }
+        }
+
+        /* Animation sur les boutons IA pendant le chargement */
+        .ai-button-loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-button-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: ai-button-shimmer 1.5s linear infinite;
+        }
+
+        @keyframes ai-button-shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        }
         
         [title]:hover::after {
             content: attr(title);
@@ -1903,6 +2077,127 @@
                 }, duration);
             }
             
+            // --- ANIMATIONS IA ---
+            function showAIReconstruction(targetElement = null) {
+                const cvPreview = targetElement || document.querySelector('.a4-page');
+                if (!cvPreview) return;
+
+                // Créer l'overlay d'animation
+                const overlay = document.createElement('div');
+                overlay.className = 'ai-reconstruction-overlay';
+                overlay.style.display = 'flex';
+                
+                // Messages aléatoires pour l'animation
+                const messages = [
+                    { main: "🤖 IA en action...", sub: "Optimisation en cours" },
+                    { main: "✨ Reconstruction...", sub: "Amélioration du contenu" },
+                    { main: "🔧 Personnalisation...", sub: "Adaptation intelligente" },
+                    { main: "🎯 Optimisation ATS...", sub: "Maximisation des chances" },
+                    { main: "📝 Réécriture...", sub: "Style professionnel" }
+                ];
+                
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                
+                overlay.innerHTML = `
+                    <div class="ai-reconstruction-content">
+                        <div class="ai-reconstruction-icon">🤖</div>
+                        <div class="ai-reconstruction-text">${randomMessage.main}</div>
+                        <div class="ai-reconstruction-subtext">${randomMessage.sub}</div>
+                        <div class="ai-reconstruction-progress">
+                            <div class="ai-reconstruction-progress-bar"></div>
+                        </div>
+                    </div>
+                    <div class="ai-particles"></div>
+                `;
+                
+                cvPreview.style.position = 'relative';
+                cvPreview.appendChild(overlay);
+                
+                // Ajouter des particules animées
+                createAIParticles(overlay.querySelector('.ai-particles'));
+                
+                return overlay;
+            }
+            
+            function hideAIReconstruction(overlay) {
+                if (overlay && overlay.parentNode) {
+                    overlay.style.opacity = '0';
+                    overlay.style.transition = 'opacity 0.5s ease-out';
+                    setTimeout(() => {
+                        if (overlay.parentNode) {
+                            overlay.parentNode.removeChild(overlay);
+                        }
+                    }, 500);
+                }
+            }
+            
+            function createAIParticles(container) {
+                const particleCount = 15;
+                for (let i = 0; i < particleCount; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className = 'ai-particle';
+                        particle.style.left = Math.random() * 100 + '%';
+                        particle.style.animationDelay = Math.random() * 2 + 's';
+                        particle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                        container.appendChild(particle);
+                        
+                        // Supprimer la particule après l'animation
+                        setTimeout(() => {
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
+                        }, 4000);
+                    }, i * 100);
+                }
+            }
+            
+            function animateAIButton(button) {
+                if (!button) return;
+                
+                button.classList.add('ai-button-loading');
+                button.style.pointerEvents = 'none';
+                
+                return () => {
+                    button.classList.remove('ai-button-loading');
+                    button.style.pointerEvents = 'auto';
+                };
+            }
+            
+            function animateCVRebuild() {
+                const cvModules = document.querySelectorAll('.cv-module');
+                cvModules.forEach((module, index) => {
+                    setTimeout(() => {
+                        module.classList.add('ai-rebuilding');
+                        setTimeout(() => {
+                            module.classList.remove('ai-rebuilding');
+                        }, 800);
+                    }, index * 100);
+                });
+            }
+            
+            // Fonction wrapper pour les appels IA avec animation
+            async function callAIWithAnimation(button, asyncFunction, targetElement = null) {
+                const overlay = showAIReconstruction(targetElement);
+                const resetButton = animateAIButton(button);
+                
+                try {
+                    const result = await asyncFunction();
+                    
+                    // Animation de reconstruction
+                    setTimeout(() => {
+                        animateCVRebuild();
+                    }, 500);
+                    
+                    return result;
+                } finally {
+                    setTimeout(() => {
+                        hideAIReconstruction(overlay);
+                        resetButton();
+                    }, 1500); // Laisser l'animation se terminer
+                }
+            }
+
             function showConfirmModal(title, text) {
                 return new Promise((resolve) => {
                     controls.confirmModal.title.textContent = title;
@@ -2837,6 +3132,62 @@
                 updatePreview('form');
             }
 
+            // --- DÉTECTION GLOBALE BOUTONS IA ---
+            // Système pour détecter automatiquement tous les boutons IA et leur ajouter l'animation
+            function initAIButtonDetection() {
+                // Sélecteur pour tous les boutons qui contiennent 'ai' dans leur ID ou qui font appel aux fonctions IA
+                const aiButtonSelectors = [
+                    '[id*="ai-"]',           // Tous les boutons avec 'ai-' dans l'ID
+                    '[id*="generate-"]',     // Boutons de génération
+                    '[id*="optimize-"]',     // Boutons d'optimisation  
+                    '[id*="analyze-"]',      // Boutons d'analyse
+                    '[id*="smart-"]'         // Boutons intelligents
+                ];
+                
+                aiButtonSelectors.forEach(selector => {
+                    const buttons = document.querySelectorAll(selector);
+                    buttons.forEach(button => {
+                        // Vérifier si le bouton fait déjà partie des boutons avec animation personnalisée
+                        const hasCustomAnimation = [
+                            'ai-keyword-optimize-btn',
+                            'ai-create-variants-btn', 
+                            'ai-generate-motto-btn',
+                            'ai-optimize-one-page-btn',
+                            'auto-optimize-layout-btn',
+                            'generate-mail-btn',
+                            'smart-analyze-btn'
+                        ].includes(button.id);
+                        
+                        if (!hasCustomAnimation && button.id) {
+                            // Ajouter l'écouteur avec animation pour les boutons non traités
+                            const originalOnClick = button.onclick;
+                            button.addEventListener('click', async function(e) {
+                                // Si le bouton fait un appel async, ajouter l'animation
+                                if (this.textContent.toLowerCase().includes('ia') || 
+                                    this.textContent.toLowerCase().includes('ai') ||
+                                    this.textContent.toLowerCase().includes('analyser') ||
+                                    this.textContent.toLowerCase().includes('générer') ||
+                                    this.textContent.toLowerCase().includes('optimiser')) {
+                                    
+                                    const overlay = showAIReconstruction();
+                                    const resetButton = animateAIButton(this);
+                                    
+                                    // Attendre un délai minimum pour l'effet visuel
+                                    setTimeout(() => {
+                                        hideAIReconstruction(overlay);
+                                        resetButton();
+                                        animateCVRebuild();
+                                    }, 2000);
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+            
+            // Initialiser la détection des boutons IA
+            initAIButtonDetection();
+
             // --- EVENT LISTENERS ---
             
             // API Key event listeners
@@ -3013,7 +3364,8 @@ Retournez un objet JSON avec cette structure exacte :
                     return;
                 }
 
-                const prompt = `Générez un mail de présentation professionnel pour un candidat avec ces informations :
+                await callAIWithAnimation(controls.generateMailBtn, async () => {
+                    const prompt = `Générez un mail de présentation professionnel pour un candidat avec ces informations :
 - Nom : ${prenom} ${nom}
 - Poste recherché : ${poste}
 - Description : ${description}
@@ -3023,11 +3375,13 @@ Retournez un objet JSON avec cette structure exacte :
 
 Le mail doit être courtois, professionnel et concis (maximum 200 mots).`;
 
-                const result = await callGeminiAPI(prompt);
-                if (result) {
-                    controls.recruiterMailContent.value = result;
-                    showNotification("Mail de présentation généré !", "success");
-                }
+                    const result = await callGeminiAPI(prompt);
+                    if (result) {
+                        controls.recruiterMailContent.value = result;
+                        showNotification("Mail de présentation généré !", "success");
+                    }
+                    return result;
+                });
             });
 
             // NEW AI FEATURES
@@ -3038,9 +3392,9 @@ Le mail doit être courtois, professionnel et concis (maximum 200 mots).`;
                     return;
                 }
 
-                showLoader("Analyse intelligente en cours...");
-
-                const prompt = `Analysez cette offre d'emploi et fournissez des recommandations détaillées pour optimiser un CV :
+                const button = document.getElementById('smart-analyze-btn');
+                await callAIWithAnimation(button, async () => {
+                    const prompt = `Analysez cette offre d'emploi et fournissez des recommandations détaillées pour optimiser un CV :
 
 ${jobDescription}
 
@@ -3054,25 +3408,24 @@ Retournez un objet JSON avec cette structure :
     "color_theme": "corporate/creative/modern"
 }`;
 
-                const schema = {
-                    type: "object",
-                    properties: {
-                        keywords: { type: "array", items: { type: "string" } },
-                        required_skills: { type: "array", items: { type: "string" } },
-                        recommended_sections: { type: "array", items: { type: "string" } },
-                        tone: { type: "string" },
-                        layout_suggestion: { type: "string" },
-                        color_theme: { type: "string" }
-                    }
-                };
+                    const schema = {
+                        type: "object",
+                        properties: {
+                            keywords: { type: "array", items: { type: "string" } },
+                            required_skills: { type: "array", items: { type: "string" } },
+                            recommended_sections: { type: "array", items: { type: "string" } },
+                            tone: { type: "string" },
+                            layout_suggestion: { type: "string" },
+                            color_theme: { type: "string" }
+                        }
+                    };
 
-                const result = await callGeminiAPI(prompt, schema);
-                if (result) {
-                    hideLoader();
-                    showSmartAnalysisResult(result);
-                } else {
-                    hideLoader();
-                }
+                    const result = await callGeminiAPI(prompt, schema);
+                    if (result) {
+                        showSmartAnalysisResult(result);
+                    }
+                    return result;
+                });
             });
 
             document.getElementById('industry-match-btn')?.addEventListener('click', async () => {
@@ -3139,27 +3492,33 @@ Format JSON attendu :
             });
 
             document.getElementById('ai-keyword-optimize-btn')?.addEventListener('click', async () => {
-                const currentCV = getCurrentCVData();
+                const button = document.getElementById('ai-keyword-optimize-btn');
                 
-                const prompt = `Analysez ce CV et suggérez des mots-clés spécifiques au secteur pour améliorer le référencement ATS :
+                await callAIWithAnimation(button, async () => {
+                    const currentCV = getCurrentCVData();
+                    
+                    const prompt = `Analysez ce CV et suggérez des mots-clés spécifiques au secteur pour améliorer le référencement ATS :
 
 ${JSON.stringify(currentCV)}
 
 Retournez une liste de mots-clés à intégrer naturellement dans le CV.`;
 
-                const result = await callGeminiAPI(prompt);
-                if (result) {
-                    highlightKeywordsInCV(result);
-                    showNotification("Mots-clés optimisés et mis en évidence dans le CV !", "success");
-                }
+                    const result = await callGeminiAPI(prompt);
+                    if (result) {
+                        highlightKeywordsInCV(result);
+                        showNotification("Mots-clés optimisés et mis en évidence dans le CV !", "success");
+                    }
+                    return result;
+                });
             });
 
             document.getElementById('ai-create-variants-btn')?.addEventListener('click', async () => {
-                const currentCV = getCurrentCVData();
+                const button = document.getElementById('ai-create-variants-btn');
                 
-                showLoader("Création de 3 variantes de CV...");
+                await callAIWithAnimation(button, async () => {
+                    const currentCV = getCurrentCVData();
 
-                const prompt = `Créez 3 variantes de ce CV pour différents contextes :
+                    const prompt = `Créez 3 variantes de ce CV pour différents contextes :
 
 CV de base : ${JSON.stringify(currentCV)}
 
@@ -3169,13 +3528,12 @@ Variante 3: Version créative (présentation moderne)
 
 Format JSON avec 3 objets CV complets.`;
 
-                const result = await callGeminiAPI(prompt);
-                if (result) {
-                    hideLoader();
-                    showCVVariantsModal(result);
-                } else {
-                    hideLoader();
-                }
+                    const result = await callGeminiAPI(prompt);
+                    if (result) {
+                        showCVVariantsModal(result);
+                    }
+                    return result;
+                });
             });
 
             document.getElementById('ai-personalize-job-btn')?.addEventListener('click', async () => {
@@ -3221,9 +3579,12 @@ Le message doit être :
             });
 
             document.getElementById('ai-generate-motto-btn')?.addEventListener('click', async () => {
-                const currentCV = getCurrentCVData();
+                const button = document.getElementById('ai-generate-motto-btn');
                 
-                const prompt = `Créez une devise/slogan professionnel personnalisé basé sur ce profil :
+                await callAIWithAnimation(button, async () => {
+                    const currentCV = getCurrentCVData();
+                    
+                    const prompt = `Créez une devise/slogan professionnel personnalisé basé sur ce profil :
 
 ${JSON.stringify(currentCV)}
 
@@ -3232,11 +3593,13 @@ La devise doit être :
 - Refléter la personnalité professionnelle
 - Applicable au secteur d'activité`;
 
-                const result = await callGeminiAPI(prompt);
-                if (result) {
-                    addMottoToCV(result);
-                    showNotification("Devise personnalisée ajoutée au CV !", "success");
-                }
+                    const result = await callGeminiAPI(prompt);
+                    if (result) {
+                        addMottoToCV(result);
+                        showNotification("Devise personnalisée ajoutée au CV !", "success");
+                    }
+                    return result;
+                });
             });
 
             document.getElementById('ai-suggest-improvements-btn')?.addEventListener('click', async () => {
@@ -3534,7 +3897,10 @@ Retournez un objet JSON avec cette structure exacte :
 
             controls.aiOptimizeOnePageBtn.addEventListener('click', async () => {
                 // Fonction pour optimiser le CV afin qu'il tienne sur une page
-                await optimizeForOnePage();
+                await callAIWithAnimation(controls.aiOptimizeOnePageBtn, async () => {
+                    await optimizeForOnePage();
+                    return true;
+                });
             });
 
             // Skills templates
@@ -4228,11 +4594,12 @@ Retournez : "1-col", "2-col-33-67", "2-col-50-50", "2-col-67-33", "3-col", ou "a
             });
 
             document.getElementById('auto-optimize-layout-btn')?.addEventListener('click', async () => {
-                const currentCV = getCurrentCVData();
+                const button = document.getElementById('auto-optimize-layout-btn');
                 
-                showLoader("Optimisation automatique du layout...");
-                
-                const prompt = `Optimisez automatiquement la mise en page de ce CV :
+                await callAIWithAnimation(button, async () => {
+                    const currentCV = getCurrentCVData();
+                    
+                    const prompt = `Optimisez automatiquement la mise en page de ce CV :
 
 ${JSON.stringify(currentCV)}
 
@@ -4244,14 +4611,13 @@ Retournez les paramètres optimaux au format JSON :
     "recommendations": "explications des choix"
 }`;
 
-                const result = await callGeminiAPI(prompt);
-                if (result) {
-                    hideLoader();
-                    applyLayoutOptimization(result);
-                    showNotification("Layout auto-optimisé !", "success");
-                } else {
-                    hideLoader();
-                }
+                    const result = await callGeminiAPI(prompt);
+                    if (result) {
+                        applyLayoutOptimization(result);
+                        showNotification("Layout auto-optimisé !", "success");
+                    }
+                    return result;
+                });
             });
 
             // Helper functions for layout optimization
