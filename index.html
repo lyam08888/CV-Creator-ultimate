@@ -230,6 +230,286 @@
         .analysis-result { position: relative; overflow: hidden; }
         .analysis-result::before { content: '🤖'; position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; opacity: 0.3; }
 
+        /* Advanced AI Chat Styles */
+        #ai-chat-float-btn {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+            cursor: move;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        #ai-chat-float-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.4);
+        }
+
+        #ai-chat-float-btn.dragging {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        #ai-chat-container {
+            position: fixed;
+            right: 100px;
+            bottom: 100px;
+            width: 400px;
+            height: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            z-index: 9998;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        #ai-chat-container.show {
+            display: flex;
+            animation: chatSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes chatSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        #ai-chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+
+        #ai-chat-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        #ai-chat-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        #ai-chat-close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #fafafa;
+        }
+
+        .chat-message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: messageSlideIn 0.3s ease;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.ai {
+            align-self: flex-start;
+            background: white;
+            color: #333;
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-message.ai.thinking {
+            background: #f3f4f6;
+            font-style: italic;
+        }
+
+        #ai-chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            align-items: end;
+        }
+
+        #ai-chat-input {
+            flex: 1;
+            resize: none;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            padding: 12px 16px;
+            font-size: 14px;
+            max-height: 100px;
+            min-height: 40px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        #ai-chat-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        #ai-chat-send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        #ai-chat-send-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        #ai-chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .suggestion-chip {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            color: #0369a1;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-chip:hover {
+            background: #0ea5e9;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .chat-typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #9ca3af;
+            animation: typingPulse 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingPulse {
+            0%, 60%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            30% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive adjustments for chat */
+        @media (max-width: 768px) {
+            #ai-chat-container {
+                width: 100vw;
+                height: 100vh;
+                right: 0;
+                bottom: 0;
+                border-radius: 0;
+            }
+            
+            #ai-chat-float-btn {
+                right: 20px;
+                bottom: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
         /* Responsive enhancements for small screens */
         @media (max-width: 768px) {
             .theme-btn, .skill-style-btn, .layout-btn { font-size: 0.75rem; padding: 0.5rem; }
@@ -4209,5 +4489,368 @@ ${controls.competences.value}`;
             
         });
     </script>
+
+    <script>
+        // Advanced AI Chat System JavaScript
+        class AdvancedAIChat {
+            constructor() {
+                this.isOpen = false;
+                this.isDragging = false;
+                this.dragOffset = { x: 0, y: 0 };
+                this.init();
+            }
+
+            init() {
+                this.floatBtn = document.getElementById('ai-chat-float-btn');
+                this.chatContainer = document.getElementById('ai-chat-container');
+                this.closeBtn = document.getElementById('ai-chat-close-btn');
+                this.header = document.getElementById('ai-chat-header');
+                this.messagesContainer = document.getElementById('ai-chat-messages');
+                this.input = document.getElementById('ai-chat-input');
+                this.sendBtn = document.getElementById('ai-chat-send-btn');
+
+                this.setupEventListeners();
+                this.loadChatPosition();
+            }
+
+            setupEventListeners() {
+                // Float button drag functionality
+                this.floatBtn.addEventListener('mousedown', this.startDragFloatBtn.bind(this));
+                this.floatBtn.addEventListener('click', this.toggleChat.bind(this));
+                
+                // Chat window drag functionality
+                this.header.addEventListener('mousedown', this.startDragChat.bind(this));
+                
+                // Close button
+                this.closeBtn.addEventListener('click', this.closeChat.bind(this));
+                
+                // Send message functionality
+                this.sendBtn.addEventListener('click', this.sendMessage.bind(this));
+                this.input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                // Auto-resize textarea
+                this.input.addEventListener('input', this.autoResizeTextarea.bind(this));
+
+                // Suggestion chips
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('suggestion-chip')) {
+                        this.input.value = e.target.dataset.suggestion;
+                        this.sendMessage();
+                    }
+                });
+
+                // Global mouse events for dragging
+                document.addEventListener('mousemove', this.handleDrag.bind(this));
+                document.addEventListener('mouseup', this.stopDrag.bind(this));
+            }
+
+            startDragFloatBtn(e) {
+                this.isDragging = true;
+                this.dragTarget = 'float';
+                this.floatBtn.classList.add('dragging');
+                
+                const rect = this.floatBtn.getBoundingClientRect();
+                this.dragOffset = {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+                e.preventDefault();
+            }
+
+            startDragChat(e) {
+                this.isDragging = true;
+                this.dragTarget = 'chat';
+                
+                const rect = this.chatContainer.getBoundingClientRect();
+                this.dragOffset = {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+                e.preventDefault();
+            }
+
+            handleDrag(e) {
+                if (!this.isDragging) return;
+
+                if (this.dragTarget === 'float') {
+                    const x = e.clientX - this.dragOffset.x;
+                    const y = e.clientY - this.dragOffset.y;
+                    
+                    const maxX = window.innerWidth - this.floatBtn.offsetWidth;
+                    const maxY = window.innerHeight - this.floatBtn.offsetHeight;
+                    
+                    this.floatBtn.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+                    this.floatBtn.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+                    this.floatBtn.style.right = 'auto';
+                    this.floatBtn.style.bottom = 'auto';
+                } else if (this.dragTarget === 'chat') {
+                    const x = e.clientX - this.dragOffset.x;
+                    const y = e.clientY - this.dragOffset.y;
+                    
+                    const maxX = window.innerWidth - this.chatContainer.offsetWidth;
+                    const maxY = window.innerHeight - this.chatContainer.offsetHeight;
+                    
+                    this.chatContainer.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+                    this.chatContainer.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+                    this.chatContainer.style.right = 'auto';
+                    this.chatContainer.style.bottom = 'auto';
+                }
+            }
+
+            stopDrag() {
+                if (this.isDragging) {
+                    this.isDragging = false;
+                    this.floatBtn.classList.remove('dragging');
+                    this.saveChatPosition();
+                }
+            }
+
+            toggleChat() {
+                if (this.isDragging) return;
+                
+                if (this.isOpen) {
+                    this.closeChat();
+                } else {
+                    this.openChat();
+                }
+            }
+
+            openChat() {
+                this.chatContainer.classList.add('show');
+                this.isOpen = true;
+                this.input.focus();
+            }
+
+            closeChat() {
+                this.chatContainer.classList.remove('show');
+                this.isOpen = false;
+            }
+
+            autoResizeTextarea() {
+                this.input.style.height = 'auto';
+                this.input.style.height = Math.min(this.input.scrollHeight, 100) + 'px';
+            }
+
+            addMessage(content, isUser = false, isThinking = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${isUser ? 'user' : 'ai'}${isThinking ? ' thinking' : ''}`;
+                
+                if (isThinking) {
+                    messageDiv.innerHTML = `
+                        <div class="chat-typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    `;
+                } else {
+                    messageDiv.innerHTML = content;
+                }
+                
+                this.messagesContainer.appendChild(messageDiv);
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+                
+                return messageDiv;
+            }
+
+            async sendMessage() {
+                const message = this.input.value.trim();
+                if (!message) return;
+
+                this.addMessage(message, true);
+                this.input.value = '';
+                this.autoResizeTextarea();
+
+                const thinkingMessage = this.addMessage('', false, true);
+                this.sendBtn.disabled = true;
+
+                try {
+                    const response = await this.processAIRequest(message);
+                    thinkingMessage.remove();
+                    this.addMessage(response, false);
+                } catch (error) {
+                    thinkingMessage.remove();
+                    this.addMessage(`❌ Erreur : ${error.message}`, false);
+                } finally {
+                    this.sendBtn.disabled = false;
+                }
+            }
+
+            async processAIRequest(userMessage) {
+                const cvData = this.extractCVData();
+                
+                const prompt = `Tu es un expert en création de CV et en recrutement. L'utilisateur te demande : "${userMessage}"
+
+Voici le contenu actuel de son CV :
+${cvData}
+
+Analyse sa demande et fournis une réponse détaillée et actionnable. Si des modifications doivent être apportées au CV, explique-les clairement et propose des améliorations concrètes.
+
+Réponds de manière claire, structurée et professionnelle.`;
+
+                const result = await callGeminiAPI(prompt);
+                
+                if (result) {
+                    this.parseAndApplyAISuggestions(result, userMessage);
+                    return result;
+                } else {
+                    throw new Error("Impossible de générer une réponse IA");
+                }
+            }
+
+            extractCVData() {
+                const data = {
+                    nom: document.getElementById('nom')?.value || '',
+                    prenom: document.getElementById('prenom')?.value || '',
+                    poste: document.getElementById('poste')?.value || '',
+                    email: document.getElementById('email')?.value || '',
+                    telephone: document.getElementById('telephone')?.value || '',
+                    description: document.getElementById('description')?.value || '',
+                    competences: document.getElementById('competences')?.value || '',
+                    experiences: this.extractDynamicData('experience'),
+                    formations: this.extractDynamicData('formation')
+                };
+
+                return `
+Nom: ${data.prenom} ${data.nom}
+Poste: ${data.poste}
+Email: ${data.email}
+Téléphone: ${data.telephone}
+
+Profil professionnel:
+${data.description}
+
+Compétences:
+${data.competences}
+
+Expériences:
+${data.experiences.map(exp => `- ${exp.title} (${exp.meta}): ${exp.desc}`).join('\n')}
+
+Formations:
+${data.formations.map(form => `- ${form.title} (${form.meta}): ${form.desc}`).join('\n')}
+                `.trim();
+            }
+
+            extractDynamicData(type) {
+                const container = document.getElementById(`${type}-list`);
+                if (!container) return [];
+
+                const items = [];
+                container.querySelectorAll('.p-2').forEach(item => {
+                    const title = item.querySelector(`[id*="${type}-title-"]`)?.value || '';
+                    const meta = item.querySelector(`[id*="${type}-meta-"]`)?.value || '';
+                    const desc = item.querySelector(`[id*="${type}-desc-"]`)?.value || '';
+                    if (title) items.push({ title, meta, desc });
+                });
+                return items;
+            }
+
+            parseAndApplyAISuggestions(aiResponse, userRequest) {
+                const lowerRequest = userRequest.toLowerCase();
+
+                if (lowerRequest.includes('profil') || lowerRequest.includes('description')) {
+                    const profileMatch = aiResponse.match(/profil amélioré:?\s*["""]([^"""]+)["""]/i);
+                    if (profileMatch) {
+                        const descriptionField = document.getElementById('description');
+                        if (descriptionField) {
+                            descriptionField.value = profileMatch[1].trim();
+                            updatePreview('form');
+                            showNotification("Profil mis à jour automatiquement !", "success");
+                        }
+                    }
+                }
+
+                if (lowerRequest.includes('compétence') || lowerRequest.includes('skills')) {
+                    const skillsMatch = aiResponse.match(/compétences améliorées:?\s*["""]([^"""]+)["""]/i);
+                    if (skillsMatch) {
+                        const competencesField = document.getElementById('competences');
+                        if (competencesField) {
+                            competencesField.value = skillsMatch[1].trim();
+                            updatePreview('form');
+                            showNotification("Compétences mises à jour automatiquement !", "success");
+                        }
+                    }
+                }
+            }
+
+            saveChatPosition() {
+                const floatBtnRect = this.floatBtn.getBoundingClientRect();
+                const chatRect = this.chatContainer.getBoundingClientRect();
+                
+                localStorage.setItem('ai-chat-position', JSON.stringify({
+                    floatBtn: { left: floatBtnRect.left, top: floatBtnRect.top },
+                    chat: { left: chatRect.left, top: chatRect.top }
+                }));
+            }
+
+            loadChatPosition() {
+                const saved = localStorage.getItem('ai-chat-position');
+                if (saved) {
+                    const positions = JSON.parse(saved);
+                    
+                    if (positions.floatBtn) {
+                        this.floatBtn.style.left = positions.floatBtn.left + 'px';
+                        this.floatBtn.style.top = positions.floatBtn.top + 'px';
+                        this.floatBtn.style.right = 'auto';
+                        this.floatBtn.style.bottom = 'auto';
+                    }
+                    
+                    if (positions.chat) {
+                        this.chatContainer.style.left = positions.chat.left + 'px';
+                        this.chatContainer.style.top = positions.chat.top + 'px';
+                        this.chatContainer.style.right = 'auto';
+                        this.chatContainer.style.bottom = 'auto';
+                    }
+                }
+            }
+        }
+
+        // Initialize the AI Chat when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.aiChat = new AdvancedAIChat();
+        });
+    </script>
+
+    <!-- Advanced AI Chat System -->
+    <button id="ai-chat-float-btn" title="Chat IA Avancé - Glissez pour déplacer">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div id="ai-chat-container">
+        <div id="ai-chat-header">
+            <h3><i class="fas fa-robot mr-2"></i>Assistant IA Avancé</h3>
+            <button id="ai-chat-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div id="ai-chat-messages">
+            <div class="chat-message ai">
+                👋 Bonjour ! Je suis votre assistant IA spécialisé dans l'amélioration de CV.
+                <br><br>
+                Je peux vous aider à :
+                <div class="chat-suggestions">
+                    <span class="suggestion-chip" data-suggestion="Améliorer mon profil professionnel">Améliorer le profil</span>
+                    <span class="suggestion-chip" data-suggestion="Optimiser mes expériences">Optimiser expériences</span>
+                    <span class="suggestion-chip" data-suggestion="Réorganiser mes compétences">Réorganiser compétences</span>
+                    <span class="suggestion-chip" data-suggestion="Améliorer la mise en page">Améliorer mise en page</span>
+                    <span class="suggestion-chip" data-suggestion="Analyser mon CV complet">Analyser le CV</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="ai-chat-input-container">
+            <textarea id="ai-chat-input" placeholder="Dites-moi comment améliorer votre CV..." rows="1"></textarea>
+            <button id="ai-chat-send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
 </body>
 </html>
