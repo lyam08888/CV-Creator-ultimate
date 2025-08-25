@@ -100,6 +100,40 @@
             position: relative;
         }
 
+        /* Enhanced title tooltips */
+        [title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: normal;
+            max-width: 220px;
+            z-index: 1001;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            animation: tooltipFadeIn 0.2s forwards;
+            line-height: 1.3;
+        }
+
+        [title]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 112%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #1f2937;
+            z-index: 1001;
+            pointer-events: none;
+            animation: tooltipFadeIn 0.2s forwards;
+        }
+
         /* Animation de reconstruction IA */
         .ai-reconstruction-overlay {
             position: absolute;
@@ -271,7 +305,6 @@
         @keyframes ai-button-shimmer {
             0% { left: -100%; }
             100% { left: 100%; }
-        }
         }
         
         [title]:hover::after {
@@ -1377,13 +1410,13 @@
 
             <!-- TABS -->
             <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia"><i class="fa-solid fa-robot mr-1"></i> IA</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content"><i class="fa-solid fa-file-lines mr-1"></i> Contenu</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills"><i class="fa-solid fa-star mr-1"></i> Compétences</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom"><i class="fa-solid fa-puzzle-piece mr-1"></i> Sections</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout"><i class="fa-solid fa-columns mr-1"></i> Mise en Page</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles"><i class="fa-solid fa-palette mr-1"></i> Styles</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner"><i class="fa-solid fa-user-tie mr-1"></i> Bannière</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV"><i class="fa-solid fa-robot mr-1"></i> IA</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" title="📝 Gérez le contenu principal de votre CV : expériences et formations"><i class="fa-solid fa-file-lines mr-1"></i> Contenu</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" title="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles"><i class="fa-solid fa-star mr-1"></i> Compétences</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" title="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications"><i class="fa-solid fa-puzzle-piece mr-1"></i> Sections</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" title="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale"><i class="fa-solid fa-columns mr-1"></i> Mise en Page</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" title="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV"><i class="fa-solid fa-palette mr-1"></i> Styles</button>
+                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" title="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact"><i class="fa-solid fa-user-tie mr-1"></i> Bannière</button>
             </div>
 
             <div id="tab-content" class="py-4 flex-grow overflow-y-auto">
@@ -1681,14 +1714,14 @@
                             <div class="mt-4">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Palettes Harmonieuses</label>
                                 <div class="grid grid-cols-4 gap-2">
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%)" data-colors='["#667eea", "#764ba2", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%)" data-colors='["#f093fb", "#f5576c", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%)" data-colors='["#4facfe", "#00f2fe", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)" data-colors='["#43e97b", "#38f9d7", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #fa709a 0%, #fee140 100%)" data-colors='["#fa709a", "#fee140", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%)" data-colors='["#a8edea", "#fed6e3", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%)" data-colors='["#ff9a9e", "#fecfef", "#2d3748"]'></button>
-                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%)" data-colors='["#667eea", "#764ba2", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%)" data-colors='["#667eea", "#764ba2", "#2d3748"]' title="💙 Palette Bleu-Violet professionnelle"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%)" data-colors='["#f093fb", "#f5576c", "#2d3748"]' title="💗 Palette Rose-Rouge créative"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%)" data-colors='["#4facfe", "#00f2fe", "#2d3748"]' title="💙 Palette Bleu-Cyan moderne"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)" data-colors='["#43e97b", "#38f9d7", "#2d3748"]' title="💚 Palette Vert-Turquoise nature"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #fa709a 0%, #fee140 100%)" data-colors='["#fa709a", "#fee140", "#2d3748"]' title="🌅 Palette Rose-Jaune énergie"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%)" data-colors='["#a8edea", "#fed6e3", "#2d3748"]' title="🌸 Palette Pastel douce et délicate"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%)" data-colors='["#ff9a9e", "#fecfef", "#2d3748"]' title="🌺 Palette Rose poudré romantique"></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%)" data-colors='["#667eea", "#764ba2", "#2d3748"]' title="💎 Palette Violet classique"></button>
                                 </div>
                             </div>
                         </div>
@@ -1778,7 +1811,7 @@
                      <details class="control-group" open>
                         <summary><span>Style du Texte</span><label class="completion-label"><input type="checkbox" id="completion-banner-text" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
-                            <button id="randomize-banner-style-btn" class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 flex items-center justify-center gap-2" title="Appliquer un style de bannière aléatoire pour l'inspiration"><i class="fas fa-dice"></i> Style Aléatoire</button><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Nom & Prénom</h4><label class="text-xs">Police</label><select id="banner-nom-font" class="cv-input w-full p-1 border text-sm rounded-md"><option value="'Montserrat', sans-serif">Montserrat</option><option value="'Playfair Display', serif">Playfair Display</option><option value="'Oswald', sans-serif">Oswald</option><option value="'Cormorant Garamond', serif">Cormorant Garamond</option><option value="'Merriweather', serif">Merriweather</option><option value="'Lato', sans-serif">Lato</option></select><label class="text-xs mt-2 block">Taille: <span id="banner-nom-size-value">24</span>pt</label><input type="range" id="banner-nom-size" min="14" max="40" step="1" value="24" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-nom-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-nom-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm"><i class="fas fa-bold"></i></button><button id="banner-nom-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Poste</h4><label class="text-xs mt-2 block">Taille: <span id="banner-poste-size-value">12</span>pt</label><input type="range" id="banner-poste-size" min="8" max="20" step="0.5" value="12" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-poste-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-poste-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm"><i class="fas fa-bold"></i></button><button id="banner-poste-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Coordonnées</h4><label class="text-xs mt-2 block">Taille: <span id="banner-contact-size-value">9</span>pt</label><input type="range" id="banner-contact-size" min="7" max="14" step="0.5" value="9" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-contact-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-contact-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm"><i class="fas fa-bold"></i></button><button id="banner-contact-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm"><i class="fas fa-italic"></i></button></div></div>
+                            <button id="randomize-banner-style-btn" class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 flex items-center justify-center gap-2" title="Appliquer un style de bannière aléatoire pour l'inspiration"><i class="fas fa-dice"></i> Style Aléatoire</button><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Nom & Prénom</h4><label class="text-xs">Police</label><select id="banner-nom-font" class="cv-input w-full p-1 border text-sm rounded-md"><option value="'Montserrat', sans-serif">Montserrat</option><option value="'Playfair Display', serif">Playfair Display</option><option value="'Oswald', sans-serif">Oswald</option><option value="'Cormorant Garamond', serif">Cormorant Garamond</option><option value="'Merriweather', serif">Merriweather</option><option value="'Lato', sans-serif">Lato</option></select><label class="text-xs mt-2 block">Taille: <span id="banner-nom-size-value">24</span>pt</label><input type="range" id="banner-nom-size" min="14" max="40" step="1" value="24" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-nom-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-nom-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le nom en gras"><i class="fas fa-bold"></i></button><button id="banner-nom-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le nom en italique"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Poste</h4><label class="text-xs mt-2 block">Taille: <span id="banner-poste-size-value">12</span>pt</label><input type="range" id="banner-poste-size" min="8" max="20" step="0.5" value="12" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-poste-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-poste-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le poste en gras"><i class="fas fa-bold"></i></button><button id="banner-poste-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le poste en italique"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Coordonnées</h4><label class="text-xs mt-2 block">Taille: <span id="banner-contact-size-value">9</span>pt</label><input type="range" id="banner-contact-size" min="7" max="14" step="0.5" value="9" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-contact-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-contact-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre les coordonnées en gras"><i class="fas fa-bold"></i></button><button id="banner-contact-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre les coordonnées en italique"><i class="fas fa-italic"></i></button></div></div>
                         </div>
                     </details>
                 </div>
@@ -1833,7 +1866,7 @@
                         </div>
                         <div id="fixed-banner-bottom"></div>
                     </div>
-                     <button class="remove-page-btn no-print"><i class="fas fa-trash-can"></i></button>
+                     <button class="remove-page-btn no-print" title="🗑️ Supprimer cette page du CV"><i class="fas fa-trash-can"></i></button>
                 </div>
                  <div id="add-page-btn-wrapper" class="no-print">
                      <button id="add-page-btn" title="Ajouter une nouvelle page au CV"><i class="fas fa-plus"></i></button>
@@ -1850,10 +1883,10 @@
             <p class="text-sm text-gray-600 mb-2">Copiez ce lien unique pour partager une version en lecture seule de ce CV.</p>
             <div class="flex items-center border rounded-md p-2 bg-gray-50">
                 <input type="text" id="share-link-input" readonly class="flex-grow bg-transparent outline-none text-sm">
-                <button id="copy-share-link-btn" class="ml-2 px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600">Copier</button>
+                <button id="copy-share-link-btn" class="ml-2 px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600" title="📋 Copier le lien de partage dans le presse-papiers">Copier</button>
             </div>
             <div class="text-right mt-4">
-                 <button id="close-share-modal" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Fermer</button>
+                 <button id="close-share-modal" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300" title="Fermer la fenêtre de partage">Fermer</button>
             </div>
         </div>
     </div>
@@ -1862,7 +1895,7 @@
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">Choisir une icône</h2>
-                <button id="close-icon-picker-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                <button id="close-icon-picker-modal" class="text-gray-500 hover:text-gray-800 text-2xl" title="Fermer le sélecteur d'icônes">&times;</button>
             </div>
             <div class="mb-4">
                 <input type="text" id="icon-search-input" placeholder="Rechercher une icône..." class="w-full p-2 border rounded-md">
@@ -1876,8 +1909,8 @@
             <h2 id="confirm-modal-title" class="text-xl font-bold mb-4">Confirmation</h2>
             <p id="confirm-modal-text" class="text-gray-600 mb-6">Êtes-vous sûr ?</p>
             <div class="flex justify-end gap-4">
-                <button id="confirm-modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Annuler</button>
-                <button id="confirm-modal-ok-btn" class="px-4 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700">Confirmer</button>
+                <button id="confirm-modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300" title="Annuler l'action et fermer">Annuler</button>
+                <button id="confirm-modal-ok-btn" class="px-4 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700" title="Confirmer l'action définitivement">Confirmer</button>
             </div>
         </div>
     </div>
@@ -1887,14 +1920,14 @@
         <div class="modal-content" style="max-width: 800px;">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">Variantes de CV générées par l'IA</h2>
-                <button id="close-variants-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                <button id="close-variants-modal" class="text-gray-500 hover:text-gray-800 text-2xl" title="Fermer le sélecteur de variantes">&times;</button>
             </div>
             <div id="variants-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Variants will be inserted here -->
             </div>
             <div class="flex justify-end gap-4 mt-6">
-                <button id="cancel-variants-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Annuler</button>
-                <button id="apply-variant-btn" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700" disabled>Appliquer la Variante</button>
+                <button id="cancel-variants-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300" title="Annuler et garder la version actuelle">Annuler</button>
+                <button id="apply-variant-btn" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700" disabled title="Appliquer la variante sélectionnée à votre CV">Appliquer la Variante</button>
             </div>
         </div>
     </div>
@@ -1903,7 +1936,7 @@
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">Traduire le CV</h2>
-                <button id="close-translation-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+                <button id="close-translation-modal" class="text-gray-500 hover:text-gray-800 text-2xl" title="Fermer le traducteur">&times;</button>
             </div>
             <div class="space-y-4">
                 <div>
