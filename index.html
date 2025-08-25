@@ -4600,6 +4600,53 @@
             background: #94a3b8;
         }
 
+        /* ===== OVERRIDES: Afficher titres à côté des icônes et aligner à gauche ===== */
+        .quick-actions-bar { justify-content: flex-start !important; }
+
+        /* Rendre les boutons expansibles avec texte visible */
+        .icon-only-btn,
+        .ai-btn-compact,
+        .theme-btn,
+        .skill-style-btn,
+        .layout-btn,
+        .style-toggle-btn,
+        .section-title-style-btn,
+        .ai-btn-enhanced {
+            width: auto !important;
+            height: auto !important;
+            min-height: 36px !important;
+            padding: 8px 12px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        /* Réactiver le texte masqué par défaut */
+        .icon-only-btn .btn-text,
+        .icon-only-btn .btn-subtitle,
+        .theme-btn .btn-text,
+        .skill-style-btn .btn-text,
+        .layout-btn .btn-text,
+        .style-toggle-btn .btn-text,
+        .section-title-style-btn .btn-text,
+        .ai-btn-enhanced .btn-text,
+        .icon-only-btn .text-container,
+        .ai-btn-enhanced .text-container {
+            display: inline-block !important;
+        }
+
+        /* Meilleur espacement des icônes */
+        .icon-only-btn i,
+        .ai-btn-enhanced i,
+        .theme-btn i,
+        .skill-style-btn i,
+        .layout-btn i {
+            margin-right: 6px !important;
+        }
+
+        /* Les palettes de couleurs restent compactes */
+        .color-palette-btn { width: 100% !important; height: 32px !important; padding: 0 !important; }
+
     </style>
 </head>
 <body class="bg-gray-200 font-sans">
@@ -4659,7 +4706,7 @@
             </div>
 
             <!-- Actions Rapides -->
-            <div class="quick-actions-bar bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 justify-center">
+            <div class="quick-actions-bar bg-white border-b border-gray-200 p-3 flex flex-wrap gap-2 justify-start">
                 <button id="download-pdf-btn" class="tab-btn action-btn icon-only-btn py-3 px-4 text-sm font-medium whitespace-nowrap bg-blue-50 hover:bg-blue-100" data-tooltip="� Télécharge votre CV au format PDF avec une mise en page professionnelle">
                     <i class="fa-solid fa-download text-blue-600"></i>
                     <div class="text-container">
