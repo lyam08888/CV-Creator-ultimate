@@ -457,7 +457,7 @@
                 rgba(255, 255, 255, 0.95) 100%);
             backdrop-filter: blur(30px) saturate(1.2);
             border-radius: 20px;
-            padding: 20px;
+            padding: 24px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.1),
@@ -466,8 +466,8 @@
                 inset 0 -1px 0 rgba(0, 0, 0, 0.05);
             margin-bottom: 16px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
             position: relative;
             overflow: hidden;
         }
@@ -486,26 +486,35 @@
             pointer-events: none;
         }
         
-        /* Onglets avec effet de pilule Apple Pro - Version Rectangulaire */
+        /* Onglets avec effet de pilule Apple Pro - Style AI Enhanced Agrandi */
         .tab-btn {
-            background: transparent;
-            border: none;
-            border-radius: 20px;
-            padding: 16px 24px;
-            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, 
+                rgba(240, 242, 247, 0.95) 0%, 
+                rgba(255, 255, 255, 0.98) 50%, 
+                rgba(240, 242, 247, 0.95) 100%) !important;
+            backdrop-filter: blur(20px) saturate(1.2);
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 
+                0 6px 25px rgba(0, 0, 0, 0.08),
+                0 3px 12px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05) !important;
+            border-radius: 24px;
+            padding: 24px 32px;
+            font-size: 14px;
             font-weight: 600;
-            color: #666;
+            color: #333 !important;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             cursor: pointer;
-            position: relative;
             display: flex;
             flex-direction: row;
             align-items: center;
-            gap: 16px;
-            min-width: 180px;
-            min-height: 70px;
+            gap: 20px;
+            min-width: 220px;
+            min-height: 85px;
             justify-content: flex-start;
-            overflow: hidden;
             z-index: 1;
         }
         
@@ -513,46 +522,46 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, 
-                rgba(0, 122, 255, 0) 0%, 
-                rgba(0, 122, 255, 0.05) 50%, 
-                rgba(0, 122, 255, 0) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 20px;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(0, 122, 255, 0.1) 50%, 
+                transparent 100%);
+            transition: left 0.6s ease;
+            border-radius: 24px;
         }
         
         .tab-btn:hover::before {
-            opacity: 1;
+            left: 100%;
         }
         
         .tab-btn:hover {
-            color: #007AFF;
-            transform: translateY(-3px) scale(1.03);
+            transform: translateY(-4px) scale(1.04) !important;
             box-shadow: 
-                0 6px 25px rgba(0, 122, 255, 0.15),
-                0 3px 12px rgba(0, 0, 0, 0.1);
+                0 12px 40px rgba(0, 122, 255, 0.2),
+                0 6px 20px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1) !important;
         }
         
         .tab-btn.active {
             background: linear-gradient(135deg, 
-                #007AFF 0%, 
-                #5856D6 50%, 
-                #007AFF 100%);
-            color: white;
+                rgba(0, 122, 255, 0.95) 0%, 
+                rgba(88, 86, 214, 0.95) 50%, 
+                rgba(0, 122, 255, 0.95) 100%) !important;
+            color: white !important;
             box-shadow: 
-                0 8px 30px rgba(0, 122, 255, 0.3),
-                0 4px 15px rgba(0, 0, 0, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-            transform: translateY(-3px);
+                0 12px 40px rgba(0, 122, 255, 0.4),
+                0 6px 20px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+            transform: translateY(-4px);
         }
         
         .tab-btn.active::before {
-            opacity: 0;
+            left: 100%;
         }
         
         .tab-btn.active::after {
@@ -566,16 +575,22 @@
                 rgba(255, 255, 255, 0.2) 0%, 
                 transparent 50%, 
                 rgba(255, 255, 255, 0.1) 100%);
-            border-radius: 20px;
+            border-radius: 24px;
         }
         
         .tab-btn i {
-            font-size: 28px;
+            font-size: 36px;
             flex-shrink: 0;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+            color: #333 !important;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
             transition: all 0.3s ease;
-            width: 40px;
+            width: 50px;
             text-align: center;
+        }
+        
+        .tab-btn.active i {
+            color: white !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
         
         .tab-btn:hover i {
@@ -587,26 +602,36 @@
         }
         
         .tab-btn .btn-text {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
+            color: #333 !important;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             letter-spacing: 0.3px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
             line-height: 1.2;
             flex: 1;
         }
         
+        .tab-btn.active .btn-text {
+            color: white !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
         .tab-btn .btn-subtitle {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 400;
-            opacity: 0.7;
+            color: rgba(51, 51, 51, 0.7) !important;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1;
             margin-top: 2px;
+        }
+        
+        .tab-btn.active .btn-subtitle {
+            color: rgba(255, 255, 255, 0.8) !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
         /* Conteneur de texte pour organisation verticale */
@@ -628,20 +653,44 @@
         
         /* Styles spéciaux pour les boutons d'actions intégrés */
         .tab-btn.action-btn {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            color: inherit !important;
             margin-left: 8px;
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05) !important;
         }
         
         .tab-btn.action-btn:hover {
             transform: translateY(-3px) scale(1.03);
             box-shadow: 
-                0 6px 25px rgba(0, 0, 0, 0.15),
-                0 3px 12px rgba(0, 0, 0, 0.1);
+                0 8px 35px rgba(0, 0, 0, 0.15),
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.1) !important;
         }
         
         .tab-btn.action-btn:active {
             transform: translateY(-1px) scale(0.98);
+        }
+        
+        .tab-btn.action-btn i {
+            color: inherit !important;
+            text-shadow: none !important;
+        }
+        
+        .tab-btn.action-btn .btn-text {
+            color: inherit !important;
+            text-shadow: none !important;
+        }
+        
+        .tab-btn.action-btn .btn-subtitle {
+            color: inherit !important;
+            text-shadow: none !important;
+            opacity: 0.7;
         }
         
         /* Séparateur visuel pour les actions */
@@ -1439,6 +1488,7 @@
             color: white !important;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            font-size: 24px !important;
         }
         
         .ai-btn-enhanced .btn-text {
@@ -1506,13 +1556,13 @@
         .grid-3 .icon-only-btn,
         .grid-2 .ai-btn-enhanced,
         .grid-3 .ai-btn-enhanced {
-            min-height: 50px;
-            padding: 14px 12px;
+            min-height: 60px;
+            padding: 16px 14px;
         }
         
         .grid-3 .icon-only-btn i,
         .grid-3 .ai-btn-enhanced i {
-            font-size: 18px;
+            font-size: 24px !important;
         }
         
         .grid-3 .icon-only-btn .btn-text,
@@ -4673,13 +4723,13 @@
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-3 gap-2">
                                 <button id="ai-optimize-one-page-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="🔮 L'IA optimise automatiquement votre CV pour qu'il tienne sur une seule page tout en gardant l'essentiel">
-                                    <i class="fas fa-magic-wand-sparkles text-lg"></i>
+                                    <i class="fas fa-magic-wand-sparkles text-xl"></i>
                                 </button>
                                 <button id="anonymize-btn" class="ai-btn-enhanced icon-only-btn bg-slate-600 text-white p-3 rounded-lg hover:bg-slate-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="🕵️ Masquer vos informations personnelles pour créer une version anonyme de votre CV">
-                                    <i class="fa-solid fa-user-secret text-lg"></i>
+                                    <i class="fa-solid fa-user-secret text-xl"></i>
                                 </button>
                                 <button id="toggle-presentation-mode-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="👁️ Mode présentation : masquer tous les éléments d'édition pour une vue propre">
-                                    <i class="fa-solid fa-eye text-lg"></i>
+                                    <i class="fa-solid fa-eye text-xl"></i>
                                 </button>
                             </div>
                         </div>
@@ -4719,21 +4769,21 @@
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="analyze-btn" class="ai-btn-enhanced icon-only-btn bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i><span class="btn-text"> Analyser & Remplir</span></button>
-                                <button id="smart-analyze-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain text-lg"></i><span class="btn-text"> Analyse Smart</span></button>
+                                <button id="analyze-btn" class="ai-btn-enhanced icon-only-btn bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i><span class="btn-text"> Analyser & Remplir</span></button>
+                                <button id="smart-analyze-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain text-xl"></i><span class="btn-text"> Analyse Smart</span></button>
                             </div>
-                            <button id="industry-match-btn" class="ai-btn-enhanced icon-only-btn w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-lg"></i><span class="btn-text"> Adapter au Secteur</span></button>
+                            <button id="industry-match-btn" class="ai-btn-enhanced icon-only-btn w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-xl"></i><span class="btn-text"> Adapter au Secteur</span></button>
                         </div>
                     </details>
                     <details class="control-group">
                         <summary><span>Optimisations IA <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-optimizations" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="ai-score-cv-btn" class="ai-btn-enhanced icon-only-btn bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line text-lg"></i><span class="btn-text"> Score ATS</span></button>
-                                <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced icon-only-btn bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key text-lg"></i><span class="btn-text"> Mots-clés</span></button>
+                                <button id="ai-score-cv-btn" class="ai-btn-enhanced icon-only-btn bg-emerald-600 text-white p-3 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line text-xl"></i><span class="btn-text"> Score ATS</span></button>
+                                <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced icon-only-btn bg-teal-600 text-white p-3 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key text-xl"></i><span class="btn-text"> Mots-clés</span></button>
                             </div>
-                            <button id="ai-create-variants-btn" class="ai-btn-enhanced icon-only-btn w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy text-lg"></i><span class="btn-text"> Créer 3 Variantes</span></button>
-                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced icon-only-btn w-full bg-rose-600 text-white py-2 px-4 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-lg"></i><span class="btn-text"> Personnaliser pour Poste</span></button>
+                            <button id="ai-create-variants-btn" class="ai-btn-enhanced icon-only-btn w-full bg-orange-600 text-white p-3 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy text-xl"></i><span class="btn-text"> Créer 3 Variantes</span></button>
+                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced icon-only-btn w-full bg-rose-600 text-white p-3 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-xl"></i><span class="btn-text"> Personnaliser pour Poste</span></button>
                         </div>
                     </details>
                     <details class="control-group">
@@ -4743,8 +4793,8 @@
                             <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
                             <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="generate-mail-btn" class="ai-btn-enhanced icon-only-btn bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles text-lg"></i><span class="btn-text"> Mail Présentation</span></button>
-                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced icon-only-btn bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin text-lg"></i><span class="btn-text"> Message LinkedIn</span></button>
+                                <button id="generate-mail-btn" class="ai-btn-enhanced icon-only-btn bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles text-xl"></i><span class="btn-text"> Mail Présentation</span></button>
+                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced icon-only-btn bg-blue-700 text-white p-3 rounded-lg hover:bg-blue-800 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin text-xl"></i><span class="btn-text"> Message LinkedIn</span></button>
                             </div>
                             <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le message généré apparaîtra ici..."></textarea>
                         </div>
@@ -4752,9 +4802,9 @@
                     <details class="control-group">
                         <summary><span>IA Créative <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-creative" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
-                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced icon-only-btn w-full bg-violet-600 text-white py-2 px-4 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-lg"></i><span class="btn-text"> Générer Devise/Slogan</span></button>
-                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced icon-only-btn w-full bg-amber-600 text-white py-2 px-4 rounded-lg hover:bg-amber-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb text-lg"></i><span class="btn-text"> Suggestions d'Amélioration</span></button>
-                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced icon-only-btn w-full bg-cyan-600 text-white py-2 px-4 rounded-lg hover:bg-cyan-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language text-lg"></i><span class="btn-text"> Traduire CV</span></button>
+                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced icon-only-btn w-full bg-violet-600 text-white p-3 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-xl"></i><span class="btn-text"> Générer Devise/Slogan</span></button>
+                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced icon-only-btn w-full bg-amber-600 text-white p-3 rounded-lg hover:bg-amber-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb text-xl"></i><span class="btn-text"> Suggestions d'Amélioration</span></button>
+                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced icon-only-btn w-full bg-cyan-600 text-white p-3 rounded-lg hover:bg-cyan-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language text-xl"></i><span class="btn-text"> Traduire CV</span></button>
                         </div>
                     </details>
                 </div>
@@ -4817,7 +4867,7 @@
                                     <button data-gauge-style="percentage" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Pourcentage">%</button>
                                 </div>
                                 <div id="skills-level-list" class="space-y-2 border-t pt-3"></div>
-                                <button id="add-skill-level-btn" class="ai-btn-enhanced icon-only-btn w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm transition-all duration-200 hover:scale-105" title="➕ Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle text-lg"></i><span class="btn-text"> Ajouter une compétence</span></button>
+                                <button id="add-skill-level-btn" class="ai-btn-enhanced icon-only-btn w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm transition-all duration-200 hover:scale-105" title="➕ Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle text-xl"></i><span class="btn-text"> Ajouter une compétence</span></button>
                             </div>
                         </div>
                     </details>
@@ -4866,7 +4916,7 @@
                                 </select>
                                 <div class="flex gap-2">
                                     <input type="text" id="new-section-title-input" class="flex-grow p-2 border rounded-md text-sm" placeholder="Ou tapez un titre personnalisé...">
-                                    <button id="add-section-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105" title="➕ Créer une nouvelle section personnalisée"><i class="fas fa-plus text-lg"></i></button>
+                                    <button id="add-section-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105" title="➕ Créer une nouvelle section personnalisée"><i class="fas fa-plus text-xl"></i></button>
                                 </div>
                             </div>
                             <div id="custom-sections-list" class="space-y-2 mt-2 border-t pt-2"></div>
