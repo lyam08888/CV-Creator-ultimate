@@ -4508,9 +4508,13 @@ ${controls.competences.value}`;
                 this.messagesContainer = document.getElementById('ai-chat-messages');
                 this.input = document.getElementById('ai-chat-input');
                 this.sendBtn = document.getElementById('ai-chat-send-btn');
+                this.voiceBtn = document.getElementById('ai-voice-btn');
+                this.smartSuggestBtn = document.getElementById('ai-smart-suggest-btn');
+                this.quickFixBtn = document.getElementById('ai-quick-fix-btn');
 
                 this.setupEventListeners();
                 this.loadChatPosition();
+                this.initializeVoiceRecognition();
             }
 
             setupEventListeners() {
@@ -4532,6 +4536,15 @@ ${controls.competences.value}`;
                         this.sendMessage();
                     }
                 });
+
+                // Voice recognition
+                this.voiceBtn.addEventListener('click', this.toggleVoiceRecognition.bind(this));
+                
+                // Smart suggestions
+                this.smartSuggestBtn.addEventListener('click', this.generateSmartSuggestions.bind(this));
+                
+                // Quick fix
+                this.quickFixBtn.addEventListener('click', this.performQuickFix.bind(this));
 
                 // Auto-resize textarea
                 this.input.addEventListener('input', this.autoResizeTextarea.bind(this));
@@ -4683,20 +4696,56 @@ ${controls.competences.value}`;
 
             async processAIRequest(userMessage) {
                 const cvData = this.extractCVData();
+                const analysisData = this.performDeepAnalysis();
                 
-                const prompt = `Tu es un expert en création de CV et en recrutement. L'utilisateur te demande : "${userMessage}"
+                // Analyser le type de demande pour adapter la réponse
+                const requestType = this.categorizeRequest(userMessage);
+                
+                let prompt = `Tu es un expert en création de CV, recrutement et design graphique avec 20 ans d'expérience. Tu peux modifier directement le CV en temps réel.
 
-Voici le contenu actuel de son CV :
+DEMANDE DE L'UTILISATEUR: "${userMessage}"
+
+CONTENU ACTUEL DU CV:
 ${cvData}
 
-Analyse sa demande et fournis une réponse détaillée et actionnable. Si des modifications doivent être apportées au CV, explique-les clairement et propose des améliorations concrètes.
+ANALYSE TECHNIQUE DU CV:
+${analysisData}
 
-Réponds de manière claire, structurée et professionnelle.`;
+INSTRUCTIONS SPÉCIALES:
+- Tu peux modifier DIRECTEMENT le contenu du CV
+- Pour les modifications, utilise les balises [MODIFY:champ:nouveau_contenu] 
+- Pour ajouter des expériences: [ADD_EXPERIENCE:titre|entreprise-période|description]
+- Pour ajouter des formations: [ADD_FORMATION:diplôme|école-année|description]
+- Pour modifier la mise en page: [LAYOUT:type] (1-col, 2-col-33-67, 2-col-50-50, 2-col-67-33)
+- Pour changer les couleurs: [COLORS:primaire|secondaire|texte]
+- Pour changer les polices: [FONTS:h1|h2|body]
+- Pour réorganiser les sections: [REORDER:section1,section2,section3...]
+
+CAPACITÉS AVANCÉES:
+1. Analyse sectorielle et optimisation pour un métier spécifique
+2. Détection automatique des faiblesses et suggestions d'amélioration
+3. Optimisation ATS (Applicant Tracking System)
+4. Conseils de design et lisibilité
+5. Adaptation au niveau d'expérience (junior, senior, expert)
+6. Optimisation par mots-clés sectoriels
+
+TYPES DE DEMANDES QUE TU PEUX TRAITER:
+- Modification de contenu (textes, descriptions, etc.)
+- Ajout/suppression d'éléments
+- Changement de mise en page et design
+- Optimisation pour un poste/secteur spécifique
+- Réorganisation des sections
+- Amélioration de la lisibilité
+- Correction d'erreurs grammaticales/orthographiques
+- Suggestions de compétences manquantes
+- Adaptation du ton (formel, créatif, technique...)
+
+Réponds de manière proactive et applique directement les modifications nécessaires.`;
 
                 const result = await callGeminiAPI(prompt);
                 
                 if (result) {
-                    this.parseAndApplyAISuggestions(result, userMessage);
+                    await this.parseAndApplyAdvancedSuggestions(result, userMessage);
                     return result;
                 } else {
                     throw new Error("Impossible de générer une réponse IA");
@@ -4750,32 +4799,695 @@ ${data.formations.map(form => `- ${form.title} (${form.meta}): ${form.desc}`).jo
                 return items;
             }
 
-            parseAndApplyAISuggestions(aiResponse, userRequest) {
+            categorizeRequest(message) {
+                const lower = message.toLowerCase();
+                
+                if (lower.includes('couleur') || lower.includes('color') || lower.includes('design')) return 'design';
+                if (lower.includes('police') || lower.includes('font')) return 'typography';
+                if (lower.includes('mise en page') || lower.includes('layout') || lower.includes('colonnes')) return 'layout';
+                if (lower.includes('expérience') || lower.includes('travail') || lower.includes('emploi')) return 'experience';
+                if (lower.includes('formation') || lower.includes('diplôme') || lower.includes('école')) return 'education';
+                if (lower.includes('compétence') || lower.includes('skill')) return 'skills';
+                if (lower.includes('profil') || lower.includes('description') || lower.includes('résumé')) return 'profile';
+                if (lower.includes('optimis') || lower.includes('amélio') || lower.includes('poste')) return 'optimization';
+                if (lower.includes('secteur') || lower.includes('industrie') || lower.includes('métier')) return 'sector';
+                return 'general';
+            }
+
+            performDeepAnalysis() {
+                const preview = document.querySelector('#cv-preview');
+                const sections = preview.querySelectorAll('.cv-module');
+                
+                const analysis = {
+                    sectionsCount: sections.length,
+                    currentLayout: this.getCurrentLayout(),
+                    currentTheme: this.getCurrentTheme(),
+                    currentFonts: this.getCurrentFonts(),
+                    contentAnalysis: this.analyzeContent(),
+                    designAnalysis: this.analyzeDesign(),
+                    missingElements: this.detectMissingElements()
+                };
+
+                return `
+Nombre de sections: ${analysis.sectionsCount}
+Mise en page actuelle: ${analysis.currentLayout}
+Thème actuel: ${analysis.currentTheme}
+Polices actuelles: H1=${analysis.currentFonts.h1}, H2=${analysis.currentFonts.h2}, Body=${analysis.currentFonts.body}
+
+Analyse du contenu:
+${analysis.contentAnalysis}
+
+Analyse du design:
+${analysis.designAnalysis}
+
+Éléments manquants détectés:
+${analysis.missingElements}
+                `;
+            }
+
+            getCurrentLayout() {
+                const container = document.querySelector('.cv-body-container');
+                if (container.classList.contains('layout-1-col')) return '1 colonne';
+                if (container.classList.contains('layout-2-col-33-67')) return '2 colonnes (33%-67%)';
+                if (container.classList.contains('layout-2-col-50-50')) return '2 colonnes (50%-50%)';
+                if (container.classList.contains('layout-2-col-67-33')) return '2 colonnes (67%-33%)';
+                return 'Layout personnalisé';
+            }
+
+            getCurrentTheme() {
+                const body = document.body;
+                if (body.classList.contains('theme-elegant')) return 'Élégant';
+                if (body.classList.contains('theme-tech')) return 'Tech';
+                if (body.classList.contains('theme-luxury')) return 'Luxe';
+                if (body.classList.contains('theme-startup')) return 'Startup';
+                if (body.classList.contains('theme-academic')) return 'Académique';
+                if (body.classList.contains('theme-artistic')) return 'Artistique';
+                return 'Standard';
+            }
+
+            getCurrentFonts() {
+                const styles = getComputedStyle(document.documentElement);
+                return {
+                    h1: styles.getPropertyValue('--font-family-h1').trim(),
+                    h2: styles.getPropertyValue('--font-family-h2').trim(),
+                    body: styles.getPropertyValue('--font-family-body').trim()
+                };
+            }
+
+            analyzeContent() {
+                const issues = [];
+                const suggestions = [];
+
+                // Analyser le profil
+                const profile = document.getElementById('description')?.value;
+                if (!profile || profile.length < 50) {
+                    issues.push('Profil professionnel trop court ou manquant');
+                    suggestions.push('Ajouter une description professionnelle de 80-120 mots');
+                }
+
+                // Analyser les expériences
+                const experiences = this.extractDynamicData('experience');
+                if (experiences.length === 0) {
+                    issues.push('Aucune expérience professionnelle');
+                } else if (experiences.length < 2) {
+                    suggestions.push('Ajouter plus d\'expériences si disponibles');
+                }
+
+                // Analyser les formations
+                const formations = this.extractDynamicData('formation');
+                if (formations.length === 0) {
+                    issues.push('Aucune formation mentionnée');
+                }
+
+                return `Problèmes détectés: ${issues.join(', ') || 'Aucun'}\nSuggestions: ${suggestions.join(', ') || 'Contenu satisfaisant'}`;
+            }
+
+            analyzeDesign() {
+                const issues = [];
+                const suggestions = [];
+
+                // Vérifier la lisibilité
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+                const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+                
+                if (primaryColor === secondaryColor) {
+                    issues.push('Couleurs primaire et secondaire identiques');
+                }
+
+                // Vérifier l'équilibre des colonnes
+                const layout = this.getCurrentLayout();
+                const contentDensity = this.analyzeContentDensity();
+                
+                if (contentDensity.leftHeavy && layout.includes('67%-33%')) {
+                    suggestions.push('Rééquilibrer le contenu entre les colonnes');
+                }
+
+                return `Design: ${issues.join(', ') || 'Bon équilibre'}\nAméliorations possibles: ${suggestions.join(', ') || 'Design optimal'}`;
+            }
+
+            analyzeContentDensity() {
+                const leftColumn = document.querySelector('.cv-column:first-child');
+                const rightColumn = document.querySelector('.cv-column:last-child');
+                
+                if (!leftColumn || !rightColumn) return { balanced: true };
+
+                const leftContent = leftColumn.textContent.length;
+                const rightContent = rightColumn.textContent.length;
+                
+                return {
+                    leftHeavy: leftContent > rightContent * 1.5,
+                    rightHeavy: rightContent > leftContent * 1.5,
+                    balanced: Math.abs(leftContent - rightContent) / Math.max(leftContent, rightContent) < 0.3
+                };
+            }
+
+            detectMissingElements() {
+                const missing = [];
+                
+                if (!document.getElementById('nom')?.value) missing.push('Nom');
+                if (!document.getElementById('email')?.value) missing.push('Email');
+                if (!document.getElementById('telephone')?.value) missing.push('Téléphone');
+                if (!document.getElementById('poste')?.value) missing.push('Intitulé de poste');
+                
+                const competences = document.getElementById('competences')?.value;
+                if (!competences || competences.trim().length < 10) {
+                    missing.push('Compétences détaillées');
+                }
+
+                return missing.length > 0 ? missing.join(', ') : 'Tous les éléments essentiels sont présents';
+            }
+
+            async parseAndApplyAdvancedSuggestions(aiResponse, userRequest) {
+                // Expressions régulières pour détecter les commandes
+                const modifyRegex = /\[MODIFY:(\w+):([^\]]+)\]/g;
+                const addExpRegex = /\[ADD_EXPERIENCE:([^|]+)\|([^|]+)\|([^\]]+)\]/g;
+                const addFormRegex = /\[ADD_FORMATION:([^|]+)\|([^|]+)\|([^\]]+)\]/g;
+                const layoutRegex = /\[LAYOUT:([^\]]+)\]/g;
+                const colorsRegex = /\[COLORS:([^|]+)\|([^|]+)\|([^\]]+)\]/g;
+                const fontsRegex = /\[FONTS:([^|]+)\|([^|]+)\|([^\]]+)\]/g;
+                const reorderRegex = /\[REORDER:([^\]]+)\]/g;
+
+                let modificationsApplied = [];
+
+                // Traiter les modifications de champs
+                let match;
+                while ((match = modifyRegex.exec(aiResponse)) !== null) {
+                    const [, field, newContent] = match;
+                    await this.modifyField(field, newContent);
+                    modificationsApplied.push(`${field} modifié`);
+                }
+
+                // Ajouter des expériences
+                while ((match = addExpRegex.exec(aiResponse)) !== null) {
+                    const [, titre, meta, description] = match;
+                    await this.addExperience(titre, meta, description);
+                    modificationsApplied.push(`Expérience "${titre}" ajoutée`);
+                }
+
+                // Ajouter des formations
+                while ((match = addFormRegex.exec(aiResponse)) !== null) {
+                    const [, diplome, meta, description] = match;
+                    await this.addFormation(diplome, meta, description);
+                    modificationsApplied.push(`Formation "${diplome}" ajoutée`);
+                }
+
+                // Changer la mise en page
+                while ((match = layoutRegex.exec(aiResponse)) !== null) {
+                    const [, layoutType] = match;
+                    await this.changeLayout(layoutType);
+                    modificationsApplied.push(`Mise en page changée: ${layoutType}`);
+                }
+
+                // Changer les couleurs
+                while ((match = colorsRegex.exec(aiResponse)) !== null) {
+                    const [, primary, secondary, text] = match;
+                    await this.changeColors(primary, secondary, text);
+                    modificationsApplied.push(`Couleurs mises à jour`);
+                }
+
+                // Changer les polices
+                while ((match = fontsRegex.exec(aiResponse)) !== null) {
+                    const [, h1, h2, body] = match;
+                    await this.changeFonts(h1, h2, body);
+                    modificationsApplied.push(`Polices mises à jour`);
+                }
+
+                // Auto-modifications intelligentes basées sur le contexte
+                await this.applyIntelligentModifications(userRequest, aiResponse);
+
+                if (modificationsApplied.length > 0) {
+                    showNotification(`🤖 IA: ${modificationsApplied.join(', ')}`, "success", 4000);
+                }
+
+                // Mise à jour de l'aperçu
+                updatePreview('form');
+            }
+
+            async modifyField(field, newContent) {
+                const element = document.getElementById(field);
+                if (element) {
+                    element.value = newContent.trim();
+                    // Déclencher l'événement de changement pour mettre à jour l'aperçu
+                    element.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            }
+
+            async addExperience(titre, meta, description) {
+                const container = document.getElementById('experience-list');
+                if (container) {
+                    const fields = [
+                        { key: 'title', placeholder: 'Titre du poste', type: 'input' },
+                        { key: 'meta', placeholder: 'Entreprise - Période', type: 'input' },
+                        { key: 'desc', placeholder: 'Description', type: 'textarea' }
+                    ];
+                    const data = { title: titre, meta: meta, desc: description };
+                    createDynamicItem(container, fields, data);
+                }
+            }
+
+            async addFormation(diplome, meta, description) {
+                const container = document.getElementById('formation-list');
+                if (container) {
+                    const fields = [
+                        { key: 'title', placeholder: 'Diplôme/Formation', type: 'input' },
+                        { key: 'meta', placeholder: 'École - Année', type: 'input' },
+                        { key: 'desc', placeholder: 'Description (optionnel)', type: 'textarea' }
+                    ];
+                    const data = { title: diplome, meta: meta, desc: description };
+                    createDynamicItem(container, fields, data);
+                }
+            }
+
+            async changeLayout(layoutType) {
+                const container = document.querySelector('.cv-body-container');
+                if (container) {
+                    // Supprimer toutes les classes de layout existantes
+                    container.classList.remove('layout-1-col', 'layout-2-col-33-67', 'layout-2-col-50-50', 'layout-2-col-67-33');
+                    
+                    // Ajouter la nouvelle classe de layout
+                    const layoutMap = {
+                        '1-col': 'layout-1-col',
+                        '2-col-33-67': 'layout-2-col-33-67',
+                        '2-col-50-50': 'layout-2-col-50-50',
+                        '2-col-67-33': 'layout-2-col-67-33'
+                    };
+                    
+                    const layoutClass = layoutMap[layoutType] || 'layout-2-col-50-50';
+                    container.classList.add(layoutClass);
+                    
+                    // Mettre à jour les boutons de layout
+                    document.querySelectorAll('.layout-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.layout === layoutType) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+            }
+
+            async changeColors(primary, secondary, text) {
+                const root = document.documentElement;
+                
+                // Convertir les noms de couleurs en codes hex si nécessaire
+                const colorMap = {
+                    'bleu': '#2563eb', 'rouge': '#dc2626', 'vert': '#16a34a', 'violet': '#7c3aed',
+                    'orange': '#ea580c', 'rose': '#e91e63', 'cyan': '#0891b2', 'jaune': '#ca8a04',
+                    'gris': '#64748b', 'noir': '#1f2937', 'blanc': '#ffffff'
+                };
+                
+                const convertColor = (color) => {
+                    const cleanColor = color.toLowerCase().trim();
+                    return colorMap[cleanColor] || (cleanColor.startsWith('#') ? cleanColor : `#${cleanColor}`);
+                };
+
+                root.style.setProperty('--primary-color', convertColor(primary));
+                root.style.setProperty('--secondary-color', convertColor(secondary));
+                root.style.setProperty('--body-text-color', convertColor(text));
+
+                // Mettre à jour les sélecteurs de couleur
+                const primaryPicker = document.getElementById('primary-color');
+                const secondaryPicker = document.getElementById('secondary-color');
+                const textPicker = document.getElementById('body-text-color');
+                
+                if (primaryPicker) primaryPicker.value = convertColor(primary);
+                if (secondaryPicker) secondaryPicker.value = convertColor(secondary);
+                if (textPicker) textPicker.value = convertColor(text);
+            }
+
+            async changeFonts(h1Font, h2Font, bodyFont) {
+                const root = document.documentElement;
+                
+                // Mapper les noms de polices aux valeurs CSS
+                const fontMap = {
+                    'montserrat': "'Montserrat', sans-serif",
+                    'lato': "'Lato', sans-serif",
+                    'roboto': "'Roboto', sans-serif",
+                    'open sans': "'Open Sans', sans-serif",
+                    'playfair': "'Playfair Display', serif",
+                    'merriweather': "'Merriweather', serif",
+                    'oswald': "'Oswald', sans-serif"
+                };
+
+                const convertFont = (font) => {
+                    const cleanFont = font.toLowerCase().trim();
+                    return fontMap[cleanFont] || font;
+                };
+
+                root.style.setProperty('--font-family-h1', convertFont(h1Font));
+                root.style.setProperty('--font-family-h2', convertFont(h2Font));
+                root.style.setProperty('--font-family-body', convertFont(bodyFont));
+
+                // Mettre à jour les sélecteurs de polices
+                const h1Select = document.getElementById('font-family-h1');
+                const h2Select = document.getElementById('font-family-h2');
+                const bodySelect = document.getElementById('font-family-body');
+                
+                if (h1Select) h1Select.value = convertFont(h1Font);
+                if (h2Select) h2Select.value = convertFont(h2Font);
+                if (bodySelect) bodySelect.value = convertFont(bodyFont);
+            }
+
+            async applyIntelligentModifications(userRequest, aiResponse) {
                 const lowerRequest = userRequest.toLowerCase();
-
-                if (lowerRequest.includes('profil') || lowerRequest.includes('description')) {
-                    const profileMatch = aiResponse.match(/profil amélioré:?\s*["""]([^"""]+)["""]/i);
-                    if (profileMatch) {
-                        const descriptionField = document.getElementById('description');
-                        if (descriptionField) {
-                            descriptionField.value = profileMatch[1].trim();
-                            updatePreview('form');
-                            showNotification("Profil mis à jour automatiquement !", "success");
-                        }
+                
+                // Détection et amélioration automatique du profil
+                if (lowerRequest.includes('profil') || lowerRequest.includes('description') || lowerRequest.includes('résumé')) {
+                    const improvedProfile = this.extractImprovedContent(aiResponse, ['profil amélioré', 'description améliorée', 'nouveau profil']);
+                    if (improvedProfile) {
+                        await this.modifyField('description', improvedProfile);
                     }
                 }
 
-                if (lowerRequest.includes('compétence') || lowerRequest.includes('skills')) {
-                    const skillsMatch = aiResponse.match(/compétences améliorées:?\s*["""]([^"""]+)["""]/i);
-                    if (skillsMatch) {
-                        const competencesField = document.getElementById('competences');
-                        if (competencesField) {
-                            competencesField.value = skillsMatch[1].trim();
-                            updatePreview('form');
-                            showNotification("Compétences mises à jour automatiquement !", "success");
-                        }
+                // Détection et amélioration automatique des compétences
+                if (lowerRequest.includes('compétence') || lowerRequest.includes('skill')) {
+                    const improvedSkills = this.extractImprovedContent(aiResponse, ['compétences améliorées', 'skills améliorés', 'nouvelles compétences']);
+                    if (improvedSkills) {
+                        await this.modifyField('competences', improvedSkills);
                     }
                 }
+
+                // Optimisation automatique pour un secteur
+                if (lowerRequest.includes('secteur') || lowerRequest.includes('industrie') || lowerRequest.includes('métier')) {
+                    await this.optimizeForSector(userRequest, aiResponse);
+                }
+
+                // Amélioration automatique du design si demandé
+                if (lowerRequest.includes('design') || lowerRequest.includes('apparence') || lowerRequest.includes('visuel')) {
+                    await this.applyDesignImprovements(aiResponse);
+                }
+
+                // Correction automatique des erreurs détectées
+                if (lowerRequest.includes('corriger') || lowerRequest.includes('améliorer') || lowerRequest.includes('optimiser')) {
+                    await this.autoCorrectIssues();
+                }
+            }
+
+            extractImprovedContent(aiResponse, keywords) {
+                for (const keyword of keywords) {
+                    const regex = new RegExp(`${keyword}:?\\s*["""]([^"""]+)["""]`, 'i');
+                    const match = aiResponse.match(regex);
+                    if (match) return match[1].trim();
+                    
+                    const regex2 = new RegExp(`${keyword}:?\\s*([^\\n]{20,200})`, 'i');
+                    const match2 = aiResponse.match(regex2);
+                    if (match2) return match2[1].trim();
+                }
+                return null;
+            }
+
+            async optimizeForSector(userRequest, aiResponse) {
+                // Extraire le secteur mentionné
+                const sectorKeywords = {
+                    'tech': ['technologie', 'informatique', 'développement', 'programmation'],
+                    'commercial': ['vente', 'commercial', 'business', 'marketing'],
+                    'finance': ['finance', 'banque', 'comptabilité', 'audit'],
+                    'santé': ['santé', 'médical', 'soins', 'hôpital'],
+                    'education': ['éducation', 'enseignement', 'formation', 'pédagogie']
+                };
+
+                let detectedSector = null;
+                for (const [sector, keywords] of Object.entries(sectorKeywords)) {
+                    if (keywords.some(keyword => userRequest.toLowerCase().includes(keyword))) {
+                        detectedSector = sector;
+                        break;
+                    }
+                }
+
+                if (detectedSector) {
+                    await this.applySectorOptimization(detectedSector);
+                }
+            }
+
+            async applySectorOptimization(sector) {
+                const optimizations = {
+                    'tech': {
+                        colors: ['#2563eb', '#1e40af', '#1f2937'],
+                        fonts: ['Roboto Mono', 'Lato', 'Open Sans'],
+                        layout: '2-col-67-33'
+                    },
+                    'commercial': {
+                        colors: ['#dc2626', '#991b1b', '#374151'],
+                        fonts: ['Montserrat', 'Montserrat', 'Lato'],
+                        layout: '2-col-50-50'
+                    },
+                    'finance': {
+                        colors: ['#1e40af', '#1e3a8a', '#1f2937'],
+                        fonts: ['Merriweather', 'Lato', 'Open Sans'],
+                        layout: '2-col-33-67'
+                    }
+                };
+
+                const config = optimizations[sector];
+                if (config) {
+                    await this.changeColors(config.colors[0], config.colors[1], config.colors[2]);
+                    await this.changeFonts(config.fonts[0], config.fonts[1], config.fonts[2]);
+                    await this.changeLayout(config.layout);
+                }
+            }
+
+            async applyDesignImprovements(aiResponse) {
+                // Détecter les suggestions de design dans la réponse
+                if (aiResponse.toLowerCase().includes('moderne')) {
+                    await this.changeColors('#667eea', '#764ba2', '#2d3748');
+                }
+                if (aiResponse.toLowerCase().includes('professionnel')) {
+                    await this.changeColors('#2563eb', '#1e40af', '#1f2937');
+                }
+                if (aiResponse.toLowerCase().includes('créatif')) {
+                    await this.changeColors('#e91e63', '#9c27b0', '#424242');
+                }
+            }
+
+            async autoCorrectIssues() {
+                // Correction automatique des problèmes courants
+                const analysis = this.performDeepAnalysis();
+                
+                // Vérifier si le profil est trop court
+                const profile = document.getElementById('description')?.value;
+                if (!profile || profile.length < 50) {
+                    // Générer un profil automatique basé sur les données existantes
+                    await this.generateAutoProfile();
+                }
+
+                // Optimiser la mise en page selon le contenu
+                const contentDensity = this.analyzeContentDensity();
+                if (contentDensity.leftHeavy) {
+                    await this.changeLayout('2-col-50-50');
+                } else if (contentDensity.rightHeavy) {
+                    await this.changeLayout('2-col-67-33');
+                }
+            }
+
+            async generateAutoProfile() {
+                const nom = document.getElementById('nom')?.value || '';
+                const prenom = document.getElementById('prenom')?.value || '';
+                const poste = document.getElementById('poste')?.value || '';
+                const experiences = this.extractDynamicData('experience');
+                
+                if (poste && experiences.length > 0) {
+                    const autoProfile = `Professionnel ${poste.toLowerCase()} avec ${experiences.length > 2 ? 'plusieurs années' : 'une expérience'} d'expérience. Passionné par l'excellence et l'innovation, je mets mes compétences au service de projets ambitieux pour contribuer au succès de l'entreprise.`;
+                    
+                    await this.modifyField('description', autoProfile);
+                    this.addMessage(`✨ J'ai généré automatiquement un profil professionnel basé sur vos informations.`, false);
+                }
+            }
+
+            initializeVoiceRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+                    this.recognition.continuous = false;
+                    this.recognition.interimResults = false;
+                    this.recognition.lang = 'fr-FR';
+
+                    this.recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        this.input.value = transcript;
+                        this.sendMessage();
+                        this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                        this.voiceBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    };
+
+                    this.recognition.onerror = () => {
+                        this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                        this.voiceBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        this.addMessage('❌ Erreur de reconnaissance vocale. Veuillez réessayer.', false);
+                    };
+                } else {
+                    this.voiceBtn.style.display = 'none';
+                }
+            }
+
+            toggleVoiceRecognition() {
+                if (this.recognition) {
+                    if (this.voiceBtn.innerHTML.includes('fa-stop')) {
+                        this.recognition.stop();
+                        this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                        this.voiceBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    } else {
+                        this.recognition.start();
+                        this.voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                        this.voiceBtn.style.background = '#ef4444';
+                        this.addMessage('🎤 Parlez maintenant...', false);
+                    }
+                }
+            }
+
+            async generateSmartSuggestions() {
+                const analysis = this.performDeepAnalysis();
+                const cvData = this.extractCVData();
+                
+                this.addMessage('🔍 Analyse de votre CV en cours...', false, true);
+                
+                const prompt = `Analyse ce CV et génère 3-5 suggestions d'amélioration très spécifiques et actionnables :
+
+${cvData}
+
+Analyse technique :
+${analysis}
+
+Fournis des suggestions courtes et précises que l'utilisateur peut demander directement. Format : "suggestion1|suggestion2|suggestion3"`;
+
+                try {
+                    const suggestions = await callGeminiAPI(prompt);
+                    if (suggestions) {
+                        const suggestionList = suggestions.split('|').filter(s => s.trim());
+                        
+                        let suggestionsHTML = '💡 <strong>Suggestions intelligentes basées sur votre CV :</strong><br><br>';
+                        suggestionList.forEach((suggestion, index) => {
+                            suggestionsHTML += `<span class="suggestion-chip" data-suggestion="${suggestion.trim()}">${index + 1}. ${suggestion.trim()}</span><br>`;
+                        });
+                        
+                        this.addMessage(suggestionsHTML, false);
+                    }
+                } catch (error) {
+                    this.addMessage('❌ Erreur lors de la génération des suggestions.', false);
+                }
+            }
+
+            async performQuickFix() {
+                this.addMessage('⚡ Correction rapide en cours...', false, true);
+                
+                const issues = this.detectQuickFixIssues();
+                let fixesApplied = [];
+
+                // Appliquer les corrections automatiquement
+                for (const issue of issues) {
+                    switch (issue.type) {
+                        case 'missing_profile':
+                            await this.generateAutoProfile();
+                            fixesApplied.push('Profil professionnel généré');
+                            break;
+                        case 'short_profile':
+                            const currentProfile = document.getElementById('description')?.value || '';
+                            const enhancedProfile = await this.enhanceProfile(currentProfile);
+                            if (enhancedProfile) {
+                                await this.modifyField('description', enhancedProfile);
+                                fixesApplied.push('Profil enrichi');
+                            }
+                            break;
+                        case 'missing_contact':
+                            this.addMessage('⚠️ Informations de contact manquantes. Veuillez les ajouter manuellement.', false);
+                            break;
+                        case 'layout_optimization':
+                            const optimalLayout = this.calculateOptimalLayout();
+                            await this.changeLayout(optimalLayout);
+                            fixesApplied.push(`Mise en page optimisée (${optimalLayout})`);
+                            break;
+                        case 'color_improvement':
+                            await this.applyOptimalColors();
+                            fixesApplied.push('Couleurs optimisées');
+                            break;
+                    }
+                }
+
+                if (fixesApplied.length > 0) {
+                    this.addMessage(`✅ Corrections appliquées : ${fixesApplied.join(', ')}`, false);
+                    showNotification(`🤖 IA: ${fixesApplied.length} améliorations appliquées`, "success", 3000);
+                } else {
+                    this.addMessage('✅ Votre CV est déjà bien optimisé ! Pas de corrections majeures nécessaires.', false);
+                }
+            }
+
+            detectQuickFixIssues() {
+                const issues = [];
+                
+                // Vérifier le profil
+                const profile = document.getElementById('description')?.value;
+                if (!profile || profile.trim().length === 0) {
+                    issues.push({ type: 'missing_profile', priority: 'high' });
+                } else if (profile.length < 80) {
+                    issues.push({ type: 'short_profile', priority: 'medium' });
+                }
+
+                // Vérifier les informations de contact
+                const email = document.getElementById('email')?.value;
+                const phone = document.getElementById('telephone')?.value;
+                if (!email || !phone) {
+                    issues.push({ type: 'missing_contact', priority: 'high' });
+                }
+
+                // Vérifier la mise en page
+                const contentDensity = this.analyzeContentDensity();
+                if (!contentDensity.balanced) {
+                    issues.push({ type: 'layout_optimization', priority: 'medium' });
+                }
+
+                // Vérifier les couleurs
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+                const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+                if (primaryColor === secondaryColor) {
+                    issues.push({ type: 'color_improvement', priority: 'low' });
+                }
+
+                return issues;
+            }
+
+            async enhanceProfile(currentProfile) {
+                const prompt = `Améliore ce profil professionnel pour le rendre plus percutant et professionnel (80-120 mots) :
+
+"${currentProfile}"
+
+Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
+
+                try {
+                    return await callGeminiAPI(prompt);
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            calculateOptimalLayout() {
+                const experiences = this.extractDynamicData('experience');
+                const formations = this.extractDynamicData('formation');
+                const competences = document.getElementById('competences')?.value || '';
+                
+                // Si beaucoup de contenu, utiliser 2 colonnes équilibrées
+                if (experiences.length > 3 || formations.length > 2 || competences.length > 200) {
+                    return '2-col-50-50';
+                }
+                // Si peu de contenu, utiliser une colonne
+                else if (experiences.length <= 1 && formations.length <= 1) {
+                    return '1-col';
+                }
+                // Sinon, utiliser un layout asymétrique
+                else {
+                    return '2-col-67-33';
+                }
+            }
+
+            async applyOptimalColors() {
+                // Couleurs professionnelles optimisées
+                const colorSchemes = [
+                    { primary: '#2563eb', secondary: '#1e40af', text: '#1f2937' }, // Bleu professionnel
+                    { primary: '#059669', secondary: '#047857', text: '#1f2937' }, // Vert moderne
+                    { primary: '#7c3aed', secondary: '#6d28d9', text: '#1f2937' }, // Violet créatif
+                    { primary: '#dc2626', secondary: '#b91c1c', text: '#1f2937' }  // Rouge dynamique
+                ];
+                
+                // Choisir un schéma basé sur le contenu
+                const randomScheme = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
+                await this.changeColors(randomScheme.primary, randomScheme.secondary, randomScheme.text);
             }
 
             saveChatPosition() {
@@ -4831,21 +5543,47 @@ ${data.formations.map(form => `- ${form.title} (${form.meta}): ${form.desc}`).jo
         
         <div id="ai-chat-messages">
             <div class="chat-message ai">
-                👋 Bonjour ! Je suis votre assistant IA spécialisé dans l'amélioration de CV.
+                🤖 <strong>Assistant IA Ultra-Intelligent</strong>
                 <br><br>
-                Je peux vous aider à :
+                Je peux <strong>modifier directement</strong> votre CV en temps réel ! Voici mes super-pouvoirs :
+                
                 <div class="chat-suggestions">
-                    <span class="suggestion-chip" data-suggestion="Améliorer mon profil professionnel">Améliorer le profil</span>
-                    <span class="suggestion-chip" data-suggestion="Optimiser mes expériences">Optimiser expériences</span>
-                    <span class="suggestion-chip" data-suggestion="Réorganiser mes compétences">Réorganiser compétences</span>
-                    <span class="suggestion-chip" data-suggestion="Améliorer la mise en page">Améliorer mise en page</span>
-                    <span class="suggestion-chip" data-suggestion="Analyser mon CV complet">Analyser le CV</span>
+                    <span class="suggestion-chip" data-suggestion="Analyse complète de mon CV et applique toutes les améliorations nécessaires">🔍 Analyse complète</span>
+                    <span class="suggestion-chip" data-suggestion="Optimise mon CV pour un poste de développeur web">💻 Optimiser pour un métier</span>
+                    <span class="suggestion-chip" data-suggestion="Améliore automatiquement le design et les couleurs">🎨 Améliorer le design</span>
+                    <span class="suggestion-chip" data-suggestion="Réécris mon profil professionnel pour le rendre plus percutant">✍️ Réécrire le profil</span>
+                    <span class="suggestion-chip" data-suggestion="Ajoute des compétences manquantes selon mon secteur">⭐ Ajouter compétences</span>
+                    <span class="suggestion-chip" data-suggestion="Change la mise en page pour une meilleure lisibilité">📋 Optimiser layout</span>
+                    <span class="suggestion-chip" data-suggestion="Corrige toutes les erreurs et incohérences">🔧 Correction auto</span>
+                    <span class="suggestion-chip" data-suggestion="Adapte le ton pour un secteur créatif">🎭 Changer le ton</span>
                 </div>
+                
+                <br>
+                <strong>💡 Exemples de commandes :</strong><br>
+                • "Change les couleurs en bleu et gris moderne"<br>
+                • "Ajoute une expérience de stage en développement"<br>
+                • "Optimise pour un poste de chef de projet"<br>
+                • "Réorganise les sections pour plus d'impact"<br>
+                • "Change les polices pour un style plus professionnel"<br>
+                
+                <br>
+                <em>Demandez-moi n'importe quoi, je modifierai directement votre CV ! 🚀</em>
             </div>
         </div>
         
         <div id="ai-chat-input-container">
-            <textarea id="ai-chat-input" placeholder="Dites-moi comment améliorer votre CV..." rows="1"></textarea>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <button id="ai-voice-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px;">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button id="ai-smart-suggest-btn" style="background: #10b981; border: none; color: white; padding: 4px 8px; border-radius: 12px; cursor: pointer; font-size: 12px;">
+                    💡 Suggestions intelligentes
+                </button>
+                <button id="ai-quick-fix-btn" style="background: #f59e0b; border: none; color: white; padding: 4px 8px; border-radius: 12px; cursor: pointer; font-size: 12px;">
+                    ⚡ Correction rapide
+                </button>
+            </div>
+            <textarea id="ai-chat-input" placeholder="Ex: 'Change les couleurs en bleu moderne' ou 'Optimise pour un poste de marketing'..." rows="1"></textarea>
             <button id="ai-chat-send-btn">
                 <i class="fas fa-paper-plane"></i>
             </button>
