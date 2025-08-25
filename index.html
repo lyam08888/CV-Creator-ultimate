@@ -69,6 +69,119 @@
         .section-title.style-background { background-color: var(--primary-color); color: white; padding: 0.3rem 0.6rem; margin-bottom: 1rem; border-radius: 0.25rem; }
         .section-title.style-background .section-icon { color: white !important; }
         .section-title.style-boxed { border: 2px solid var(--primary-color); padding: 0.3rem 0.6rem; }
+        .section-title.style-gradient { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: white; padding: 0.3rem 0.6rem; margin-bottom: 1rem; border-radius: 0.25rem; }
+        .section-title.style-gradient .section-icon { color: white !important; }
+        .section-title.style-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+
+        /* New theme styles */
+        .theme-elegant { --primary-color: #8b5a3c; --secondary-color: #d4af37; --body-text-color: #2c2c2c; }
+        .theme-tech { --primary-color: #00d4aa; --secondary-color: #1a1a1a; --body-text-color: #333; }
+        .theme-luxury { --primary-color: #b8860b; --secondary-color: #4b0082; --body-text-color: #2c2c2c; }
+        .theme-startup { --primary-color: #ff6b35; --secondary-color: #f7931e; --body-text-color: #333; }
+        .theme-academic { --primary-color: #2c3e50; --secondary-color: #34495e; --body-text-color: #2c3e50; }
+        .theme-artistic { --primary-color: #e91e63; --secondary-color: #9c27b0; --body-text-color: #424242; }
+
+        /* Glassmorphism effect */
+        .glassmorphism { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); }
+        .glassmorphism-dark { background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.18); color: white; }
+
+        /* Animation effects */
+        @keyframes subtle-bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-2px); } 60% { transform: translateY(-1px); } }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .cv-module.animate { animation: fade-in 0.3s ease-out; }
+        .section-title.animate:hover { animation: subtle-bounce 0.6s; }
+
+        /* Enhanced color palettes */
+        .color-palette-btn { transition: all 0.2s ease; cursor: pointer; }
+        .color-palette-btn:hover { transform: scale(1.05); }
+
+        /* Smart analysis results */
+        .analysis-result { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; }
+        .score-indicator { display: inline-flex; align-items: center; gap: 0.5rem; }
+        .score-bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.3); overflow: hidden; }
+        .score-fill { height: 100%; background: #4ade80; transition: width 0.3s ease; }
+
+        /* CV Variants Modal */
+        .variant-preview { border: 2px solid transparent; border-radius: 0.5rem; padding: 0.5rem; cursor: pointer; transition: all 0.2s; }
+        .variant-preview:hover { border-color: var(--primary-color); background: #f8fafc; }
+        .variant-preview.selected { border-color: var(--primary-color); background: #eff6ff; }
+
+        /* Language selector for translation */
+        .language-flag { width: 20px; height: 15px; margin-right: 0.5rem; }
+
+        /* Motto/Slogan display */
+        .motto-display { font-style: italic; text-align: center; border-left: 4px solid var(--primary-color); padding-left: 1rem; margin: 1rem 0; }
+
+        /* Industry keywords highlight */
+        .keyword-highlight { background: rgba(59, 130, 246, 0.1); padding: 2px 4px; border-radius: 3px; font-weight: 500; }
+
+        /* CV scoring display */
+        .cv-score-container { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1.5rem; border-radius: 0.75rem; text-align: center; }
+        .score-circle { width: 80px; height: 80px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; position: relative; }
+        .score-text { font-size: 1.5rem; font-weight: bold; }
+
+        /* New layout options */
+        .layout-3-col { grid-template-columns: 1fr 1fr 1fr; }
+        .layout-asymmetric-1 { grid-template-columns: 1fr 2fr 1fr; }
+        .layout-asymmetric-2 { grid-template-columns: 2fr 1fr 1fr; }
+
+        /* Enhanced section customization */
+        .section-icon.animated { transition: transform 0.3s ease; }
+        .section-icon.animated:hover { transform: rotate(360deg) scale(1.2); }
+
+        /* Zebra sections effect */
+        body.zebra-sections .cv-module:nth-child(even) { background: rgba(0, 0, 0, 0.02); border-radius: 8px; padding: 1rem; margin: 0.5rem 0; }
+
+        /* Floating elements effect */
+        .floating-element { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-5px); } }
+
+        /* Skill styles enhancements */
+        .cv-competences-circular .skill-item { border-radius: 50%; width: 60px; height: 60px; display: inline-flex; align-items: center; justify-content: center; margin: 0.25rem; }
+        .cv-competences-categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .cv-competences-timeline .skill-item { position: relative; padding-left: 2rem; }
+        .cv-competences-timeline .skill-item::before { content: ''; position: absolute; left: 0; top: 50%; width: 12px; height: 12px; background: var(--primary-color); border-radius: 50%; transform: translateY(-50%); }
+
+        /* Enhanced gauge styles */
+        .gauge-percentage { display: flex; align-items: center; gap: 8px; }
+        .gauge-percentage .skill-level-label { min-width: 120px; }
+        .gauge-percentage .gauge-container { flex-grow: 1; position: relative; }
+        .gauge-percentage-fill { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); height: 8px; border-radius: 4px; transition: width 0.3s ease; }
+        .gauge-percentage-text { min-width: 40px; text-align: right; font-weight: bold; color: var(--primary-color); }
+
+        /* Font suggestion styles */
+        .font-suggestions { animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .font-suggestion-btn { transition: all 0.2s ease; }
+        .font-suggestion-btn:hover { transform: translateX(5px); }
+
+        /* Enhanced modal animations */
+        .modal-overlay { backdrop-filter: blur(5px); }
+        .modal-overlay.active .modal-content { animation: modalSlideIn 0.3s ease; }
+        @keyframes modalSlideIn { from { opacity: 0; transform: scale(0.9) translateY(-20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* Completion progress enhancements */
+        #progress-bar { position: relative; overflow: hidden; }
+        #progress-bar::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: shimmer 2s infinite; }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+        /* Template button hover effects */
+        .skill-template-btn, .section-template-btn { transition: all 0.2s ease; position: relative; overflow: hidden; }
+        .skill-template-btn:hover, .section-template-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .skill-template-btn::before, .section-template-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s; }
+        .skill-template-btn:hover::before, .section-template-btn:hover::before { left: 100%; }
+
+        /* AI analysis result enhancements */
+        .analysis-result { position: relative; overflow: hidden; }
+        .analysis-result::before { content: '🤖'; position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; opacity: 0.3; }
+
+        /* Responsive enhancements for small screens */
+        @media (max-width: 768px) {
+            .theme-btn, .skill-style-btn, .layout-btn { font-size: 0.75rem; padding: 0.5rem; }
+            .modal-content { margin: 1rem; max-height: 90vh; overflow-y: auto; }
+            .grid.grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+            .grid.grid-cols-6 { grid-template-columns: repeat(3, 1fr); }
+        }
 
         .section-title .section-icon { cursor: pointer; transition: transform 0.2s; }
         .section-title .section-icon:hover { transform: scale(1.1); }
@@ -457,10 +570,25 @@
                         </div>
                     </details>
                     <details class="control-group" open>
-                        <summary><span>Analyse IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <summary><span>Analyse IA Avancée</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
-                            <button id="analyze-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyser & Remplir</button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="analyze-btn" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyser & Remplir</button>
+                                <button id="smart-analyze-btn" class="bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2"><i class="fa-solid fa-brain"></i> Analyse Smart</button>
+                            </div>
+                            <button id="industry-match-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2"><i class="fa-solid fa-industry"></i> Adapter au Secteur</button>
+                        </div>
+                    </details>
+                    <details class="control-group" open>
+                        <summary><span>Optimisations IA <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-optimizations" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-2">
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="ai-score-cv-btn" class="bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2"><i class="fa-solid fa-chart-line"></i> Score ATS</button>
+                                <button id="ai-keyword-optimize-btn" class="bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 flex items-center justify-center gap-2"><i class="fa-solid fa-key"></i> Mots-clés</button>
+                            </div>
+                            <button id="ai-create-variants-btn" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2"><i class="fa-solid fa-copy"></i> Créer 3 Variantes</button>
+                            <button id="ai-personalize-job-btn" class="w-full bg-rose-600 text-white py-2 px-4 rounded-md hover:bg-rose-700 flex items-center justify-center gap-2"><i class="fa-solid fa-bullseye"></i> Personnaliser pour Poste</button>
                         </div>
                     </details>
                     <details class="control-group" open>
@@ -469,8 +597,19 @@
                             <input type="text" id="qualification-dispo" placeholder="Disponibilité" class="cv-input w-full p-2 border rounded-md">
                             <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
                             <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
-                            <button id="generate-mail-btn" class="mt-2 w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fas fa-wand-magic-sparkles"></i> Générer le mail</button>
-                            <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le mail de présentation apparaîtra ici..."></textarea>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="generate-mail-btn" class="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fas fa-wand-magic-sparkles"></i> Mail Présentation</button>
+                                <button id="generate-linkedin-msg-btn" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-800 flex items-center justify-center gap-2"><i class="fab fa-linkedin"></i> Message LinkedIn</button>
+                            </div>
+                            <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le message généré apparaîtra ici..."></textarea>
+                        </div>
+                    </details>
+                    <details class="control-group" open>
+                        <summary><span>IA Créative <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-creative" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-2">
+                            <button id="ai-generate-motto-btn" class="w-full bg-violet-600 text-white py-2 px-4 rounded-md hover:bg-violet-700 flex items-center justify-center gap-2"><i class="fa-solid fa-quote-left"></i> Générer Devise/Slogan</button>
+                            <button id="ai-suggest-improvements-btn" class="w-full bg-amber-600 text-white py-2 px-4 rounded-md hover:bg-amber-700 flex items-center justify-center gap-2"><i class="fa-solid fa-lightbulb"></i> Suggestions d'Amélioration</button>
+                            <button id="ai-translate-cv-btn" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700 flex items-center justify-center gap-2"><i class="fa-solid fa-language"></i> Traduire CV</button>
                         </div>
                     </details>
                 </div>
@@ -508,28 +647,51 @@
                         <summary><span>Compétences</span><label class="completion-label"><input type="checkbox" id="completion-skills" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <p class="text-sm font-medium">Style de Présentation</p>
-                            <div class="flex gap-2">
-                                <button data-skill-style="tags" class="skill-style-btn flex-1 bg-gray-200 p-2 rounded-md text-sm active">Tags</button>
-                                <button data-skill-style="levels" class="skill-style-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">Niveaux</button>
-                                <button data-skill-style="simple" class="skill-style-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">Simple</button>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button data-skill-style="tags" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm active">Tags</button>
+                                <button data-skill-style="levels" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm">Niveaux</button>
+                                <button data-skill-style="simple" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm">Simple</button>
+                                <button data-skill-style="circular" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm">Circulaire</button>
+                                <button data-skill-style="categories" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm">Catégories</button>
+                                <button data-skill-style="timeline" class="skill-style-btn bg-gray-200 p-2 rounded-md text-sm">Timeline</button>
                             </div>
                             
                             <div id="skills-text-controls">
-                                <div class="flex justify-between items-center"><label for="competences" class="font-medium">Liste des compétences</label><div class="flex gap-2"><button id="ai-limit-skills-btn" class="text-blue-600 hover:text-blue-800" title="Limiter à 10 compétences par l'IA"><i class="fas fa-filter"></i> 10</button><button id="ai-synthesize-skills-btn" class="text-blue-600 hover:text-blue-800" title="Synthétiser et ranger les compétences par l'IA"><i class="fas fa-brain"></i></button></div></div>
+                                <div class="flex justify-between items-center"><label for="competences" class="font-medium">Liste des compétences</label><div class="flex gap-2"><button id="ai-limit-skills-btn" class="text-blue-600 hover:text-blue-800" title="Limiter à 10 compétences par l'IA"><i class="fas fa-filter"></i> 10</button><button id="ai-synthesize-skills-btn" class="text-blue-600 hover:text-blue-800" title="Synthétiser et ranger les compétences par l'IA"><i class="fas fa-brain"></i></button><button id="ai-skills-from-job-btn" class="text-purple-600 hover:text-purple-800" title="Générer compétences depuis offre d'emploi"><i class="fas fa-magic-wand-sparkles"></i> Job</button></div></div>
                                 <textarea id="competences" placeholder="Compétences (séparées par des virgules)..." rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
                             </div>
 
                             <div id="skills-level-controls" class="hidden space-y-3">
                                 <p class="text-sm font-medium">Style de Jauge</p>
-                                <div class="grid grid-cols-5 gap-2 text-center">
+                                <div class="grid grid-cols-6 gap-2 text-center">
                                     <button data-gauge-style="bar" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm active" title="Barre"><i class="fas fa-bars"></i></button>
                                     <button data-gauge-style="dots" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Points"><i class="fas fa-circle"></i></button>
                                     <button data-gauge-style="stars" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Étoiles"><i class="fas fa-star"></i></button>
                                     <button data-gauge-style="squares" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Carrés"><i class="fas fa-square"></i></button>
                                     <button data-gauge-style="number" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm font-bold" title="Chiffres">⅗</button>
+                                    <button data-gauge-style="percentage" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Pourcentage">%</button>
                                 </div>
                                 <div id="skills-level-list" class="space-y-2 border-t pt-3"></div>
                                 <button id="add-skill-level-btn" class="w-full bg-blue-100 text-blue-800 py-2 px-4 rounded-md hover:bg-blue-200 flex items-center justify-center gap-2 text-sm"><i class="fas fa-plus-circle"></i> Ajouter une compétence</button>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="control-group" open>
+                        <summary><span>Compétences Avancées <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-skills-advanced" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-3">
+                            <button id="skill-matcher-btn" class="w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2"><i class="fa-solid fa-search"></i> Analyse Compétences vs Poste</button>
+                            <button id="suggest-missing-skills-btn" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2"><i class="fa-solid fa-plus-circle"></i> Compétences Manquantes</button>
+                            <button id="skill-trend-analysis-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2"><i class="fa-solid fa-trending-up"></i> Tendances du Marché</button>
+                            <div class="border-t pt-3">
+                                <label class="text-sm font-medium mb-2 block">Templates de Compétences</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button data-skill-template="tech" class="skill-template-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200">Tech</button>
+                                    <button data-skill-template="marketing" class="skill-template-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200">Marketing</button>
+                                    <button data-skill-template="finance" class="skill-template-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200">Finance</button>
+                                    <button data-skill-template="design" class="skill-template-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200">Design</button>
+                                    <button data-skill-template="management" class="skill-template-btn bg-red-100 text-red-800 p-2 rounded-md text-sm hover:bg-red-200">Management</button>
+                                    <button data-skill-template="sales" class="skill-template-btn bg-indigo-100 text-indigo-800 p-2 rounded-md text-sm hover:bg-indigo-200">Ventes</button>
+                                </div>
                             </div>
                         </div>
                     </details>
@@ -549,6 +711,13 @@
                                     <option value="Certifications 📜">Certifications 📜</option>
                                     <option value="Projets Personnels 💡">Projets Personnels 💡</option>
                                     <option value="Bénévolat ❤️">Bénévolat ❤️</option>
+                                    <option value="Publications 📚">Publications 📚</option>
+                                    <option value="Récompenses 🏆">Récompenses 🏆</option>
+                                    <option value="Références 👥">Références 👥</option>
+                                    <option value="Portfolio 🎨">Portfolio 🎨</option>
+                                    <option value="Réseaux Sociaux 📱">Réseaux Sociaux 📱</option>
+                                    <option value="Objectifs de Carrière 🎯">Objectifs de Carrière 🎯</option>
+                                    <option value="Soft Skills 💭">Soft Skills 💭</option>
                                 </select>
                                 <div class="flex gap-2">
                                     <input type="text" id="new-section-title-input" class="flex-grow p-2 border rounded-md text-sm" placeholder="Ou tapez un titre personnalisé...">
@@ -558,6 +727,28 @@
                             <div id="custom-sections-list" class="space-y-2 mt-2 border-t pt-2"></div>
                         </div>
                     </details>
+                    <details class="control-group" open>
+                        <summary><span>Templates de Sections <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-custom-templates" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-3">
+                            <button id="ai-suggest-sections-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2"><i class="fa-solid fa-magic-wand-sparkles"></i> IA : Sections Suggérées</button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button data-section-template="startup" class="section-template-btn bg-orange-100 text-orange-800 p-2 rounded-md text-sm hover:bg-orange-200">Startup</button>
+                                <button data-section-template="academic" class="section-template-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200">Académique</button>
+                                <button data-section-template="creative" class="section-template-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200">Créatif</button>
+                                <button data-section-template="executive" class="section-template-btn bg-gray-100 text-gray-800 p-2 rounded-md text-sm hover:bg-gray-200">Cadre</button>
+                                <button data-section-template="international" class="section-template-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200">International</button>
+                                <button data-section-template="freelance" class="section-template-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200">Freelance</button>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="control-group" open>
+                        <summary><span>Import/Export Sections <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-custom-import" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-3">
+                            <button id="export-sections-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> Exporter Sections</button>
+                            <button id="import-sections-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fa-solid fa-upload"></i> Importer Sections</button>
+                            <input type="file" id="import-sections-file" accept=".json" class="hidden">
+                        </div>
+                    </details>
                 </div>
 
                 <!-- TAB: Mise en Page -->
@@ -565,7 +756,15 @@
                     <details class="control-group" open>
                         <summary><span>Mise en Colonnes</span><label class="completion-label"><input type="checkbox" id="completion-layout-cols" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
-                            <div class="flex gap-2"><button data-layout="layout-1-col" class="layout-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">1</button><button data-layout="layout-2-col-33-67" class="layout-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">33/67</button><button data-layout="layout-2-col-50-50" class="layout-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">50/50</button><button data-layout="layout-2-col-67-33" class="layout-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">67/33</button></div>
+                            <div class="grid grid-cols-3 gap-2 mb-3">
+                                <button data-layout="layout-1-col" class="layout-btn bg-gray-200 p-2 rounded-md text-sm">1</button>
+                                <button data-layout="layout-2-col-33-67" class="layout-btn bg-gray-200 p-2 rounded-md text-sm">33/67</button>
+                                <button data-layout="layout-2-col-50-50" class="layout-btn bg-gray-200 p-2 rounded-md text-sm">50/50</button>
+                                <button data-layout="layout-2-col-67-33" class="layout-btn bg-gray-200 p-2 rounded-md text-sm">67/33</button>
+                                <button data-layout="layout-3-col" class="layout-btn bg-gray-200 p-2 rounded-md text-sm">3 Col.</button>
+                                <button data-layout="layout-asymmetric-1" class="layout-btn bg-gray-200 p-2 rounded-md text-sm">1-2-1</button>
+                            </div>
+                            <button id="ai-suggest-layout-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2"><i class="fa-solid fa-magic-wand-sparkles"></i> Suggestion IA de Layout</button>
                         </div>
                     </details>
                     <details class="control-group" open>
@@ -577,18 +776,36 @@
                             <div><label for="font-size-h1" class="block text-sm font-medium text-gray-700">Taille Titre Principal: <span id="font-size-h1-value">40</span>pt</label><input type="range" id="font-size-h1" min="20" max="50" step="1" value="40" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="font-size-h2" class="block text-sm font-medium text-gray-700">Taille Titres Section: <span id="font-size-h2-value">21</span>pt</label><input type="range" id="font-size-h2" min="14" max="30" step="1" value="21" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="font-size-p" class="block text-sm font-medium text-gray-700">Taille Paragraphe: <span id="font-size-p-value">10</span>pt</label><input type="range" id="font-size-p" min="8" max="14" step="0.5" value="10" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="font-size-banner" class="block text-sm font-medium text-gray-700">Taille Bannière: <span id="font-size-banner-value">9</span>pt</label><input type="range" id="font-size-banner" min="7" max="12" step="0.5" value="9" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="line-height" class="block text-sm font-medium text-gray-700">Interligne: <span id="line-height-value">1.6</span></label><input type="range" id="line-height" min="0.8" max="2.5" step="0.1" value="1.6" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="paragraph-spacing" class="block text-sm font-medium text-gray-700">Espace Paragraphe: <span id="paragraph-spacing-value">0.5</span>rem</label><input type="range" id="paragraph-spacing" min="0" max="2" step="0.1" value="0.5" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div>
                         </div>
                     </details>
+                    <details class="control-group" open>
+                        <summary><span>Présentation Avancée <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-layout-advanced" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-4">
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="enable-zebra-sections" class="cv-input">Sections alternées</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="enable-floating-elements" class="cv-input">Éléments flottants</label>
+                            </div>
+                            <button id="auto-optimize-layout-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fa-solid fa-magic-wand-sparkles"></i> Auto-Optimiser Layout</button>
+                            <button id="save-layout-template-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"><i class="fa-solid fa-bookmark"></i> Sauver comme Template</button>
+                        </div>
+                    </details>
                 </div>
                 
                 <!-- TAB: Styles Globaux -->
                 <div id="panel-styles" class="tab-panel hidden space-y-4">
                      <details class="control-group" open>
-                        <summary><span>Thèmes</span><label class="completion-label"><input type="checkbox" id="completion-styles-themes" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <summary><span>Thèmes Prédéfinis</span><label class="completion-label"><input type="checkbox" id="completion-styles-themes" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
                             <div id="theme-buttons" class="grid grid-cols-3 gap-2">
                                 <button data-theme="professional" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Pro</button>
                                 <button data-theme="creative" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Créatif</button>
                                 <button data-theme="modern" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Moderne</button>
+                                <button data-theme="elegant" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Élégant</button>
+                                <button data-theme="tech" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Tech</button>
+                                <button data-theme="luxury" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Luxe</button>
+                                <button data-theme="startup" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Startup</button>
+                                <button data-theme="academic" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Académique</button>
+                                <button data-theme="artistic" class="theme-btn bg-gray-200 p-2 rounded-md text-sm">Artistique</button>
                             </div>
+                            <button id="random-theme-btn" class="w-full mt-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 flex items-center justify-center gap-2"><i class="fa-solid fa-dice"></i> Thème Aléatoire</button>
                         </div>
                     </details>
                      <details class="control-group" open>
@@ -611,11 +828,25 @@
                                     <input type="color" id="body-text-color-picker" value="#334155" class="cv-input w-full h-10 p-1 border rounded-md">
                                 </div>
                             </div>
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Palettes Harmonieuses</label>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%)" data-colors='["#667eea", "#764ba2", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%)" data-colors='["#f093fb", "#f5576c", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%)" data-colors='["#4facfe", "#00f2fe", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%)" data-colors='["#43e97b", "#38f9d7", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #fa709a 0%, #fee140 100%)" data-colors='["#fa709a", "#fee140", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #a8edea 0%, #fed6e3 100%)" data-colors='["#a8edea", "#fed6e3", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%)" data-colors='["#ff9a9e", "#fecfef", "#2d3748"]'></button>
+                                    <button class="color-palette-btn h-8 rounded-md border-2 border-transparent hover:border-gray-400" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%)" data-colors='["#667eea", "#764ba2", "#2d3748"]'></button>
+                                </div>
+                            </div>
                         </div>
                     </details>
                      <details class="control-group" open>
                         <summary><span>Polices</span><label class="completion-label"><input type="checkbox" id="completion-styles-fonts" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
+                            <button id="ai-suggest-fonts-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2"><i class="fa-solid fa-font"></i> Suggestions IA de Polices</button>
                             <div>
                                 <label for="font-family-h1-select" class="block text-sm font-medium text-gray-700">Titre Principal (H1)</label>
                                 <select id="font-family-h1-select" class="cv-input w-full p-2 border rounded-md"></select>
@@ -631,6 +862,24 @@
                         </div>
                     </details>
                      <details class="control-group" open>
+                        <summary><span>Effets Visuels <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-styles-effects" class="completion-checkbox"><span>Fait ✅</span></label></summary>
+                        <div class="control-group-content space-y-4">
+                            <div>
+                                <label for="cv-shadow-intensity" class="block text-sm font-medium text-gray-700">Ombre des pages: <span id="cv-shadow-intensity-value">10</span></label>
+                                <input type="range" id="cv-shadow-intensity" min="0" max="30" step="1" value="10" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                            </div>
+                            <div>
+                                <label for="section-border-radius" class="block text-sm font-medium text-gray-700">Arrondi des sections: <span id="section-border-radius-value">0</span>px</label>
+                                <input type="range" id="section-border-radius" min="0" max="20" step="1" value="0" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="enable-gradients" class="cv-input">Dégradés sur titres</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="enable-animations" class="cv-input">Animations subtiles</label>
+                            </div>
+                            <button id="apply-glassmorphism-btn" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-2 px-4 rounded-md hover:from-cyan-600 hover:to-blue-600 flex items-center justify-center gap-2"><i class="fa-solid fa-sparkles"></i> Effet Glassmorphism</button>
+                        </div>
+                    </details>
+                     <details class="control-group" open>
                         <summary><span>Style des Titres de Section</span><label class="completion-label"><input type="checkbox" id="completion-styles-titles" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
                             <div class="grid grid-cols-2 gap-2">
@@ -638,6 +887,8 @@
                                 <button data-title-style="style-side-line" class="section-title-style-btn bg-gray-200 p-2 rounded-md text-sm">Ligne Côté</button>
                                 <button data-title-style="style-background" class="section-title-style-btn bg-gray-200 p-2 rounded-md text-sm">Fond</button>
                                 <button data-title-style="style-boxed" class="section-title-style-btn bg-gray-200 p-2 rounded-md text-sm">Encadré</button>
+                                <button data-title-style="style-gradient" class="section-title-style-btn bg-gray-200 p-2 rounded-md text-sm">Dégradé</button>
+                                <button data-title-style="style-shadow" class="section-title-style-btn bg-gray-200 p-2 rounded-md text-sm">Ombre</button>
                             </div>
                         </div>
                     </details>
@@ -777,6 +1028,96 @@
             <div class="flex justify-end gap-4">
                 <button id="confirm-modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Annuler</button>
                 <button id="confirm-modal-ok-btn" class="px-4 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW MODALS -->
+    <div id="cv-variants-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Variantes de CV générées par l'IA</h2>
+                <button id="close-variants-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <div id="variants-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Variants will be inserted here -->
+            </div>
+            <div class="flex justify-end gap-4 mt-6">
+                <button id="cancel-variants-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Annuler</button>
+                <button id="apply-variant-btn" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700" disabled>Appliquer la Variante</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="translation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Traduire le CV</h2>
+                <button id="close-translation-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Langue cible</label>
+                    <select id="target-language-select" class="w-full p-2 border rounded-md">
+                        <option value="en">🇺🇸 Anglais</option>
+                        <option value="es">🇪🇸 Espagnol</option>
+                        <option value="de">🇩🇪 Allemand</option>
+                        <option value="it">🇮🇹 Italien</option>
+                        <option value="pt">🇵🇹 Portugais</option>
+                        <option value="zh">🇨🇳 Chinois</option>
+                        <option value="ja">🇯🇵 Japonais</option>
+                        <option value="ar">🇸🇦 Arabe</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button id="cancel-translation-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Annuler</button>
+                    <button id="start-translation-btn" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">Traduire</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cv-score-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Score ATS du CV</h2>
+                <button id="close-score-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <div id="score-result-container">
+                <!-- Score results will be inserted here -->
+            </div>
+            <div class="text-right mt-4">
+                <button id="close-score-modal-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="improvements-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Suggestions d'amélioration IA</h2>
+                <button id="close-improvements-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <div id="improvements-container" class="space-y-4">
+                <!-- Improvements will be inserted here -->
+            </div>
+            <div class="text-right mt-4">
+                <button id="close-improvements-modal-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="skill-analysis-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Analyse des Compétences</h2>
+                <button id="close-skill-analysis-modal" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <div id="skill-analysis-container">
+                <!-- Analysis results will be inserted here -->
+            </div>
+            <div class="text-right mt-4">
+                <button id="close-skill-analysis-modal-btn" class="px-4 py-2 bg-gray-200 text-sm rounded-md hover:bg-gray-300">Fermer</button>
             </div>
         </div>
     </div>
@@ -921,7 +1262,51 @@
                 modern: {
                     primaryColor: '#16a34a', secondaryColor: '#1f2937', bodyTextColor: '#374151',
                     fontH1: "'Oswald', sans-serif", fontH2: "'Source Sans Pro', sans-serif", fontBody: "'Source Sans Pro', sans-serif"
+                },
+                elegant: {
+                    primaryColor: '#8b5a3c', secondaryColor: '#d4af37', bodyTextColor: '#2c2c2c',
+                    fontH1: "'Playfair Display', serif", fontH2: "'Cormorant Garamond', serif", fontBody: "'Merriweather', serif"
+                },
+                tech: {
+                    primaryColor: '#00d4aa', secondaryColor: '#1a1a1a', bodyTextColor: '#333',
+                    fontH1: "'Roboto Mono', monospace", fontH2: "'Source Sans Pro', sans-serif", fontBody: "'Source Sans Pro', sans-serif"
+                },
+                luxury: {
+                    primaryColor: '#b8860b', secondaryColor: '#4b0082', bodyTextColor: '#2c2c2c',
+                    fontH1: "'Playfair Display', serif", fontH2: "'Cormorant Garamond', serif", fontBody: "'Lato', sans-serif"
+                },
+                startup: {
+                    primaryColor: '#ff6b35', secondaryColor: '#f7931e', bodyTextColor: '#333',
+                    fontH1: "'Montserrat', sans-serif", fontH2: "'Nunito Sans', sans-serif", fontBody: "'Open Sans', sans-serif"
+                },
+                academic: {
+                    primaryColor: '#2c3e50', secondaryColor: '#34495e', bodyTextColor: '#2c3e50',
+                    fontH1: "'Merriweather', serif", fontH2: "'Source Sans Pro', sans-serif", fontBody: "'Source Sans Pro', sans-serif"
+                },
+                artistic: {
+                    primaryColor: '#e91e63', secondaryColor: '#9c27b0', bodyTextColor: '#424242',
+                    fontH1: "'Playfair Display', serif", fontH2: "'Oswald', sans-serif", fontBody: "'Nunito Sans', sans-serif"
                 }
+            };
+
+            // Skill templates
+            const skillTemplates = {
+                tech: "JavaScript, Python, React, Node.js, SQL, Git, Docker, AWS, TypeScript, MongoDB",
+                marketing: "Google Analytics, SEO, SEM, Social Media Marketing, Content Marketing, Email Marketing, Adobe Creative Suite, HubSpot, Canva, WordPress",
+                finance: "Excel Avancé, Analyse Financière, Budgétisation, SAP, Bloomberg Terminal, VBA, PowerBI, Audit, Comptabilité, Gestion des Risques",
+                design: "Adobe Photoshop, Illustrator, InDesign, Figma, Sketch, After Effects, UI/UX Design, Prototypage, Design Thinking, Typography",
+                management: "Leadership, Gestion d'Équipe, Planification Stratégique, Gestion de Projet, Scrum, Agile, Communication, Négociation, Budgets, KPI",
+                sales: "Prospection, Négociation, CRM, Salesforce, Closing, Pipeline Management, Présentation Commerciale, Relation Client, Téléprospection, Account Management"
+            };
+
+            // Section templates
+            const sectionTemplates = {
+                startup: ["Projets Entrepreneuriaux 🚀", "Levées de Fonds 💰", "Équipes Constituées 👥", "Technologies Maîtrisées 💻"],
+                academic: ["Publications 📚", "Conférences 🎤", "Recherches 🔬", "Collaborations 🤝"],
+                creative: ["Portfolio 🎨", "Créations 🎭", "Expositions 🖼️", "Collaborations Artistiques 🎪"],
+                executive: ["Équipes Dirigées 👔", "Budgets Gérés 💼", "Stratégies Déployées 📊", "Acquisitions 🏢"],
+                international: ["Langues 🌍", "Expérience Internationale ✈️", "Certifications Linguistiques 📜", "Missions à l'Étranger 🗺️"],
+                freelance: ["Clients Principaux 👥", "Projets Réalisés 💼", "Testimonials 💬", "Tarification 💰"]
             };
             
             // --- GLOBAL STATE VARIABLES ---
@@ -2054,6 +2439,341 @@ Le mail doit être courtois, professionnel et concis (maximum 200 mots).`;
                 }
             });
 
+            // NEW AI FEATURES
+            document.getElementById('smart-analyze-btn')?.addEventListener('click', async () => {
+                const jobDescription = controls.aiInput.value.trim();
+                if (!jobDescription) {
+                    showNotification("Veuillez coller une description de poste.", "error");
+                    return;
+                }
+
+                showLoader("Analyse intelligente en cours...");
+
+                const prompt = `Analysez cette offre d'emploi et fournissez des recommandations détaillées pour optimiser un CV :
+
+${jobDescription}
+
+Retournez un objet JSON avec cette structure :
+{
+    "keywords": ["mot-clé1", "mot-clé2", ...],
+    "required_skills": ["compétence1", "compétence2", ...],
+    "recommended_sections": ["section1", "section2", ...],
+    "tone": "professionnel/créatif/technique",
+    "layout_suggestion": "1-colonne/2-colonnes",
+    "color_theme": "corporate/creative/modern"
+}`;
+
+                const schema = {
+                    type: "object",
+                    properties: {
+                        keywords: { type: "array", items: { type: "string" } },
+                        required_skills: { type: "array", items: { type: "string" } },
+                        recommended_sections: { type: "array", items: { type: "string" } },
+                        tone: { type: "string" },
+                        layout_suggestion: { type: "string" },
+                        color_theme: { type: "string" }
+                    }
+                };
+
+                const result = await callGeminiAPI(prompt, schema);
+                if (result) {
+                    hideLoader();
+                    showSmartAnalysisResult(result);
+                } else {
+                    hideLoader();
+                }
+            });
+
+            document.getElementById('industry-match-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                if (!currentCV.poste) {
+                    showNotification("Veuillez d'abord renseigner le poste recherché.", "error");
+                    return;
+                }
+
+                const prompt = `Adaptez ce CV au secteur "${currentCV.poste}" en suggérant des améliorations spécifiques :
+
+CV actuel :
+- Poste : ${currentCV.poste}
+- Description : ${currentCV.description}
+- Compétences : ${currentCV.competences}
+
+Retournez des suggestions pour optimiser le CV pour ce secteur.`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    showImprovementModal("Adaptation Sectorielle", result);
+                }
+            });
+
+            document.getElementById('ai-score-cv-btn')?.addEventListener('click', async () => {
+                const cvData = getCurrentCVData();
+                
+                const prompt = `Évaluez ce CV selon les critères ATS (Applicant Tracking System) et recruteurs :
+
+${JSON.stringify(cvData)}
+
+Donnez un score sur 100 et des recommendations détaillées pour chaque critère :
+- Mots-clés sectoriels (0-20)
+- Structure et lisibilité (0-20) 
+- Expérience pertinente (0-20)
+- Compétences techniques (0-20)
+- Présentation professionnelle (0-20)
+
+Format JSON attendu :
+{
+    "total_score": 85,
+    "scores": {
+        "keywords": 18,
+        "structure": 16,
+        "experience": 19,
+        "skills": 17,
+        "presentation": 15
+    },
+    "recommendations": ["amélioration 1", "amélioration 2", ...]
+}`;
+
+                const result = await callGeminiAPI(prompt, {
+                    type: "object",
+                    properties: {
+                        total_score: { type: "number" },
+                        scores: { type: "object" },
+                        recommendations: { type: "array", items: { type: "string" } }
+                    }
+                });
+
+                if (result) {
+                    showCVScoreModal(result);
+                }
+            });
+
+            document.getElementById('ai-keyword-optimize-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Analysez ce CV et suggérez des mots-clés spécifiques au secteur pour améliorer le référencement ATS :
+
+${JSON.stringify(currentCV)}
+
+Retournez une liste de mots-clés à intégrer naturellement dans le CV.`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    highlightKeywordsInCV(result);
+                    showNotification("Mots-clés optimisés et mis en évidence dans le CV !", "success");
+                }
+            });
+
+            document.getElementById('ai-create-variants-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                showLoader("Création de 3 variantes de CV...");
+
+                const prompt = `Créez 3 variantes de ce CV pour différents contextes :
+
+CV de base : ${JSON.stringify(currentCV)}
+
+Variante 1: Version concise (1 page, focus expérience)
+Variante 2: Version détaillée (2 pages, projets + compétences)
+Variante 3: Version créative (présentation moderne)
+
+Format JSON avec 3 objets CV complets.`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    hideLoader();
+                    showCVVariantsModal(result);
+                } else {
+                    hideLoader();
+                }
+            });
+
+            document.getElementById('ai-personalize-job-btn')?.addEventListener('click', async () => {
+                const jobDesc = prompt("Collez la description du poste pour personnaliser le CV :");
+                if (!jobDesc) return;
+
+                const currentCV = getCurrentCVData();
+                
+                const promptText = `Personnalisez ce CV pour correspondre exactement à cette offre d'emploi :
+
+OFFRE : ${jobDesc}
+
+CV ACTUEL : ${JSON.stringify(currentCV)}
+
+Retournez un CV modifié qui maximise les chances de correspondance avec l'offre.`;
+
+                const result = await callGeminiAPI(promptText);
+                if (result) {
+                    // Apply the personalized CV
+                    applyPersonalizedCV(result);
+                    showNotification("CV personnalisé pour l'offre d'emploi !", "success");
+                }
+            });
+
+            document.getElementById('generate-linkedin-msg-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Générez un message LinkedIn professionnel basé sur ce profil :
+
+${JSON.stringify(currentCV)}
+
+Le message doit être :
+- Concis (150 mots max)
+- Engageant
+- Professionnel
+- Personnalisable selon le destinataire`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    controls.recruiterMailContent.value = result;
+                    showNotification("Message LinkedIn généré !", "success");
+                }
+            });
+
+            document.getElementById('ai-generate-motto-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Créez une devise/slogan professionnel personnalisé basé sur ce profil :
+
+${JSON.stringify(currentCV)}
+
+La devise doit être :
+- Mémorable (10 mots max)
+- Refléter la personnalité professionnelle
+- Applicable au secteur d'activité`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    addMottoToCV(result);
+                    showNotification("Devise personnalisée ajoutée au CV !", "success");
+                }
+            });
+
+            document.getElementById('ai-suggest-improvements-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Analysez ce CV et fournissez 5 suggestions concrètes d'amélioration :
+
+${JSON.stringify(currentCV)}
+
+Pour chaque suggestion, expliquez :
+1. Le problème identifié
+2. La solution recommandée
+3. L'impact attendu`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    showImprovementModal("Suggestions d'Amélioration", result);
+                }
+            });
+
+            document.getElementById('ai-translate-cv-btn')?.addEventListener('click', () => {
+                document.getElementById('translation-modal').classList.add('active');
+            });
+
+            // Helper functions for new AI features
+            function getCurrentCVData() {
+                return {
+                    nom: controls.nom.value,
+                    prenom: controls.prenom.value,
+                    poste: controls.poste.value,
+                    description: controls.description.value,
+                    experiences: getDynamicData(controls.experienceList),
+                    formations: getDynamicData(controls.formationList),
+                    competences: controls.competences.value
+                };
+            }
+
+            function showSmartAnalysisResult(analysis) {
+                const container = document.createElement('div');
+                container.className = 'analysis-result';
+                container.innerHTML = `
+                    <h3 class="font-bold mb-3">📊 Analyse Intelligente</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="font-semibold mb-2">Mots-clés détectés :</p>
+                            <div class="flex flex-wrap gap-1">
+                                ${analysis.keywords?.map(k => `<span class="keyword-highlight">${k}</span>`).join('') || ''}
+                            </div>
+                        </div>
+                        <div>
+                            <p class="font-semibold mb-2">Compétences requises :</p>
+                            <ul class="list-disc list-inside">
+                                ${analysis.required_skills?.map(s => `<li>${s}</li>`).join('') || ''}
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-semibold mb-2">Sections recommandées :</p>
+                            <ul class="list-disc list-inside">
+                                ${analysis.recommended_sections?.map(s => `<li>${s}</li>`).join('') || ''}
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-semibold mb-2">Recommandations :</p>
+                            <p>Ton : ${analysis.tone}</p>
+                            <p>Layout : ${analysis.layout_suggestion}</p>
+                            <p>Thème : ${analysis.color_theme}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Insert after AI input
+                controls.aiInput.parentNode.insertBefore(container, controls.aiInput.nextSibling);
+
+                // Auto-apply some suggestions
+                if (analysis.required_skills) {
+                    const newSkills = controls.competences.value + ', ' + analysis.required_skills.join(', ');
+                    controls.competences.value = newSkills;
+                    updatePreview('form');
+                }
+            }
+
+            function showCVScoreModal(scoreData) {
+                const modal = document.getElementById('cv-score-modal');
+                const container = document.getElementById('score-result-container');
+                
+                container.innerHTML = `
+                    <div class="cv-score-container">
+                        <div class="score-circle">
+                            <span class="score-text">${scoreData.total_score}/100</span>
+                        </div>
+                        <h3 class="text-xl font-bold">Score ATS Global</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        ${Object.entries(scoreData.scores).map(([key, value]) => `
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">${key}</span>
+                                    <span class="font-bold">${value}/20</span>
+                                </div>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${(value/20)*100}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="font-bold mb-3">💡 Recommandations :</h4>
+                        <ul class="list-disc list-inside space-y-1">
+                            ${scoreData.recommendations.map(rec => `<li class="text-sm">${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                modal.classList.add('active');
+            }
+
+            function showImprovementModal(title, content) {
+                const modal = document.getElementById('improvements-modal');
+                const container = document.getElementById('improvements-container');
+                
+                modal.querySelector('h2').textContent = title;
+                container.innerHTML = `<div class="prose max-w-none">${content.replace(/\n/g, '<br>')}</div>`;
+                
+                modal.classList.add('active');
+            }
+
             // Fonction pour optimiser le CV afin qu'il tienne sur une page
             async function optimizeForOnePage() {
                 try {
@@ -2226,24 +2946,248 @@ Retournez un objet JSON avec cette structure exacte :
                 await optimizeForOnePage();
             });
 
-            controls.aiLimitSkillsBtn.addEventListener('click', async () => {
-                if (!controls.competences.value.trim()) {
-                    showNotification("Aucune compétence à limiter.", "error");
-                    return;
-                }
+            // Skills templates
+            document.querySelectorAll('.skill-template-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const template = btn.dataset.skillTemplate;
+                    if (skillTemplates[template]) {
+                        controls.competences.value = skillTemplates[template];
+                        updatePreview('form');
+                        showNotification(`Template ${template} appliqué !`, "success");
+                    }
+                });
+            });
 
-                const prompt = `Analysez cette liste de compétences et sélectionnez les 10 plus importantes et pertinentes :
-${controls.competences.value}
+            // AI skills from job description
+            document.getElementById('ai-skills-from-job-btn')?.addEventListener('click', async () => {
+                const jobDesc = controls.aiInput.value.trim() || prompt("Collez la description du poste :");
+                if (!jobDesc) return;
 
-Retournez seulement les compétences sélectionnées, séparées par des virgules.`;
+                const promptText = `Analysez cette offre d'emploi et extrayez les compétences techniques et soft skills requises :
 
-                const result = await callGeminiAPI(prompt);
+${jobDesc}
+
+Retournez une liste de compétences séparées par des virgules, en français, adaptées pour un CV.`;
+
+                const result = await callGeminiAPI(promptText);
                 if (result) {
                     controls.competences.value = result;
                     updatePreview('form');
-                    showNotification("Compétences limitées à 10 !", "success");
+                    showNotification("Compétences extraites de l'offre d'emploi !", "success");
                 }
             });
+
+            // Skill matcher
+            document.getElementById('skill-matcher-btn')?.addEventListener('click', async () => {
+                const jobDesc = prompt("Collez la description du poste pour analyser la correspondance :");
+                if (!jobDesc) return;
+
+                const currentSkills = controls.competences.value;
+                
+                const prompt = `Analysez la correspondance entre ces compétences du CV et celles requises dans l'offre :
+
+COMPÉTENCES CV : ${currentSkills}
+
+OFFRE D'EMPLOI : ${jobDesc}
+
+Retournez au format JSON :
+{
+    "match_percentage": 75,
+    "matching_skills": ["skill1", "skill2"],
+    "missing_skills": ["skill3", "skill4"],
+    "recommendations": "conseils pour améliorer la correspondance"
+}`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    showSkillAnalysisModal(result);
+                }
+            });
+
+            // Suggest missing skills
+            document.getElementById('suggest-missing-skills-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Analysez ce profil et suggérez les compétences manquantes qui pourraient renforcer le CV :
+
+${JSON.stringify(currentCV)}
+
+Suggérez 5-8 compétences complémentaires pertinentes pour ce profil.`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    const currentSkills = controls.competences.value;
+                    const newSkills = currentSkills ? `${currentSkills}, ${result}` : result;
+                    controls.competences.value = newSkills;
+                    updatePreview('form');
+                    showNotification("Compétences complémentaires ajoutées !", "success");
+                }
+            });
+
+            // Skill trend analysis
+            document.getElementById('skill-trend-analysis-btn')?.addEventListener('click', async () => {
+                const currentSkills = controls.competences.value;
+                const sector = controls.poste.value;
+                
+                const prompt = `Analysez les tendances du marché pour ces compétences dans le secteur "${sector}" :
+
+COMPÉTENCES : ${currentSkills}
+
+Identifiez :
+1. Les compétences les plus demandées
+2. Les compétences émergentes à acquérir
+3. Les compétences obsolètes à remplacer
+4. Les formations recommandées`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    showImprovementModal("Analyse des Tendances Compétences", result);
+                }
+            });
+
+            // Enhanced skill styles
+            document.querySelectorAll('.skill-style-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.skill-style-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const style = btn.dataset.skillStyle;
+                    
+                    // Show/hide appropriate controls
+                    if (style === 'levels') {
+                        controls.skillsTextControls.classList.add('hidden');
+                        controls.skillsLevelControls.classList.remove('hidden');
+                    } else {
+                        controls.skillsTextControls.classList.remove('hidden');
+                        controls.skillsLevelControls.classList.add('hidden');
+                    }
+                    
+                    // Apply style to preview
+                    const skillsPreview = document.getElementById('cv-competences-preview');
+                    if (skillsPreview) {
+                        skillsPreview.dataset.style = style;
+                        skillsPreview.className = `cv-competences-${style}`;
+                    }
+                    
+                    updatePreview('form');
+                });
+            });
+
+            // Section templates
+            document.querySelectorAll('.section-template-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const template = btn.dataset.sectionTemplate;
+                    if (sectionTemplates[template]) {
+                        sectionTemplates[template].forEach(sectionTitle => {
+                            addCustomSection(sectionTitle);
+                        });
+                        showNotification(`Template ${template} appliqué !`, "success");
+                    }
+                });
+            });
+
+            // AI suggest sections
+            document.getElementById('ai-suggest-sections-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Analysez ce CV et suggérez 3-5 sections personnalisées qui pourraient le renforcer :
+
+${JSON.stringify(currentCV)}
+
+Considérez le secteur, l'expérience et les objectifs de carrière.
+Retournez une liste de titres de sections avec des emojis.`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    const sections = result.split('\n').filter(s => s.trim());
+                    sections.forEach(section => {
+                        addCustomSection(section.trim());
+                    });
+                    showNotification("Sections suggérées ajoutées !", "success");
+                }
+            });
+
+            // Import/Export sections
+            document.getElementById('export-sections-btn')?.addEventListener('click', () => {
+                const customSections = Array.from(document.querySelectorAll('[data-section-id]'))
+                    .map(section => ({
+                        id: section.dataset.sectionId,
+                        title: section.querySelector('span[contenteditable]').textContent,
+                        content: section.innerHTML
+                    }));
+
+                const dataStr = JSON.stringify(customSections, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'cv-sections.json';
+                link.click();
+                URL.revokeObjectURL(url);
+                
+                showNotification("Sections exportées !", "success");
+            });
+
+            document.getElementById('import-sections-btn')?.addEventListener('click', () => {
+                document.getElementById('import-sections-file').click();
+            });
+
+            document.getElementById('import-sections-file')?.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const sections = JSON.parse(event.target.result);
+                            sections.forEach(section => {
+                                addCustomSection(section.title);
+                            });
+                            showNotification("Sections importées !", "success");
+                        } catch (error) {
+                            showNotification("Erreur lors de l'import des sections.", "error");
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            // Helper functions for skill analysis
+            function showSkillAnalysisModal(analysis) {
+                const modal = document.getElementById('skill-analysis-modal');
+                const container = document.getElementById('skill-analysis-container');
+                
+                container.innerHTML = `
+                    <div class="text-center mb-6">
+                        <div class="score-circle" style="width: 100px; height: 100px; border: 6px solid #e5e7eb; border-top-color: #3b82f6; margin: 0 auto;">
+                            <span class="text-2xl font-bold">${analysis.match_percentage}%</span>
+                        </div>
+                        <p class="mt-2 text-gray-600">Correspondance avec l'offre</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-bold text-green-600 mb-3">✅ Compétences correspondantes</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                ${analysis.matching_skills?.map(skill => `<li class="text-sm">${skill}</li>`).join('') || '<li>Aucune</li>'}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-bold text-red-600 mb-3">❌ Compétences manquantes</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                ${analysis.missing_skills?.map(skill => `<li class="text-sm">${skill}</li>`).join('') || '<li>Aucune</li>'}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">💡 Recommandations</h4>
+                        <p class="text-sm text-blue-700">${analysis.recommendations}</p>
+                    </div>
+                `;
+                
+                modal.classList.add('active');
+            }
 
             controls.aiSynthesizeSkillsBtn.addEventListener('click', async () => {
                 if (!controls.competences.value.trim()) {
@@ -2538,9 +3482,239 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
                         controls.fontFamilyH2Select.value = themes[theme].fontH2;
                         controls.fontFamilyBodySelect.value = themes[theme].fontBody;
                         updateAllStyles();
+                        showNotification(`Thème ${theme} appliqué !`, "success");
                     }
                 });
             });
+
+            // Random theme button
+            document.getElementById('random-theme-btn')?.addEventListener('click', () => {
+                const themeNames = Object.keys(themes);
+                const randomTheme = themeNames[Math.floor(Math.random() * themeNames.length)];
+                document.querySelector(`[data-theme="${randomTheme}"]`).click();
+            });
+
+            // Color palette buttons
+            document.querySelectorAll('.color-palette-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const colors = JSON.parse(btn.dataset.colors);
+                    controls.primaryColorPicker.value = colors[0];
+                    controls.secondaryColorPicker.value = colors[1];
+                    controls.bodyTextColorPicker.value = colors[2];
+                    updateAllStyles();
+                    showNotification("Palette de couleurs appliquée !", "success");
+                });
+            });
+
+            // AI font suggestions
+            document.getElementById('ai-suggest-fonts-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Suggérez 3 combinaisons de polices harmonieuses pour ce CV :
+                
+Secteur : ${currentCV.poste}
+Style souhaité : Professionnel
+
+Retournez au format JSON :
+{
+    "suggestions": [
+        {"name": "Combinaison 1", "h1": "font-family", "h2": "font-family", "body": "font-family"},
+        {"name": "Combinaison 2", "h1": "font-family", "h2": "font-family", "body": "font-family"},
+        {"name": "Combinaison 3", "h1": "font-family", "h2": "font-family", "body": "font-family"}
+    ]
+}`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result && result.suggestions) {
+                    showFontSuggestions(result.suggestions);
+                }
+            });
+
+            // Visual effects
+            document.getElementById('cv-shadow-intensity')?.addEventListener('input', (e) => {
+                const value = e.target.value;
+                document.getElementById('cv-shadow-intensity-value').textContent = value;
+                document.querySelectorAll('.a4-page').forEach(page => {
+                    page.style.boxShadow = `0 ${value}px ${value * 2}px rgba(0,0,0,0.15)`;
+                });
+            });
+
+            document.getElementById('section-border-radius')?.addEventListener('input', (e) => {
+                const value = e.target.value;
+                document.getElementById('section-border-radius-value').textContent = value;
+                document.documentElement.style.setProperty('--section-border-radius', `${value}px`);
+            });
+
+            document.getElementById('enable-gradients')?.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.documentElement.style.setProperty('--title-background', 'linear-gradient(45deg, var(--primary-color), var(--secondary-color))');
+                } else {
+                    document.documentElement.style.setProperty('--title-background', 'var(--primary-color)');
+                }
+            });
+
+            document.getElementById('enable-animations')?.addEventListener('change', (e) => {
+                document.querySelectorAll('.cv-module').forEach(module => {
+                    if (e.target.checked) {
+                        module.classList.add('animate');
+                    } else {
+                        module.classList.remove('animate');
+                    }
+                });
+            });
+
+            document.getElementById('apply-glassmorphism-btn')?.addEventListener('click', () => {
+                document.querySelectorAll('.cv-module').forEach(module => {
+                    module.classList.toggle('glassmorphism');
+                });
+                showNotification("Effet glassmorphism appliqué !", "success");
+            });
+
+            // New layout options
+            document.querySelectorAll('.layout-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const layout = btn.dataset.layout;
+                    document.querySelectorAll('.cv-body-container').forEach(container => {
+                        container.className = `cv-body-container ${layout}`;
+                        
+                        // Add third column for 3-column layouts
+                        if (layout === 'layout-3-col' || layout.includes('asymmetric')) {
+                            if (!container.querySelector('#cv-col-1-3')) {
+                                const col3 = document.createElement('div');
+                                col3.id = 'cv-col-1-3';
+                                col3.className = 'cv-column';
+                                container.appendChild(col3);
+                            }
+                        } else {
+                            // Remove third column if exists
+                            const col3 = container.querySelector('#cv-col-1-3');
+                            if (col3) col3.remove();
+                        }
+                    });
+                    
+                    setupAllResizers();
+                    checkAllPagesOverflow();
+                    showNotification("Layout appliqué !", "success");
+                });
+            });
+
+            // AI layout suggestion
+            document.getElementById('ai-suggest-layout-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                const prompt = `Analysez ce CV et suggérez le meilleur layout :
+
+${JSON.stringify(currentCV)}
+
+Considérez :
+- Quantité de contenu
+- Type de poste
+- Secteur d'activité
+
+Retournez : "1-col", "2-col-33-67", "2-col-50-50", "2-col-67-33", "3-col", ou "asymmetric-1"`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    const layout = result.trim().replace('-', '-layout-');
+                    const btn = document.querySelector(`[data-layout="layout-${result.trim()}"]`);
+                    if (btn) {
+                        btn.click();
+                        showNotification(`Layout "${result}" suggéré et appliqué !`, "success");
+                    }
+                }
+            });
+
+            // Advanced layout features
+            document.getElementById('enable-zebra-sections')?.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    document.body.classList.add('zebra-sections');
+                } else {
+                    document.body.classList.remove('zebra-sections');
+                }
+            });
+
+            document.getElementById('auto-optimize-layout-btn')?.addEventListener('click', async () => {
+                const currentCV = getCurrentCVData();
+                
+                showLoader("Optimisation automatique du layout...");
+                
+                const prompt = `Optimisez automatiquement la mise en page de ce CV :
+
+${JSON.stringify(currentCV)}
+
+Retournez les paramètres optimaux au format JSON :
+{
+    "layout": "2-col-33-67",
+    "font_sizes": {"h1": 36, "h2": 18, "p": 9.5},
+    "spacings": {"module": 1.2, "item": 0.4, "paragraph": 0.3},
+    "recommendations": "explications des choix"
+}`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    hideLoader();
+                    applyLayoutOptimization(result);
+                    showNotification("Layout auto-optimisé !", "success");
+                } else {
+                    hideLoader();
+                }
+            });
+
+            // Helper functions for layout optimization
+            function applyLayoutOptimization(optimization) {
+                // Apply layout
+                if (optimization.layout) {
+                    const layoutBtn = document.querySelector(`[data-layout="layout-${optimization.layout}"]`);
+                    if (layoutBtn) layoutBtn.click();
+                }
+                
+                // Apply font sizes
+                if (optimization.font_sizes) {
+                    const sizes = optimization.font_sizes;
+                    if (sizes.h1) {
+                        document.getElementById('font-size-h1').value = sizes.h1;
+                        document.getElementById('font-size-h1-value').textContent = sizes.h1;
+                        document.documentElement.style.setProperty('--font-size-h1', `${sizes.h1}pt`);
+                    }
+                    if (sizes.h2) {
+                        document.getElementById('font-size-h2').value = sizes.h2;
+                        document.getElementById('font-size-h2-value').textContent = sizes.h2;
+                        document.documentElement.style.setProperty('--font-size-h2', `${sizes.h2}pt`);
+                    }
+                    if (sizes.p) {
+                        document.getElementById('font-size-p').value = sizes.p;
+                        document.getElementById('font-size-p-value').textContent = sizes.p;
+                        document.documentElement.style.setProperty('--font-size-p', `${sizes.p}pt`);
+                    }
+                }
+                
+                // Apply spacings
+                if (optimization.spacings) {
+                    const spacings = optimization.spacings;
+                    if (spacings.module) {
+                        document.getElementById('module-spacing').value = spacings.module;
+                        document.getElementById('module-spacing-value').textContent = spacings.module;
+                        document.documentElement.style.setProperty('--module-spacing', `${spacings.module}rem`);
+                    }
+                    if (spacings.item) {
+                        document.getElementById('item-spacing').value = spacings.item;
+                        document.getElementById('item-spacing-value').textContent = spacings.item;
+                        document.documentElement.style.setProperty('--item-spacing', `${spacings.item}rem`);
+                    }
+                    if (spacings.paragraph) {
+                        document.getElementById('paragraph-spacing').value = spacings.paragraph;
+                        document.getElementById('paragraph-spacing-value').textContent = spacings.paragraph;
+                        document.documentElement.style.setProperty('--paragraph-spacing', `${spacings.paragraph}rem`);
+                    }
+                }
+
+                if (optimization.recommendations) {
+                    showNotification(optimization.recommendations, "info", 5000);
+                }
+            }
 
             // Banner alignment buttons
             document.querySelectorAll('.banner-align-btn').forEach(btn => {
@@ -2573,15 +3747,204 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
                 input.addEventListener('input', () => updatePreview('form'));
             });
 
-            // Completion checkboxes
+            // Modal event handlers
+            document.getElementById('close-variants-modal')?.addEventListener('click', () => {
+                document.getElementById('cv-variants-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-translation-modal')?.addEventListener('click', () => {
+                document.getElementById('translation-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-score-modal')?.addEventListener('click', () => {
+                document.getElementById('cv-score-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-score-modal-btn')?.addEventListener('click', () => {
+                document.getElementById('cv-score-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-improvements-modal')?.addEventListener('click', () => {
+                document.getElementById('improvements-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-improvements-modal-btn')?.addEventListener('click', () => {
+                document.getElementById('improvements-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-skill-analysis-modal')?.addEventListener('click', () => {
+                document.getElementById('skill-analysis-modal').classList.remove('active');
+            });
+
+            document.getElementById('close-skill-analysis-modal-btn')?.addEventListener('click', () => {
+                document.getElementById('skill-analysis-modal').classList.remove('active');
+            });
+
+            // Translation functionality
+            document.getElementById('start-translation-btn')?.addEventListener('click', async () => {
+                const targetLang = document.getElementById('target-language-select').value;
+                const currentCV = getCurrentCVData();
+                
+                showLoader("Traduction en cours...");
+                
+                const prompt = `Traduisez ce CV en ${targetLang} en conservant le professionnalisme et l'impact :
+
+${JSON.stringify(currentCV)}
+
+Retournez le CV traduit au même format JSON.`;
+
+                const result = await callGeminiAPI(prompt);
+                if (result) {
+                    hideLoader();
+                    applyTranslatedCV(result);
+                    document.getElementById('translation-modal').classList.remove('active');
+                    showNotification("CV traduit avec succès !", "success");
+                } else {
+                    hideLoader();
+                }
+            });
+
+            document.getElementById('cancel-translation-btn')?.addEventListener('click', () => {
+                document.getElementById('translation-modal').classList.remove('active');
+            });
+
+            // Helper functions for new features
+            function addMottoToCV(motto) {
+                const headerModule = document.getElementById('header-module');
+                if (headerModule) {
+                    const mottoDiv = document.createElement('div');
+                    mottoDiv.className = 'motto-display';
+                    mottoDiv.innerHTML = `<p>"${motto}"</p>`;
+                    headerModule.appendChild(mottoDiv);
+                }
+            }
+
+            function highlightKeywordsInCV(keywords) {
+                const keywordList = keywords.split(',').map(k => k.trim());
+                const textElements = document.querySelectorAll('#cv-description-preview, #cv-experience-preview, #cv-formation-preview');
+                
+                textElements.forEach(element => {
+                    let html = element.innerHTML;
+                    keywordList.forEach(keyword => {
+                        const regex = new RegExp(`\\b(${keyword})\\b`, 'gi');
+                        html = html.replace(regex, '<span class="keyword-highlight">$1</span>');
+                    });
+                    element.innerHTML = html;
+                });
+            }
+
+            function applyTranslatedCV(translatedCV) {
+                try {
+                    const cv = typeof translatedCV === 'string' ? JSON.parse(translatedCV) : translatedCV;
+                    
+                    if (cv.nom) controls.nom.value = cv.nom;
+                    if (cv.prenom) controls.prenom.value = cv.prenom;
+                    if (cv.poste) controls.poste.value = cv.poste;
+                    if (cv.description) controls.description.value = cv.description;
+                    if (cv.competences) controls.competences.value = cv.competences;
+                    
+                    // Apply experiences
+                    if (cv.experiences) {
+                        controls.experienceList.innerHTML = '';
+                        cv.experiences.forEach(exp => {
+                            createDynamicItem(controls.experienceList, [
+                                { key: 'title', placeholder: 'Titre du poste', type: 'input' },
+                                { key: 'meta', placeholder: 'Entreprise - Période', type: 'input' },
+                                { key: 'desc', placeholder: 'Description', type: 'textarea' }
+                            ], exp);
+                        });
+                    }
+                    
+                    // Apply formations
+                    if (cv.formations) {
+                        controls.formationList.innerHTML = '';
+                        cv.formations.forEach(form => {
+                            createDynamicItem(controls.formationList, [
+                                { key: 'title', placeholder: 'Diplôme/Formation', type: 'input' },
+                                { key: 'meta', placeholder: 'École - Année', type: 'input' },
+                                { key: 'desc', placeholder: 'Description (optionnel)', type: 'textarea' }
+                            ], form);
+                        });
+                    }
+                    
+                    updatePreview('form');
+                } catch (error) {
+                    console.error('Error applying translated CV:', error);
+                    showNotification("Erreur lors de l'application de la traduction.", "error");
+                }
+            }
+
+            function showFontSuggestions(suggestions) {
+                const container = document.createElement('div');
+                container.className = 'font-suggestions mt-4 p-4 bg-blue-50 rounded-lg';
+                container.innerHTML = `
+                    <h4 class="font-bold mb-3">🎨 Suggestions de polices IA</h4>
+                    <div class="space-y-2">
+                        ${suggestions.map((suggestion, index) => `
+                            <button class="font-suggestion-btn w-full text-left p-2 border rounded hover:bg-white" 
+                                    data-h1="${suggestion.h1}" data-h2="${suggestion.h2}" data-body="${suggestion.body}">
+                                <strong>${suggestion.name}</strong><br>
+                                <small>H1: ${suggestion.h1} | H2: ${suggestion.h2} | Body: ${suggestion.body}</small>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+
+                // Insert suggestions after font controls
+                const fontSection = document.querySelector('#completion-styles-fonts').closest('.control-group');
+                fontSection.appendChild(container);
+
+                // Add event listeners for font suggestions
+                container.querySelectorAll('.font-suggestion-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        controls.fontFamilyH1Select.value = btn.dataset.h1;
+                        controls.fontFamilyH2Select.value = btn.dataset.h2;
+                        controls.fontFamilyBodySelect.value = btn.dataset.body;
+                        updateAllStyles();
+                        container.remove();
+                        showNotification("Combinaison de polices appliquée !", "success");
+                    });
+                });
+
+                // Auto-remove after 10 seconds
+                setTimeout(() => {
+                    if (container.parentNode) container.remove();
+                }, 10000);
+            }
+
+            // Enhanced progress tracking
             function updateProgressBar() {
                 const checkboxes = document.querySelectorAll('.completion-checkbox');
                 const completed = document.querySelectorAll('.completion-checkbox:checked').length;
                 const total = checkboxes.length;
                 const percentage = total > 0 ? (completed / total) * 100 : 0;
                 
-                document.getElementById('progress-bar').style.width = `${percentage}%`;
-                document.getElementById('progress-text').textContent = `${completed}/${total} sections complétées`;
+                const progressBar = document.getElementById('progress-bar');
+                const progressText = document.getElementById('progress-text');
+                
+                if (progressBar) {
+                    progressBar.style.width = `${percentage}%`;
+                    
+                    // Change color based on progress
+                    if (percentage < 30) {
+                        progressBar.className = 'bg-red-500 h-2.5 rounded-full transition-all duration-300';
+                    } else if (percentage < 70) {
+                        progressBar.className = 'bg-yellow-500 h-2.5 rounded-full transition-all duration-300';
+                    } else {
+                        progressBar.className = 'bg-green-500 h-2.5 rounded-full transition-all duration-300';
+                    }
+                }
+                
+                if (progressText) {
+                    progressText.textContent = `${completed}/${total} sections complétées`;
+                }
+
+                // Show celebration when 100% complete
+                if (percentage === 100) {
+                    setTimeout(() => {
+                        showNotification("🎉 Félicitations ! Votre CV est complet !", "success", 5000);
+                    }, 500);
+                }
             }
 
             document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
