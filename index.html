@@ -13,6 +13,276 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     
     <style>
+        /* ===== SYSTÈME D'HARMONISATION MODERNE ===== */
+        
+        /* Variables CSS pour une cohérence totale */
+        :root {
+            --page-margin: 2cm;
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary-color: #334155;
+            --body-text-color: #334155;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --border-radius-sm: 6px;
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-family-h1: 'Montserrat', sans-serif;
+            --font-family-h2: 'Montserrat', sans-serif;
+            --font-family-body: 'Lato', sans-serif;
+            --font-size-h1: 40pt;
+            --font-size-h2: 21pt;
+            --font-size-p: 10pt;
+            --font-size-banner: 9pt;
+            --line-height: 1.6;
+            --paragraph-spacing: 0.5rem;
+            --module-spacing: 1.5rem;
+            --item-spacing: 0.5rem;
+            --banner-element-spacing: 1rem;
+        }
+
+        /* Animations globales */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); max-height: 0; }
+            to { opacity: 1; transform: translateY(0); max-height: 1000px; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 1; transform: translateY(0); max-height: 1000px; }
+            to { opacity: 0; transform: translateY(-10px); max-height: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+            40%, 43% { transform: translate3d(0, -8px, 0); }
+            70% { transform: translate3d(0, -4px, 0); }
+            90% { transform: translate3d(0, -2px, 0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px var(--primary-color); }
+            50% { box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color); }
+        }
+
+        /* Base pour tous les éléments interactifs */
+        .interactive-element {
+            transition: all var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Système de boutons harmonisé */
+        .btn-base {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: var(--font-family-body);
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            text-decoration: none;
+            transition: all var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+            user-select: none;
+        }
+
+        .btn-base:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-base:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-base::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .btn-base:hover::before {
+            left: 100%;
+        }
+
+        /* Variantes de boutons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            box-shadow: var(--shadow), 0 4px 14px 0 rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), 0 8px 25px 0 rgba(37, 99, 235, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--gray-200), var(--gray-300));
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            box-shadow: var(--shadow), 0 4px 14px 0 rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), 0 8px 25px 0 rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color), #d97706);
+            color: white;
+            box-shadow: var(--shadow), 0 4px 14px 0 rgba(245, 158, 11, 0.25);
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), 0 8px 25px 0 rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            color: white;
+            box-shadow: var(--shadow), 0 4px 14px 0 rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), 0 8px 25px 0 rgba(239, 68, 68, 0.35);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color), #0891b2);
+            color: white;
+            box-shadow: var(--shadow), 0 4px 14px 0 rgba(6, 182, 212, 0.25);
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), 0 8px 25px 0 rgba(6, 182, 212, 0.35);
+        }
+
+        /* Tailles des boutons */
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+
+        .btn-xl {
+            padding: 1.25rem 2rem;
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+
+        /* Boutons compacts spéciaux */
+        .btn-compact {
+            padding: 0.5rem;
+            min-width: 2.5rem;
+            min-height: 2.5rem;
+        }
+
+        /* Boutons de forme spéciale */
+        .btn-circle {
+            border-radius: 50%;
+            aspect-ratio: 1;
+        }
+
+        .btn-pill {
+            border-radius: 9999px;
+        }
+
         :root {
             --page-margin: 2cm;
             --primary-color: #2563eb;
@@ -1594,6 +1864,670 @@
             gap: 4px !important;
         }
 
+        /* ===== SYSTÈME D'ONGLETS MODERNE ===== */
+        .tab-btn {
+            background: transparent;
+            color: var(--gray-600);
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transition: all var(--transition);
+            transform: translateX(-50%);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--gray-700);
+            background: var(--gray-50);
+            transform: translateY(-1px);
+        }
+
+        .tab-btn:hover:not(.active)::before {
+            width: 50%;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            background: linear-gradient(145deg, var(--gray-50), white);
+            font-weight: 600;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn.active::before {
+            width: 100%;
+        }
+
+        .tab-btn i {
+            font-size: 0.875rem;
+            transition: transform var(--transition);
+        }
+
+        .tab-btn:hover i,
+        .tab-btn.active i {
+            transform: scale(1.1);
+        }
+
+        /* Panneau d'onglets */
+        .tab-panel {
+            animation: fadeIn var(--transition-slow) ease-out;
+        }
+
+        .tab-panel.hidden {
+            display: none;
+        }
+
+        /* ===== GROUPES DE CONTRÔLES MODERNES ===== */
+        .control-group {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 1rem;
+            background: white;
+            overflow: hidden;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .control-group:hover {
+            border-color: var(--gray-300);
+            box-shadow: var(--shadow);
+        }
+
+        .control-group[open] {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md), 0 0 0 1px rgba(37, 99, 235, 0.1);
+        }
+
+        .control-group summary {
+            padding: 1rem 1.25rem;
+            background: linear-gradient(145deg, var(--gray-50), white);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all var(--transition);
+            position: relative;
+            outline: none;
+        }
+
+        .control-group summary:hover {
+            background: linear-gradient(145deg, var(--gray-100), var(--gray-50));
+            color: var(--gray-800);
+        }
+
+        .control-group[open] summary {
+            background: linear-gradient(145deg, rgba(37, 99, 235, 0.05), rgba(37, 99, 235, 0.02));
+            color: var(--primary-color);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .control-group summary::marker {
+            display: none;
+        }
+
+        .control-group summary::before {
+            content: '▶';
+            font-size: 0.75rem;
+            transition: transform var(--transition);
+            margin-right: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .control-group[open] summary::before {
+            transform: rotate(90deg);
+            color: var(--primary-color);
+        }
+
+        .control-group summary:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: -2px;
+        }
+
+        .control-group-content {
+            padding: 1.25rem;
+            border-top: none;
+            animation: slideDown var(--transition-slow) ease-out;
+            background: white;
+        }
+
+        /* ===== ÉTIQUETTES DE COMPLETION ===== */
+        .completion-label {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            background: var(--gray-50);
+            transition: all var(--transition);
+        }
+
+        .completion-label:hover {
+            background: var(--gray-100);
+        }
+
+        .completion-checkbox {
+            width: 1rem;
+            height: 1rem;
+            border-radius: var(--border-radius-sm);
+            border: 2px solid var(--gray-300);
+            background: white;
+            cursor: pointer;
+            transition: all var(--transition);
+            appearance: none;
+            position: relative;
+        }
+
+        .completion-checkbox:checked {
+            background: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .completion-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .completion-checkbox:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* ===== BADGES ET INDICATEURS ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .badge-primary {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .new-badge {
+            background: linear-gradient(45deg, var(--warning-color), #d97706);
+            color: white;
+            font-size: 0.625rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: var(--border-radius-lg);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-left: 0.5rem;
+            box-shadow: var(--shadow-sm);
+            animation: pulse 2s infinite;
+        }
+
+        /* ===== FORMULAIRES ET INPUTS ===== */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            transition: all var(--transition);
+            background: white;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-input:hover:not(:focus) {
+            border-color: var(--gray-400);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        /* ===== GRILLES ET LAYOUTS ===== */
+        .grid-auto-fit {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        /* ===== NOTIFICATIONS ET ALERTES ===== */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid;
+            margin-bottom: 1rem;
+            background: white;
+        }
+
+        .alert-success {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.05);
+            color: #065f46;
+        }
+
+        .alert-warning {
+            border-color: var(--warning-color);
+            background: rgba(245, 158, 11, 0.05);
+            color: #92400e;
+        }
+
+        .alert-danger {
+            border-color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.05);
+            color: #991b1b;
+        }
+
+        .alert-info {
+            border-color: var(--info-color);
+            background: rgba(6, 182, 212, 0.05);
+            color: #155e75;
+        }
+
+        /* ===== TOOLTIPS MODERNISÉS ===== */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-900);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius);
+            font-size: 0.75rem;
+            white-space: normal;
+            max-width: 200px;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: var(--shadow-lg);
+            animation: fadeIn var(--transition-fast) ease-out;
+            line-height: 1.3;
+        }
+
+        [data-tooltip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 117%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: var(--gray-900);
+            z-index: 1000;
+            pointer-events: none;
+            animation: fadeIn var(--transition-fast) ease-out;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .btn-base {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .tab-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .control-group summary {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .control-group-content {
+                padding: 1rem;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== ÉTATS DE CHARGEMENT ===== */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1rem;
+            height: 1rem;
+            margin: -0.5rem 0 0 -0.5rem;
+            border: 2px solid var(--gray-300);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== ANIMATIONS SPÉCIALES ===== */
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        .animate-glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .animate-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* ===== EFFETS VISUELS SUPPLÉMENTAIRES ===== */
+        
+        /* Effet de verre sur le panneau de contrôles */
+        #controls {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Amélioration du header */
+        #controls .flex.justify-between.items-center {
+            background: linear-gradient(135deg, var(--gray-50), white);
+            padding: 1.5rem;
+            margin: -1.5rem -1.5rem 1rem -1.5rem;
+            border-bottom: 2px solid var(--gray-100);
+            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+        }
+        
+        /* Amélioration de la barre de progression */
+        #progress-bar-container {
+            background: linear-gradient(90deg, var(--gray-200), var(--gray-100));
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #progress-bar {
+            background: linear-gradient(90deg, var(--success-color), var(--info-color), var(--primary-color));
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Hover effects pour les éléments de navigation */
+        #tab-navigation {
+            background: linear-gradient(145deg, var(--gray-50), white);
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+            padding: 0.5rem;
+            margin: 0 -1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Amélioration des scrollbars */
+        #controls::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #controls::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 4px;
+        }
+        
+        #controls::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary-color), var(--primary-light));
+            border-radius: 4px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        #controls::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--primary-hover), var(--primary-color));
+        }
+        
+        /* Amélioration du CV preview */
+        .a4-page {
+            border: 2px solid var(--gray-200);
+            transition: all var(--transition);
+        }
+        
+        .a4-page:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.1);
+        }
+        
+        /* Effets de particules sur les boutons principaux */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .btn-primary:active::after {
+            width: 300px;
+            height: 300px;
+            opacity: 0;
+        }
+        
+        /* Animation d'apparition des éléments */
+        .control-group,
+        .tab-panel > *,
+        .btn-base {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .control-group:nth-child(1) { animation-delay: 0.1s; }
+        .control-group:nth-child(2) { animation-delay: 0.2s; }
+        .control-group:nth-child(3) { animation-delay: 0.3s; }
+        .control-group:nth-child(4) { animation-delay: 0.4s; }
+        .control-group:nth-child(5) { animation-delay: 0.5s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Effet de focus enhanced pour les inputs */
+        .form-input:focus,
+        .form-select:focus {
+            background: linear-gradient(145deg, white, var(--gray-50));
+            transform: translateY(-1px);
+            box-shadow: 
+                0 0 0 3px rgba(37, 99, 235, 0.1),
+                var(--shadow-md);
+        }
+        
+        /* Amélioration des badges et indicateurs */
+        .completion-label {
+            background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .completion-checkbox:checked {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Mode sombre pour certains éléments */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --gray-50: #1e293b;
+                --gray-100: #334155;
+                --gray-200: #475569;
+            }
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            #controls {
+                backdrop-filter: blur(5px);
+            }
+            
+            .btn-base {
+                min-height: 44px; /* Touch-friendly */
+            }
+            
+            .tab-btn {
+                min-height: 40px;
+            }
+        }
+        
+        /* Amélioration de l'accessibilité */
+        .btn-base:focus-visible,
+        .tab-btn:focus-visible,
+        .control-group summary:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        
+        /* Animation de chargement global */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(37, 99, 235, 0.1),
+                rgba(168, 85, 247, 0.1),
+                rgba(16, 185, 129, 0.1)
+            );
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition);
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+        }
+
+        /* ===== MODERNISATION DES ANCIENS ÉLÉMENTS ===== */
+        
+        /* Remplace les anciens styles tab-btn pour cohérence */
         .tab-btn.active {
             background: #3b82f6 !important;
             color: white !important;
@@ -1793,8 +2727,8 @@
                 <div class="flex items-center gap-3"><i class="fas fa-magic-wand-sparkles text-3xl text-blue-600"></i><h1 class="text-2xl font-bold text-gray-800">Créateur de CV</h1></div>
                 <div class="flex items-center gap-2">
                     <!-- Save status removed -->
-                    <button id="undo-btn" class="ai-btn-compact history-btn text-xl text-gray-600 hover:text-gray-900 disabled:text-gray-300" data-tooltip="↶ Annule la dernière action effectuée (Ctrl+Z)"><i class="fas fa-undo"></i></button>
-                    <button id="redo-btn" class="ai-btn-compact history-btn text-xl text-gray-600 hover:text-gray-900 disabled:text-gray-300" data-tooltip="↷ Rétablit la dernière action annulée (Ctrl+Y)"><i class="fas fa-redo"></i></button>
+                    <button id="undo-btn" class="btn-base btn-compact btn-secondary" data-tooltip="↶ Annule la dernière action effectuée (Ctrl+Z)"><i class="fas fa-undo"></i></button>
+                    <button id="redo-btn" class="btn-base btn-compact btn-secondary" data-tooltip="↷ Rétablit la dernière action annulée (Ctrl+Y)"><i class="fas fa-redo"></i></button>
                 </div>
             </div>
             
@@ -1809,18 +2743,18 @@
 
             <!-- Actions Rapides -->
             <div class="space-y-2 mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
-                 <div class="grid grid-cols-2 gap-2">
-                      <button id="download-pdf-btn" class="ai-btn-enhanced w-full bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download text-lg"></i> PDF</button>
-                      <button id="share-btn" class="ai-btn-enhanced w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt text-lg"></i> Partager</button>
+                 <div class="grid-2">
+                      <button id="download-pdf-btn" class="btn-base btn-secondary" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download text-lg"></i> PDF</button>
+                      <button id="share-btn" class="btn-base btn-success" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt text-lg"></i> Partager</button>
                  </div>
-                 <button id="reset-cv-btn" class="ai-btn-enhanced w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus text-lg"></i> Nouveau CV</button>
-                 <button id="toggle-overflow-btn" class="ai-btn-enhanced w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined text-lg"></i> Détection Dépassement</button>
+                 <button id="reset-cv-btn" class="btn-base btn-danger w-full" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus text-lg"></i> Nouveau CV</button>
+                 <button id="toggle-overflow-btn" class="btn-base btn-warning w-full" data-tooltip="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined text-lg"></i> Détection Dépassement</button>
             </div>
 
 
             <!-- TABS -->
             <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV"><i class="fa-solid fa-robot mr-1"></i> IA</button>
+                <button class="tab-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV"><i class="fa-solid fa-robot mr-1"></i> IA</button>
                 <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" title="📝 Gérez le contenu principal de votre CV : expériences et formations"><i class="fa-solid fa-file-lines mr-1"></i> Contenu</button>
                 <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" title="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles"><i class="fa-solid fa-star mr-1"></i> Compétences</button>
                 <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" title="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications"><i class="fa-solid fa-puzzle-piece mr-1"></i> Sections</button>
@@ -1832,7 +2766,7 @@
             <div id="tab-content" class="py-4 flex-grow overflow-y-auto">
                 <!-- TAB: IA -->
                 <div id="panel-ia" class="tab-panel space-y-4">
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Actions Rapides IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-actions" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-3 gap-2">
@@ -1848,7 +2782,7 @@
                             </div>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Configuration API Gemini</span><label class="completion-label"><input type="checkbox" id="completion-ia-config" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <div class="space-y-2">
@@ -1878,7 +2812,7 @@
                             </div>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Analyse IA Avancée</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
@@ -1889,7 +2823,7 @@
                             <button id="industry-match-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-lg"></i> Adapter au Secteur</button>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Optimisations IA <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-optimizations" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-2 gap-2">
@@ -1900,7 +2834,7 @@
                             <button id="ai-personalize-job-btn" class="ai-btn-enhanced w-full bg-rose-600 text-white py-2 px-4 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-lg"></i> Personnaliser pour Poste</button>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Présentation Recruteur</span><label class="completion-label"><input type="checkbox" id="completion-ia-presentation" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <input type="text" id="qualification-dispo" placeholder="Disponibilité" class="cv-input w-full p-2 border rounded-md">
@@ -1913,7 +2847,7 @@
                             <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le message généré apparaîtra ici..."></textarea>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>IA Créative <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-creative" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <button id="ai-generate-motto-btn" class="ai-btn-enhanced w-full bg-violet-600 text-white py-2 px-4 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-lg"></i> Générer Devise/Slogan</button>
@@ -1925,7 +2859,7 @@
 
                 <!-- TAB: Contenu -->
                 <div id="panel-content" class="tab-panel hidden space-y-4">
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Informations Principales</span><label class="completion-label"><input type="checkbox" id="completion-content-infos" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <input type="text" id="nom" placeholder="Nom" class="cv-input w-full p-2 border rounded-md">
@@ -1934,14 +2868,14 @@
                             <textarea id="description" placeholder="Description du profil" rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Expériences</span><label class="completion-label"><input type="checkbox" id="completion-content-exp" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="flex justify-end mb-2"><button id="add-experience" class="ai-btn-compact text-sm text-blue-600 hover:text-blue-800 font-medium" data-tooltip="➕ Ajoute une nouvelle expérience professionnelle avec tous les détails : poste, entreprise, dates, missions"><i class="fas fa-circle-plus"></i> Ajouter un bloc</button></div>
                             <div id="experience-list" class="space-y-2"></div>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Formations</span><label class="completion-label"><input type="checkbox" id="completion-content-form" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="flex justify-end mb-2"><button id="add-formation" class="ai-btn-compact text-sm text-blue-600 hover:text-blue-800 font-medium" data-tooltip="🎓 Ajoute une nouvelle formation, diplôme ou certification avec l'établissement et les dates"><i class="fas fa-circle-plus"></i> Ajouter un bloc</button></div>
@@ -1952,7 +2886,7 @@
                 
                 <!-- TAB: Compétences -->
                 <div id="panel-skills" class="tab-panel hidden space-y-4">
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Compétences</span><label class="completion-label"><input type="checkbox" id="completion-skills" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <p class="text-sm font-medium">Style de Présentation</p>
@@ -1985,7 +2919,7 @@
                             </div>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Compétences Avancées <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-skills-advanced" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <button id="skill-matcher-btn" class="ai-btn-enhanced w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2" data-tooltip="🎯 Analyse en profondeur la correspondance entre vos compétences et celles demandées dans l'offre d'emploi"><i class="fa-solid fa-search"></i> Analyse Compétences vs Poste</button>
@@ -2008,7 +2942,7 @@
 
                 <!-- TAB: Sections Perso -->
                 <div id="panel-custom" class="tab-panel hidden space-y-4">
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Sections Personnalisées</span><label class="completion-label"><input type="checkbox" id="completion-custom" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <div class="space-y-2">
@@ -2036,7 +2970,7 @@
                             <div id="custom-sections-list" class="space-y-2 mt-2 border-t pt-2"></div>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Templates de Sections <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-custom-templates" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <button id="ai-suggest-sections-btn" class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" title="L'IA suggère les sections les plus adaptées à votre profil"><i class="fa-solid fa-magic-wand-sparkles"></i> IA : Sections Suggérées</button>
@@ -2050,7 +2984,7 @@
                             </div>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Import/Export Sections <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-custom-import" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <button id="export-sections-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2" title="Sauvegarder vos sections personnalisées dans un fichier"><i class="fa-solid fa-download"></i> Exporter Sections</button>
@@ -2062,7 +2996,7 @@
 
                 <!-- TAB: Mise en Page -->
                 <div id="panel-layout" class="tab-panel hidden space-y-4">
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Mise en Colonnes</span><label class="completion-label"><input type="checkbox" id="completion-layout-cols" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
                             <div class="grid grid-cols-3 gap-2 mb-3">
@@ -2076,7 +3010,7 @@
                             <button id="ai-suggest-layout-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2" data-tooltip="🤖 L'IA analyse votre contenu et recommande automatiquement le meilleur layout pour optimiser la lisibilité"><i class="fa-solid fa-magic-wand-sparkles"></i> Suggestion IA de Layout</button>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Espacements & Tailles</span><label class="completion-label"><input type="checkbox" id="completion-layout-spacing" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
                             <div><label for="page-margin" class="block text-sm font-medium text-gray-700">Marge Page: <span id="page-margin-value">2</span>cm</label><input type="range" id="page-margin" min="0.5" max="3" step="0.1" value="2" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div>
@@ -2085,7 +3019,7 @@
                             <div><label for="font-size-h1" class="block text-sm font-medium text-gray-700">Taille Titre Principal: <span id="font-size-h1-value">40</span>pt</label><input type="range" id="font-size-h1" min="20" max="50" step="1" value="40" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="font-size-h2" class="block text-sm font-medium text-gray-700">Taille Titres Section: <span id="font-size-h2-value">21</span>pt</label><input type="range" id="font-size-h2" min="14" max="30" step="1" value="21" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="font-size-p" class="block text-sm font-medium text-gray-700">Taille Paragraphe: <span id="font-size-p-value">10</span>pt</label><input type="range" id="font-size-p" min="8" max="14" step="0.5" value="10" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="font-size-banner" class="block text-sm font-medium text-gray-700">Taille Bannière: <span id="font-size-banner-value">9</span>pt</label><input type="range" id="font-size-banner" min="7" max="12" step="0.5" value="9" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="line-height" class="block text-sm font-medium text-gray-700">Interligne: <span id="line-height-value">1.6</span></label><input type="range" id="line-height" min="0.8" max="2.5" step="0.1" value="1.6" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><div><label for="paragraph-spacing" class="block text-sm font-medium text-gray-700">Espace Paragraphe: <span id="paragraph-spacing-value">0.5</span>rem</label><input type="range" id="paragraph-spacing" min="0" max="2" step="0.1" value="0.5" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div>
                         </div>
                     </details>
-                    <details class="control-group" open>
+                    <details class="control-group">
                         <summary><span>Présentation Avancée <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-layout-advanced" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
                             <div class="grid grid-cols-2 gap-2">
@@ -2100,7 +3034,7 @@
                 
                 <!-- TAB: Styles Globaux -->
                 <div id="panel-styles" class="tab-panel hidden space-y-4">
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Thèmes Prédéfinis</span><label class="completion-label"><input type="checkbox" id="completion-styles-themes" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
                             <div id="theme-buttons" class="grid grid-cols-3 gap-2">
@@ -2117,7 +3051,7 @@
                             <button id="random-theme-btn" class="w-full mt-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-md hover:from-purple-600 hover:to-pink-600 flex items-center justify-center gap-2" title="Appliquer un thème au hasard pour l'inspiration"><i class="fa-solid fa-dice"></i> Thème Aléatoire</button>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Couleurs</span><label class="completion-label"><input type="checkbox" id="completion-styles-colors" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
                             <div class="grid grid-cols-2 gap-4">
@@ -2152,7 +3086,7 @@
                             </div>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Polices</span><label class="completion-label"><input type="checkbox" id="completion-styles-fonts" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
                             <button id="ai-suggest-fonts-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2" title="L'IA recommande les meilleures combinaisons de polices pour votre CV"><i class="fa-solid fa-font"></i> Suggestions IA de Polices</button>
@@ -2170,7 +3104,7 @@
                             </div>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Effets Visuels <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-styles-effects" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
                             <div>
@@ -2188,7 +3122,7 @@
                             <button id="apply-glassmorphism-btn" class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-2 px-4 rounded-md hover:from-cyan-600 hover:to-blue-600 flex items-center justify-center gap-2" title="Appliquer un effet glassmorphism moderne et tendance"><i class="fa-solid fa-sparkles"></i> Effet Glassmorphism</button>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Style des Titres de Section</span><label class="completion-label"><input type="checkbox" id="completion-styles-titles" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content">
                             <div class="grid grid-cols-2 gap-2">
@@ -2205,7 +3139,7 @@
 
                 <!-- TAB: Bannière -->
                 <div id="panel-banner" class="tab-panel hidden space-y-4">
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Bannière Recruteur</span><label class="completion-label"><input type="checkbox" id="completion-banner-main" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <div class="flex justify-between items-center">
@@ -2286,7 +3220,7 @@
                             </div>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Image de Fond</span><label class="completion-label"><input type="checkbox" id="completion-banner-bg" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
                             <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3 text-sm">
@@ -2331,7 +3265,7 @@
                             </button>
                         </div>
                     </details>
-                     <details class="control-group" open>
+                     <details class="control-group">
                         <summary><span>Style du Texte</span><label class="completion-label"><input type="checkbox" id="completion-banner-text" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
                             <button id="randomize-banner-style-btn" class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 flex items-center justify-center gap-2" title="Appliquer un style de bannière aléatoire pour l'inspiration"><i class="fas fa-dice"></i> Style Aléatoire</button><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Nom & Prénom</h4><label class="text-xs">Police</label><select id="banner-nom-font" class="cv-input w-full p-1 border text-sm rounded-md"><option value="'Montserrat', sans-serif">Montserrat</option><option value="'Playfair Display', serif">Playfair Display</option><option value="'Oswald', sans-serif">Oswald</option><option value="'Cormorant Garamond', serif">Cormorant Garamond</option><option value="'Merriweather', serif">Merriweather</option><option value="'Lato', sans-serif">Lato</option></select><label class="text-xs mt-2 block">Taille: <span id="banner-nom-size-value">24</span>pt</label><input type="range" id="banner-nom-size" min="14" max="40" step="1" value="24" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-nom-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-nom-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le nom en gras"><i class="fas fa-bold"></i></button><button id="banner-nom-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le nom en italique"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Poste</h4><label class="text-xs mt-2 block">Taille: <span id="banner-poste-size-value">12</span>pt</label><input type="range" id="banner-poste-size" min="8" max="20" step="0.5" value="12" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-poste-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-poste-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le poste en gras"><i class="fas fa-bold"></i></button><button id="banner-poste-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre le poste en italique"><i class="fas fa-italic"></i></button></div></div><div class="border-t pt-4 mt-4"><h4 class="font-semibold text-sm mb-2">Coordonnées</h4><label class="text-xs mt-2 block">Taille: <span id="banner-contact-size-value">9</span>pt</label><input type="range" id="banner-contact-size" min="7" max="14" step="0.5" value="9" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"><div class="flex items-center gap-2 mt-2"><label class="text-xs">Couleur:</label><input type="color" id="banner-contact-color" value="#334155" class="cv-input w-full h-8 p-1 border rounded-md"><button id="banner-contact-bold" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre les coordonnées en gras"><i class="fas fa-bold"></i></button><button id="banner-contact-italic" class="style-toggle-btn p-1 px-2 rounded-md bg-gray-200 text-sm" title="Mettre les coordonnées en italique"><i class="fas fa-italic"></i></button></div></div>
@@ -4984,23 +5918,345 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
             controls.undoBtn.addEventListener('click', undo);
             controls.redoBtn.addEventListener('click', redo);
 
-            // Tab navigation
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Remove active class from all tabs and panels
-                    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('border-blue-500', 'text-blue-600'));
-                    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-                    
-                    // Add active class to clicked tab
-                    btn.classList.add('border-blue-500', 'text-blue-600');
-                    
-                    // Show corresponding panel
-                    const targetPanel = document.querySelector(btn.dataset.target);
-                    if (targetPanel) {
-                        targetPanel.classList.remove('hidden');
+            // ===== SYSTÈME DE GESTION DES ONGLETS MODERNISÉ =====
+            function initializeTabSystem() {
+                const tabBtns = document.querySelectorAll('.tab-btn');
+                const tabPanels = document.querySelectorAll('.tab-panel');
+                
+                // Assurer qu'un seul onglet est actif au démarrage
+                tabBtns.forEach(btn => btn.classList.remove('active', 'border-blue-500', 'text-blue-600'));
+                tabPanels.forEach(panel => panel.classList.add('hidden'));
+                
+                // Activer le premier onglet (IA) par défaut
+                const firstTab = document.querySelector('.tab-btn[data-target="#panel-ia"]');
+                const firstPanel = document.querySelector('#panel-ia');
+                if (firstTab && firstPanel) {
+                    firstTab.classList.add('active');
+                    firstPanel.classList.remove('hidden');
+                }
+                
+                // Gestion des clics sur les onglets avec animations
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        switchTab(btn);
+                    });
+                });
+            }
+            
+            function switchTab(clickedBtn) {
+                const tabBtns = document.querySelectorAll('.tab-btn');
+                const tabPanels = document.querySelectorAll('.tab-panel');
+                const targetPanel = document.querySelector(clickedBtn.dataset.target);
+                
+                if (!targetPanel) return;
+                
+                // Désactiver tous les onglets
+                tabBtns.forEach(btn => {
+                    btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                });
+                
+                // Masquer tous les panneaux avec animation
+                tabPanels.forEach(panel => {
+                    if (!panel.classList.contains('hidden')) {
+                        panel.style.animation = 'fadeOut 0.2s ease-out';
+                        setTimeout(() => {
+                            panel.classList.add('hidden');
+                            panel.style.animation = '';
+                        }, 200);
                     }
                 });
+                
+                // Activer l'onglet cliqué
+                clickedBtn.classList.add('active');
+                
+                // Afficher le panneau correspondant avec animation
+                setTimeout(() => {
+                    targetPanel.classList.remove('hidden');
+                    targetPanel.style.animation = 'fadeIn 0.3s ease-out';
+                    setTimeout(() => {
+                        targetPanel.style.animation = '';
+                    }, 300);
+                }, 200);
+                
+                // Ouvrir automatiquement la première section si aucune n'est ouverte
+                setTimeout(() => {
+                    const firstControlGroup = targetPanel.querySelector('.control-group:not([open])');
+                    if (firstControlGroup) {
+                        firstControlGroup.setAttribute('open', '');
+                        // Animation d'ouverture
+                        const content = firstControlGroup.querySelector('.control-group-content');
+                        if (content) {
+                            content.style.animation = 'slideDown 0.3s ease-out';
+                            setTimeout(() => content.style.animation = '', 300);
+                        }
+                    }
+                }, 400);
+            }
+            
+            // Initialisation du système d'onglets
+            initializeTabSystem();
+            
+            // ===== SYSTÈME D'HARMONISATION DES BOUTONS =====
+            function harmonizeButtons() {
+                console.log('🎨 Début de l\'harmonisation des boutons...');
+                
+                // Mapping des anciens styles vers les nouveaux
+                const buttonMappings = [
+                    // Boutons AI Enhanced
+                    {
+                        selector: '.ai-btn-enhanced:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-primary'],
+                        removeClasses: ['ai-btn-enhanced']
+                    },
+                    // Boutons compacts
+                    {
+                        selector: '.ai-btn-compact:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-compact', 'btn-secondary'],
+                        removeClasses: ['ai-btn-compact']
+                    },
+                    // Boutons de thème
+                    {
+                        selector: '.theme-btn:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-sm', 'btn-secondary'],
+                        removeClasses: ['theme-btn']
+                    },
+                    // Boutons de style de compétences
+                    {
+                        selector: '.skill-style-btn:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-sm', 'btn-info'],
+                        removeClasses: ['skill-style-btn']
+                    },
+                    // Boutons de layout
+                    {
+                        selector: '.layout-btn:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-sm', 'btn-secondary'],
+                        removeClasses: ['layout-btn']
+                    },
+                    // Boutons avec background spécifiques
+                    {
+                        selector: 'button[class*="bg-green"]:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-success'],
+                        removeClasses: []
+                    },
+                    {
+                        selector: 'button[class*="bg-red"]:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-danger'],
+                        removeClasses: []
+                    },
+                    {
+                        selector: 'button[class*="bg-yellow"]:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-warning'],
+                        removeClasses: []
+                    },
+                    {
+                        selector: 'button[class*="bg-blue"]:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-primary'],
+                        removeClasses: []
+                    },
+                    {
+                        selector: 'button[class*="bg-purple"]:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-info'],
+                        removeClasses: []
+                    },
+                    {
+                        selector: 'button[class*="bg-gray"]:not(.btn-base)',
+                        newClasses: ['btn-base', 'btn-secondary'],
+                        removeClasses: []
+                    }
+                ];
+                
+                let harmonizedCount = 0;
+                
+                buttonMappings.forEach(mapping => {
+                    const buttons = document.querySelectorAll(mapping.selector);
+                    buttons.forEach(button => {
+                        // Supprimer les anciens styles Tailwind
+                        const classesToRemove = [
+                            'bg-blue-600', 'bg-blue-700', 'bg-green-600', 'bg-green-700',
+                            'bg-red-600', 'bg-red-700', 'bg-yellow-500', 'bg-yellow-600',
+                            'bg-purple-600', 'bg-purple-700', 'bg-gray-800', 'bg-gray-900',
+                            'hover:bg-blue-700', 'hover:bg-green-700', 'hover:bg-red-700',
+                            'hover:bg-yellow-600', 'hover:bg-purple-700', 'hover:bg-gray-900',
+                            'text-white', 'py-2', 'px-4', 'rounded-lg', 'transition-all',
+                            'duration-200', 'hover:scale-105', 'flex', 'items-center',
+                            'justify-center', 'gap-2', 'w-full', ...mapping.removeClasses
+                        ];
+                        
+                        classesToRemove.forEach(cls => button.classList.remove(cls));
+                        
+                        // Ajouter les nouvelles classes
+                        mapping.newClasses.forEach(cls => button.classList.add(cls));
+                        
+                        // Préserver la classe w-full si elle était présente
+                        if (button.style.width === '100%' || button.getAttribute('data-full-width')) {
+                            button.classList.add('w-full');
+                        }
+                        
+                        harmonizedCount++;
+                    });
+                });
+                
+                // Harmoniser aussi les inputs et selects
+                const inputs = document.querySelectorAll('input:not(.completion-checkbox), select, textarea');
+                inputs.forEach(input => {
+                    if (!input.classList.contains('form-input') && !input.classList.contains('form-select')) {
+                        input.classList.add(input.tagName.toLowerCase() === 'select' ? 'form-select' : 'form-input');
+                        harmonizedCount++;
+                    }
+                });
+                
+                // Ajouter des tooltips modernisés aux éléments qui n'en ont pas
+                const elementsWithTitle = document.querySelectorAll('[title]:not([data-tooltip])');
+                elementsWithTitle.forEach(el => {
+                    el.setAttribute('data-tooltip', el.getAttribute('title'));
+                    el.removeAttribute('title');
+                });
+                
+                console.log(`✅ Harmonisation terminée: ${harmonizedCount} éléments mis à jour`);
+            }
+            
+            // Fonction pour ajouter des animations au survol
+            function addInteractiveAnimations() {
+                const interactiveElements = document.querySelectorAll('.btn-base, .control-group summary, .tab-btn');
+                
+                interactiveElements.forEach(el => {
+                    el.classList.add('interactive-element');
+                    
+                    // Animation de clic
+                    el.addEventListener('mousedown', () => {
+                        el.style.transform = 'scale(0.98)';
+                    });
+                    
+                    el.addEventListener('mouseup', () => {
+                        el.style.transform = '';
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        el.style.transform = '';
+                    });
+                });
+            }
+            
+            // Exécuter l'harmonisation
+            harmonizeButtons();
+            addInteractiveAnimations();
+            
+            // Observer les nouveaux éléments ajoutés dynamiquement
+            const observer = new MutationObserver((mutations) => {
+                let needsHarmonization = false;
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.nodeType === 1 && (node.tagName === 'BUTTON' || node.querySelector('button'))) {
+                                needsHarmonization = true;
+                            }
+                        });
+                    }
+                });
+                
+                if (needsHarmonization) {
+                    setTimeout(() => {
+                        harmonizeButtons();
+                        addInteractiveAnimations();
+                    }, 100);
+                }
             });
+            
+            observer.observe(document.body, { childList: true, subtree: true });
+            
+            // ===== ANIMATIONS AVANCÉES POUR LES GROUPES DE CONTRÔLES =====
+            function enhanceControlGroups() {
+                const controlGroups = document.querySelectorAll('.control-group');
+                
+                controlGroups.forEach(group => {
+                    const summary = group.querySelector('summary');
+                    const content = group.querySelector('.control-group-content');
+                    
+                    if (summary && content) {
+                        // Animation d'ouverture/fermeture
+                        summary.addEventListener('click', (e) => {
+                            if (group.hasAttribute('open')) {
+                                // Se ferme
+                                e.preventDefault();
+                                content.style.animation = 'slideUp 0.3s ease-out';
+                                setTimeout(() => {
+                                    group.removeAttribute('open');
+                                    content.style.animation = '';
+                                }, 300);
+                            } else {
+                                // S'ouvre
+                                setTimeout(() => {
+                                    content.style.animation = 'slideDown 0.3s ease-out';
+                                    setTimeout(() => content.style.animation = '', 300);
+                                }, 10);
+                            }
+                        });
+                        
+                        // Animation de survol du summary
+                        summary.addEventListener('mouseenter', () => {
+                            summary.style.transform = 'translateX(2px)';
+                        });
+                        
+                        summary.addEventListener('mouseleave', () => {
+                            summary.style.transform = '';
+                        });
+                    }
+                });
+            }
+            
+            enhanceControlGroups();
+            
+            // ===== NOTIFICATION DE SUCCÈS =====
+            function showHarmonizationComplete() {
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: linear-gradient(135deg, var(--success-color), #059669);
+                        color: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: var(--border-radius-lg);
+                        box-shadow: var(--shadow-xl);
+                        z-index: 10000;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        animation: slideInRight 0.5s ease-out;
+                        font-weight: 500;
+                    ">
+                        <i class="fas fa-magic-wand-sparkles"></i>
+                        Interface harmonisée avec succès !
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.firstElementChild.style.animation = 'slideOutRight 0.5s ease-out';
+                    setTimeout(() => notification.remove(), 500);
+                }, 3000);
+            }
+            
+            // Ajouter les keyframes pour les animations de notification
+            const notificationStyles = document.createElement('style');
+            notificationStyles.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(notificationStyles);
+            
+            // Afficher la notification après un court délai
+            setTimeout(showHarmonizationComplete, 1000);
 
             // Sliders
             Object.values(sliders).forEach(config => {
