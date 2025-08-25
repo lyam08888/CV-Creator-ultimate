@@ -406,7 +406,6 @@
                       <button id="download-pdf-btn" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-900 flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> PDF</button>
                       <button id="share-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fa-solid fa-share-alt"></i> Partager</button>
                  </div>
-                 <button id="anonymize-btn" class="w-full bg-slate-500 text-white py-2 px-4 rounded-md hover:bg-slate-600 flex items-center justify-center gap-2"><i class="fa-solid fa-user-secret"></i>Anonymiser le CV</button>
                  <button id="reset-cv-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 flex items-center justify-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> Nouveau CV</button>
                  <button id="toggle-overflow-btn" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 flex items-center justify-center gap-2"><i class="fa-solid fa-ruler-combined"></i> Détection Dépassement</button>
                  <button id="toggle-presentation-mode-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-eye"></i> Mode Présentation</button>
@@ -688,12 +687,16 @@
 
         <!-- PREVIEW PANEL -->
         <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex flex-col justify-center items-start overflow-auto" id="preview-area">
-            <!-- Bouton d'optimisation IA pour une page -->
-            <div class="w-full flex justify-center mb-6">
+            <!-- Boutons d'action CV -->
+            <div class="w-full flex justify-center gap-4 mb-6">
                 <button id="ai-optimize-one-page-btn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 flex items-center justify-center gap-3 shadow-lg transform transition-all duration-200 hover:scale-105 no-print">
                     <i class="fas fa-magic-wand-sparkles text-lg"></i>
                     <span class="font-semibold">Optimiser pour 1 page IA</span>
                     <i class="fas fa-file-alt text-lg"></i>
+                </button>
+                <button id="anonymize-btn" class="bg-gradient-to-r from-slate-500 to-slate-600 text-white py-3 px-6 rounded-lg hover:from-slate-600 hover:to-slate-700 flex items-center justify-center gap-3 shadow-lg transform transition-all duration-200 hover:scale-105 no-print">
+                    <i class="fa-solid fa-user-secret text-lg"></i>
+                    <span class="font-semibold">Anonymiser le CV</span>
                 </button>
             </div>
             
@@ -1808,25 +1811,52 @@
 
             function anonymizeCV() {
                 if (isAnonymized) {
-                    controls.nom.value = originalData.nom;
-                    controls.prenom.value = originalData.prenom;
+                    // Restoration mode
+                    controls.nom.value = originalData.nom || '';
+                    controls.prenom.value = originalData.prenom || '';
+                    controls.bannerEmail.value = originalData.bannerEmail || '';
+                    controls.bannerTel.value = originalData.bannerTel || '';
+                    controls.qualificationLoc.value = originalData.qualificationLoc || '';
                     
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-secret text-lg"></i><span class="font-semibold">Anonymiser le CV</span>';
                     isAnonymized = false;
-                    showNotification("CV désanonymisé.", "success");
+                    showNotification("CV désanonymisé avec succès !", "success");
                 } else {
+                    // Anonymization mode - store original data
                     originalData = {
-                        nom: controls.nom.value,
-                        prenom: controls.prenom.value,
+                        nom: controls.nom.value || '',
+                        prenom: controls.prenom.value || '',
+                        bannerEmail: controls.bannerEmail.value || '',
+                        bannerTel: controls.bannerTel.value || '',
+                        qualificationLoc: controls.qualificationLoc.value || ''
                     };
                     
+                    // Apply anonymization rules
+                    // Last name: Keep only first letter + dot
                     const firstLetter = originalData.nom ? originalData.nom.charAt(0) + '.' : '';
                     controls.nom.value = firstLetter;
-                    controls.prenom.value = 'Candidat';
                     
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user"></i> Désanonymiser le CV';
+                    // First name: Keep as-is (no change)
+                    // controls.prenom.value remains unchanged
+                    
+                    // Email: Anonymize to "***@.***"
+                    if (originalData.bannerEmail) {
+                        controls.bannerEmail.value = "***@.***";
+                    }
+                    
+                    // Phone: Anonymize to "** ** ** ** **"
+                    if (originalData.bannerTel) {
+                        controls.bannerTel.value = "** ** ** ** **";
+                    }
+                    
+                    // Location: Anonymize to "***"
+                    if (originalData.qualificationLoc) {
+                        controls.qualificationLoc.value = "***";
+                    }
+                    
+                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user text-lg"></i><span class="font-semibold">Désanonymiser le CV</span>';
                     isAnonymized = true;
-                    showNotification("CV anonymisé.", "success");
+                    showNotification("CV anonymisé avec succès !", "success");
                 }
                 updatePreview('form');
             }
