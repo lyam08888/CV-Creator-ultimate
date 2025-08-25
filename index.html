@@ -1386,17 +1386,19 @@
             display: inline-flex !important;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem !important;
-            min-width: 2.5rem;
-            min-height: 2.5rem;
-            border-radius: var(--border-radius);
+            width: 44px; /* Taille fixe */
+            height: 44px; /* Taille fixe */
+            padding: 0 !important; /* Pas de padding pour un contrôle total */
+            border-radius: var(--border-radius-lg); /* Bordures arrondies Apple */
             transition: all var(--transition);
-            font-size: 1rem;
+            font-size: 1.1rem; /* Taille d'icône adaptée */
             text-decoration: none;
             cursor: pointer;
-            border: none;
+            border: 1px solid var(--border-color);
             outline: none;
             box-shadow: var(--shadow-sm);
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
         }
 
         /* Masquer le texte, garder seulement les icônes */
@@ -1453,6 +1455,9 @@
         .btn-compact:hover {
             transform: translateY(-2px) scale(1.05);
             box-shadow: var(--shadow-lg);
+            background-color: var(--gray-50);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
         }
 
         .icon-only-btn:active,
@@ -1480,6 +1485,18 @@
             background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
             color: white !important;
             box-shadow: var(--shadow), 0 4px 14px 0 rgba(37, 99, 235, 0.25);
+            border-color: transparent;
+        }
+
+        /* Espacement entre les boutons */
+        .flex.gap-2 > .icon-only-btn,
+        .flex.gap-2 > .btn-compact {
+            margin: 0 4px; /* 8px de distance totale */
+        }
+        
+        .space-y-2 > .icon-only-btn,
+        .space-y-2 > .btn-compact {
+            margin-bottom: 8px;
         }
 
         /* Exception pour les onglets - ils gardent leur style d'origine mais masquent le texte */
