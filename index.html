@@ -219,9 +219,6 @@
             color: #3b82f6;
         }
         
-        #ai-summarize-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: #2563eb; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; z-index: 999; transition: transform 0.2s ease-in-out; }
-        #ai-summarize-btn:hover { transform: scale(1.1); }
-
         /* --- Specific styles for skills section --- */
         #cv-competences-preview h3.skill-category { font-family: var(--font-family-h2); font-weight: 700; color: var(--secondary-color); margin-top: 0.8rem; margin-bottom: 0.4rem; padding-bottom: 0.2rem; border-bottom: 1px solid #e5e7eb; font-size: calc(var(--font-size-p) * 1.05); text-transform: uppercase; letter-spacing: 0.5px; }
         #cv-competences-preview .skill-category:hover { background-color: #f3f4f6; }
@@ -327,7 +324,6 @@
         }
         body.presentation-mode .column-resizer,
         body.presentation-mode .drag-handle,
-        body.presentation-mode #ai-summarize-btn,
         body.presentation-mode .remove-page-btn,
         body.presentation-mode #add-page-btn-wrapper,
         body.presentation-mode .section-ai-actions,
@@ -382,7 +378,6 @@
     </div>
 
     <div id="notification"></div>
-    <button id="ai-summarize-btn" title="Synthèse IA des expériences (5 lignes max)" class="no-print"><i class="fas fa-compress-arrows-alt"></i></button>
 
     <div class="flex flex-col lg:flex-row min-h-screen">
         <!-- CONTROLS PANEL -->
@@ -692,7 +687,17 @@
         </div>
 
         <!-- PREVIEW PANEL -->
-        <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex justify-center items-start overflow-auto" id="preview-area">
+        <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex flex-col justify-center items-start overflow-auto" id="preview-area">
+            <!-- Bouton d'optimisation IA pour une page -->
+            <div class="w-full flex justify-center mb-6">
+                <button id="ai-optimize-one-page-btn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-lg hover:from-purple-700 hover:to-blue-700 flex items-center justify-center gap-3 shadow-lg transform transition-all duration-200 hover:scale-105 no-print">
+                    <i class="fas fa-magic-wand-sparkles text-lg"></i>
+                    <span class="font-semibold">Optimiser pour 1 page IA</span>
+                    <i class="fas fa-file-alt text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="w-full flex justify-center">
             <div id="cv-preview-wrapper">
                 <div class="a4-page-container">
                     <div id="page-1" class="a4-page">
@@ -729,6 +734,7 @@
                  <div id="add-page-btn-wrapper" class="no-print">
                      <button id="add-page-btn" title="Ajouter une page"><i class="fas fa-plus"></i></button>
                  </div>
+            </div>
             </div>
         </div>
     </div>
@@ -792,7 +798,7 @@
                 resetCvBtn: document.getElementById('reset-cv-btn'),
                 togglePresentationModeBtn: document.getElementById('toggle-presentation-mode-btn'),
                 toggleOverflowBtn: document.getElementById('toggle-overflow-btn'),
-                aiSummarizeBtn: document.getElementById('ai-summarize-btn'),
+                aiOptimizeOnePageBtn: document.getElementById('ai-optimize-one-page-btn'),
                 resetRecruiterBtn: document.getElementById('reset-recruiter-btn'),
                 aiLimitSkillsBtn: document.getElementById('ai-limit-skills-btn'),
                 pageMargin: document.getElementById('page-margin'), pageMarginValue: document.getElementById('page-margin-value'),
@@ -2018,23 +2024,176 @@ Le mail doit être courtois, professionnel et concis (maximum 200 mots).`;
                 }
             });
 
-            controls.aiSummarizeBtn.addEventListener('click', async () => {
-                const experiences = getDynamicData(controls.experienceList);
-                if (experiences.length === 0) {
-                    showNotification("Aucune expérience à synthétiser.", "error");
-                    return;
-                }
+            // Fonction pour optimiser le CV afin qu'il tienne sur une page
+            async function optimizeForOnePage() {
+                try {
+                    showNotification("Optimisation en cours...", "info");
+                    
+                    // Collecter toutes les données du CV
+                    const cvData = {
+                        nom: controls.nom.value,
+                        prenom: controls.prenom.value,
+                        poste: controls.poste.value,
+                        description: controls.description.value,
+                        experiences: getDynamicData(controls.experienceList),
+                        formations: getDynamicData(controls.formationList),
+                        competences: controls.competences.value
+                    };
 
-                const expText = experiences.map(exp => `${exp.title} - ${exp.meta}: ${exp.desc}`).join('\n');
-                const prompt = `Synthétisez ces expériences professionnelles en maximum 5 lignes, en gardant les informations les plus importantes :
-${expText}`;
+                    // Vérifier si le CV a du contenu
+                    if (!cvData.nom && !cvData.prenom && !cvData.poste && cvData.experiences.length === 0) {
+                        showNotification("Veuillez remplir au moins les informations de base du CV.", "error");
+                        return;
+                    }
 
-                const result = await callGeminiAPI(prompt);
-                if (result) {
-                    controls.description.value = result;
-                    updatePreview('form');
-                    showNotification("Expériences synthétisées !", "success");
+                    const prompt = `Vous êtes un expert en CV professionnel. Optimisez ce CV pour qu'il tienne parfaitement sur UNE SEULE PAGE tout en conservant les informations les plus importantes et pertinentes.
+
+DONNÉES DU CV ACTUEL :
+- Nom: ${cvData.prenom} ${cvData.nom}
+- Poste: ${cvData.poste}
+- Description: ${cvData.description}
+- Expériences: ${cvData.experiences.map(exp => `${exp.title} - ${exp.meta}: ${exp.desc}`).join('\\n')}
+- Formations: ${cvData.formations.map(form => `${form.title} - ${form.meta}: ${form.desc || ''}`).join('\\n')}
+- Compétences: ${cvData.competences}
+
+CONSIGNES D'OPTIMISATION :
+1. Raccourcissez la description professionnelle à 2-3 lignes maximum
+2. Limitez chaque expérience à 2-3 points clés maximum
+3. Condensez les formations en gardant l'essentiel
+4. Sélectionnez les 8-10 compétences les plus pertinentes
+5. Utilisez des phrases courtes et percutantes
+6. Supprimez les répétitions et informations redondantes
+7. Privilégiez les résultats chiffrés et mots-clés du secteur
+
+Retournez un objet JSON avec cette structure exacte :
+{
+    "description": "description professionnelle optimisée (2-3 lignes max)",
+    "experiences": [
+        {"title": "Titre du poste", "meta": "Entreprise - Période", "desc": "Description concise avec 2-3 points clés maximum"}
+    ],
+    "formations": [
+        {"title": "Diplôme", "meta": "Établissement - Année", "desc": ""}
+    ],
+    "competences": "liste des 8-10 compétences les plus importantes séparées par des virgules"
+}`;
+
+                    const schema = {
+                        type: "object",
+                        properties: {
+                            description: { type: "string" },
+                            experiences: {
+                                type: "array",
+                                items: {
+                                    type: "object",
+                                    properties: {
+                                        title: { type: "string" },
+                                        meta: { type: "string" },
+                                        desc: { type: "string" }
+                                    }
+                                }
+                            },
+                            formations: {
+                                type: "array",
+                                items: {
+                                    type: "object",
+                                    properties: {
+                                        title: { type: "string" },
+                                        meta: { type: "string" },
+                                        desc: { type: "string" }
+                                    }
+                                }
+                            },
+                            competences: { type: "string" }
+                        }
+                    };
+
+                    const result = await callGeminiAPI(prompt, schema);
+                    if (result) {
+                        // Appliquer les optimisations
+                        if (result.description) {
+                            controls.description.value = result.description;
+                        }
+                        
+                        if (result.competences) {
+                            controls.competences.value = result.competences;
+                        }
+
+                        // Remplacer les expériences
+                        if (result.experiences && result.experiences.length > 0) {
+                            controls.experienceList.innerHTML = '';
+                            result.experiences.forEach(exp => {
+                                createDynamicItem(controls.experienceList, [
+                                    { key: 'title', placeholder: 'Titre du poste', type: 'input' },
+                                    { key: 'meta', placeholder: 'Entreprise - Période', type: 'input' },
+                                    { key: 'desc', placeholder: 'Description', type: 'textarea' }
+                                ], exp);
+                            });
+                        }
+
+                        // Remplacer les formations
+                        if (result.formations && result.formations.length > 0) {
+                            controls.formationList.innerHTML = '';
+                            result.formations.forEach(form => {
+                                createDynamicItem(controls.formationList, [
+                                    { key: 'title', placeholder: 'Diplôme/Formation', type: 'input' },
+                                    { key: 'meta', placeholder: 'École - Année', type: 'input' },
+                                    { key: 'desc', placeholder: 'Description (optionnel)', type: 'textarea' }
+                                ], form);
+                            });
+                        }
+
+                        // Optimiser automatiquement la taille de police et les espacements pour une page
+                        document.documentElement.style.setProperty('--font-size-p', '9pt');
+                        document.documentElement.style.setProperty('--font-size-h2', '18pt');
+                        document.documentElement.style.setProperty('--paragraph-spacing', '0.3rem');
+                        document.documentElement.style.setProperty('--module-spacing', '1rem');
+                        document.documentElement.style.setProperty('--item-spacing', '0.3rem');
+                        
+                        // Mettre à jour les sliders pour refléter les nouveaux paramètres
+                        const fontSizePSlider = document.getElementById('font-size-p');
+                        const fontSizeH2Slider = document.getElementById('font-size-h2');
+                        const moduleSpacingSlider = document.getElementById('module-spacing');
+                        const paragraphSpacingSlider = document.getElementById('paragraph-spacing');
+                        const itemSpacingSlider = document.getElementById('item-spacing');
+                        
+                        if (fontSizePSlider) {
+                            fontSizePSlider.value = 9;
+                            document.getElementById('font-size-p-value').textContent = '9';
+                        }
+                        if (fontSizeH2Slider) {
+                            fontSizeH2Slider.value = 18;
+                            document.getElementById('font-size-h2-value').textContent = '18';
+                        }
+                        if (moduleSpacingSlider) {
+                            moduleSpacingSlider.value = 1;
+                            document.getElementById('module-spacing-value').textContent = '1';
+                        }
+                        if (paragraphSpacingSlider) {
+                            paragraphSpacingSlider.value = 0.3;
+                            document.getElementById('paragraph-spacing-value').textContent = '0.3';
+                        }
+                        if (itemSpacingSlider) {
+                            itemSpacingSlider.value = 0.3;
+                            document.getElementById('item-spacing-value').textContent = '0.3';
+                        }
+
+                        updatePreview('form');
+                        
+                        // Vérifier si le CV tient maintenant sur une page
+                        setTimeout(() => {
+                            checkAllPagesOverflow();
+                            showNotification("CV optimisé pour tenir sur une page ! ✨", "success");
+                        }, 500);
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'optimisation:', error);
+                    showNotification("Erreur lors de l'optimisation. Veuillez réessayer.", "error");
                 }
+            }
+
+            controls.aiOptimizeOnePageBtn.addEventListener('click', async () => {
+                // Fonction pour optimiser le CV afin qu'il tienne sur une page
+                await optimizeForOnePage();
             });
 
             controls.aiLimitSkillsBtn.addEventListener('click', async () => {
