@@ -2357,8 +2357,14 @@
                     hideLoader();
                 }
             }
+
+            // Rendre la fonction globalement accessible
+            window.callGeminiAPI = callGeminiAPI;
+            window.updatePreview = updatePreview;
+            window.createDynamicItem = createDynamicItem;
+            window.showNotification = showNotification;
             
-            function updateAllStyles() {
+            function updatePreview(source = 'form') {
                 root.style.setProperty('--primary-color', controls.primaryColorPicker.value);
                 root.style.setProperty('--secondary-color', controls.secondaryColorPicker.value);
                 root.style.setProperty('--body-text-color', controls.bodyTextColorPicker.value);
@@ -4742,7 +4748,7 @@ TYPES DE DEMANDES QUE TU PEUX TRAITER:
 
 Réponds de manière proactive et applique directement les modifications nécessaires.`;
 
-                const result = await callGeminiAPI(prompt);
+                const result = await window.callGeminiAPI(prompt);
                 
                 if (result) {
                     await this.parseAndApplyAdvancedSuggestions(result, userMessage);
@@ -5016,11 +5022,11 @@ ${analysis.missingElements}
                 await this.applyIntelligentModifications(userRequest, aiResponse);
 
                 if (modificationsApplied.length > 0) {
-                    showNotification(`🤖 IA: ${modificationsApplied.join(', ')}`, "success", 4000);
+                    window.showNotification(`🤖 IA: ${modificationsApplied.join(', ')}`, "success", 4000);
                 }
 
                 // Mise à jour de l'aperçu
-                updatePreview('form');
+                window.updatePreview('form');
             }
 
             async modifyField(field, newContent) {
@@ -5041,7 +5047,7 @@ ${analysis.missingElements}
                         { key: 'desc', placeholder: 'Description', type: 'textarea' }
                     ];
                     const data = { title: titre, meta: meta, desc: description };
-                    createDynamicItem(container, fields, data);
+                    window.createDynamicItem(container, fields, data);
                 }
             }
 
@@ -5054,7 +5060,7 @@ ${analysis.missingElements}
                         { key: 'desc', placeholder: 'Description (optionnel)', type: 'textarea' }
                     ];
                     const data = { title: diplome, meta: meta, desc: description };
-                    createDynamicItem(container, fields, data);
+                    window.createDynamicItem(container, fields, data);
                 }
             }
 
@@ -5349,7 +5355,7 @@ ${analysis}
 Fournis des suggestions courtes et précises que l'utilisateur peut demander directement. Format : "suggestion1|suggestion2|suggestion3"`;
 
                 try {
-                    const suggestions = await callGeminiAPI(prompt);
+                    const suggestions = await window.callGeminiAPI(prompt);
                     if (suggestions) {
                         const suggestionList = suggestions.split('|').filter(s => s.trim());
                         
@@ -5451,7 +5457,7 @@ Fournis des suggestions courtes et précises que l'utilisateur peut demander dir
 Rends-le plus dynamique, professionnel et attractif pour les recruteurs.`;
 
                 try {
-                    return await callGeminiAPI(prompt);
+                    return await window.callGeminiAPI(prompt);
                 } catch (error) {
                     return null;
                 }
