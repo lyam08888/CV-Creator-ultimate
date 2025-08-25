@@ -5188,10 +5188,17 @@ ${data.formations.map(form => `- ${form.title} (${form.meta}): ${form.desc}`).jo
                 if (!container) return [];
 
                 const items = [];
-                container.querySelectorAll('.p-2').forEach(item => {
-                    const title = item.querySelector(`[id*="${type}-title-"]`)?.value || '';
-                    const meta = item.querySelector(`[id*="${type}-meta-"]`)?.value || '';
-                    const desc = item.querySelector(`[id*="${type}-desc-"]`)?.value || '';
+                const itemElements = container.querySelectorAll('.p-2');
+                
+                itemElements.forEach(item => {
+                    const titleElement = item.querySelector(`[id*="${type}-title-"]`);
+                    const metaElement = item.querySelector(`[id*="${type}-meta-"]`);
+                    const descElement = item.querySelector(`[id*="${type}-desc-"]`);
+                    
+                    const title = titleElement ? titleElement.value || '' : '';
+                    const meta = metaElement ? metaElement.value || '' : '';
+                    const desc = descElement ? descElement.value || '' : '';
+                    
                     if (title) items.push({ title, meta, desc });
                 });
                 return items;
@@ -5214,7 +5221,7 @@ ${data.formations.map(form => `- ${form.title} (${form.meta}): ${form.desc}`).jo
 
             performDeepAnalysis() {
                 const preview = document.querySelector('#cv-preview');
-                const sections = preview.querySelectorAll('.cv-module');
+                const sections = preview ? preview.querySelectorAll('.cv-module') : [];
                 
                 const analysis = {
                     sectionsCount: sections.length,
@@ -5245,6 +5252,8 @@ ${analysis.missingElements}
 
             getCurrentLayout() {
                 const container = document.querySelector('.cv-body-container');
+                if (!container) return 'Layout non défini';
+                
                 if (container.classList.contains('layout-1-col')) return '1 colonne';
                 if (container.classList.contains('layout-2-col-33-67')) return '2 colonnes (33%-67%)';
                 if (container.classList.contains('layout-2-col-50-50')) return '2 colonnes (50%-50%)';
@@ -5264,12 +5273,20 @@ ${analysis.missingElements}
             }
 
             getCurrentFonts() {
-                const styles = getComputedStyle(document.documentElement);
-                return {
-                    h1: styles.getPropertyValue('--font-family-h1').trim(),
-                    h2: styles.getPropertyValue('--font-family-h2').trim(),
-                    body: styles.getPropertyValue('--font-family-body').trim()
-                };
+                try {
+                    const styles = getComputedStyle(document.documentElement);
+                    return {
+                        h1: styles.getPropertyValue('--font-family-h1').trim() || 'Non défini',
+                        h2: styles.getPropertyValue('--font-family-h2').trim() || 'Non défini',
+                        body: styles.getPropertyValue('--font-family-body').trim() || 'Non défini'
+                    };
+                } catch (error) {
+                    return {
+                        h1: 'Non défini',
+                        h2: 'Non défini',
+                        body: 'Non défini'
+                    };
+                }
             }
 
             analyzeContent() {
@@ -5329,8 +5346,8 @@ ${analysis.missingElements}
                 
                 if (!leftColumn || !rightColumn) return { balanced: true };
 
-                const leftContent = leftColumn.textContent.length;
-                const rightContent = rightColumn.textContent.length;
+                const leftContent = leftColumn.textContent ? leftColumn.textContent.length : 0;
+                const rightContent = rightColumn.textContent ? rightColumn.textContent.length : 0;
                 
                 return {
                     leftHeavy: leftContent > rightContent * 1.5,
@@ -5458,23 +5475,26 @@ ${analysis.missingElements}
 
             async changeLayout(layoutType) {
                 const container = document.querySelector('.cv-body-container');
-                if (container) {
-                    // Supprimer toutes les classes de layout existantes
-                    container.classList.remove('layout-1-col', 'layout-2-col-33-67', 'layout-2-col-50-50', 'layout-2-col-67-33');
-                    
-                    // Ajouter la nouvelle classe de layout
-                    const layoutMap = {
-                        '1-col': 'layout-1-col',
-                        '2-col-33-67': 'layout-2-col-33-67',
-                        '2-col-50-50': 'layout-2-col-50-50',
-                        '2-col-67-33': 'layout-2-col-67-33'
-                    };
-                    
-                    const layoutClass = layoutMap[layoutType] || 'layout-2-col-50-50';
-                    container.classList.add(layoutClass);
-                    
-                    // Mettre à jour les boutons de layout
-                    document.querySelectorAll('.layout-btn').forEach(btn => {
+                if (!container) return;
+                
+                // Supprimer toutes les classes de layout existantes
+                container.classList.remove('layout-1-col', 'layout-2-col-33-67', 'layout-2-col-50-50', 'layout-2-col-67-33');
+                
+                // Ajouter la nouvelle classe de layout
+                const layoutMap = {
+                    '1-col': 'layout-1-col',
+                    '2-col-33-67': 'layout-2-col-33-67',
+                    '2-col-50-50': 'layout-2-col-50-50',
+                    '2-col-67-33': 'layout-2-col-67-33'
+                };
+                
+                const layoutClass = layoutMap[layoutType] || 'layout-2-col-50-50';
+                container.classList.add(layoutClass);
+                
+                // Mettre à jour les boutons de layout s'ils existent
+                const layoutButtons = document.querySelectorAll('.layout-btn');
+                if (layoutButtons.length > 0) {
+                    layoutButtons.forEach(btn => {
                         btn.classList.remove('active');
                         if (btn.dataset.layout === layoutType) {
                             btn.classList.add('active');
