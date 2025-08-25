@@ -531,7 +531,7 @@
         .item-title { font-weight: 700; color: var(--secondary-color); }
         .item-meta { font-size: calc(var(--font-size-p) * 0.9); font-style: italic; }
 
-        #recruiter-banner { display: flex; align-items: center; padding: 0.5rem; box-sizing: border-box; width: 100%; font-size: var(--font-size-banner); position: relative; overflow: hidden; }
+        #recruiter-banner { display: none; align-items: center; padding: 0.5rem; box-sizing: border-box; width: 100%; font-size: var(--font-size-banner); position: relative; overflow: hidden; }
         .banner-content-wrapper { position: relative; z-index: 1; display: flex; align-items: center; width: 100%; height: 100%; gap: var(--banner-element-spacing); }
         #banner-bg-img-preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: opacity 0.3s, filter 0.3s; }
         #fixed-banner-top { margin-bottom: var(--module-spacing); display: none; }
@@ -2192,6 +2192,9 @@
                 const isBannerInTop = preview.fixedBannerTop.contains(preview.banner);
                 const isBannerInBottom = preview.fixedBannerBottom.contains(preview.banner);
                 const isBannerInModule = preview.bannerModule.contains(preview.banner);
+                
+                // Cacher/afficher la bannière selon l'état de la checkbox
+                preview.banner.style.display = isBannerEnabled ? 'flex' : 'none';
                 
                 preview.bannerModule.classList.toggle('hidden', !isBannerEnabled || !isBannerInModule);
                 preview.fixedBannerTop.style.display = (isBannerEnabled && isBannerInTop) ? 'block' : 'none';
