@@ -966,6 +966,41 @@
         #banner-bg-img-preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: opacity 0.3s, filter 0.3s; }
         #fixed-banner-top { margin-bottom: var(--module-spacing); display: none; }
         #fixed-banner-bottom { margin-top: auto; padding-top: var(--module-spacing); display: none; }
+        
+        /* Styles spécifiques pour les boutons fixer bannière - visibilité assurée */
+        #fix-banner-top-btn, #fix-banner-bottom-btn {
+            background-color: #0d9488 !important; /* Teal-600 avec !important */
+            color: white !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3) !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+        }
+        
+        #fix-banner-top-btn:hover, #fix-banner-bottom-btn:hover {
+            background-color: #0f766e !important; /* Teal-700 avec !important */
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4) !important;
+        }
+        
+        /* Contrôle de l'image de fond de bannière */
+        #banner-fix-controls {
+            background-color: #f8fafc;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+        }
+        
+        /* Amélioration de la visibilité des éléments de bannière avec image de fond */
+        .banner-content-wrapper * {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .banner-style-modern .banner-content-wrapper *, 
+        .banner-style-degrade .banner-content-wrapper * {
+            text-shadow: none; /* Pas besoin d'ombre pour les styles avec fond coloré */
+        }
         #banner-img-preview { border-radius: 50%; object-fit: cover; flex-shrink: 0; transition: width 0.3s, height 0.3s; background-color: rgba(255,255,255,0.5); }
         #banner-img-preview.logo-sm { width: 40px; height: 40px; }
         #banner-img-preview.logo-md { width: 60px; height: 60px; }
@@ -1842,26 +1877,123 @@
                                 <h3 class="font-semibold text-gray-700">Bannière Recruteur</h3>
                                 <button id="reset-recruiter-btn" class="text-sm text-gray-500 hover:text-red-600" title="Réinitialiser les informations recruteur"><i class="fas fa-undo"></i></button>
                             </div>
-                            <div id="banner-fix-controls"><button id="fix-banner-top-btn" class="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 flex items-center justify-center gap-2" title="Fixer la bannière en haut de toutes les pages"><i class="fas fa-arrow-up"></i>Fixer en haut</button><button id="fix-banner-bottom-btn" class="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 flex items-center justify-center gap-2 mt-2" title="Fixer la bannière en bas de toutes les pages"><i class="fas fa-arrow-down"></i>Fixer en bas</button></div><button id="modular-banner-btn" class="cv-input w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 flex items-center justify-center gap-2 hidden" title="Rendre la bannière déplaçable dans les colonnes"><i class="fas fa-arrows-up-down-left-right"></i>Rendre modulaire</button><label class="flex items-center gap-2 text-sm"><input type="checkbox" id="toggle-banner-checkbox" class="cv-input">Afficher la bannière</label><label for="banner-style-select" class="text-sm font-medium">Style de Bannière</label><select id="banner-style-select" class="cv-input w-full p-2 border rounded-md"><option value="banner-style-modern">Moderne</option><option value="banner-style-elegant">Élégant</option><option value="banner-style-discret">Discret</option><option value="banner-style-carte">Carte</option><option value="banner-style-degrade">Dégradé</option><option value="banner-style-premium">Premium</option><option value="banner-style-minimal">Minimal</option><option value="banner-style-encadre">Encadré</option><option value="banner-style-ligne-haute">Ligne Haute</option></select><p class="text-sm font-medium">Alignement</p><div class="flex gap-2"><button data-banner-align="left" class="banner-align-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Aligner la bannière à gauche"><i class="fas fa-align-left"></i></button><button data-banner-align="center" class="banner-align-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Centrer la bannière"><i class="fas fa-align-center"></i></button><button data-banner-align="right" class="banner-align-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Aligner la bannière à droite"><i class="fas fa-align-right"></i></button><button id="banner-invert-btn" class="p-2 bg-gray-200 rounded-md text-sm" title="Inverser Logo/Texte"><i class="fas fa-right-left"></i></button></div><p class="text-sm font-medium">Taille Logo</p><div class="flex gap-2"><button data-logo-size="sm" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo petit (40px)">P</button><button data-logo-size="md" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo moyen (60px)">M</button><button data-logo-size="lg" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo grand (80px)">G</button><button data-logo-size="xl" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo très grand (100px)">XL</button><button data-logo-size="xxl" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo extra grand (120px)">XXL</button></div><div><label for="banner-element-spacing" class="block text-sm font-medium text-gray-700">Espace Bannière: <span id="banner-element-spacing-value">1</span>rem</label><input type="range" id="banner-element-spacing" min="0.5" max="4" step="0.1" value="1" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer"></div><input type="text" id="banner-nom" placeholder="Votre Nom & Prénom" class="banner-input w-full p-2 border rounded-md"><input type="text" id="banner-poste" placeholder="Votre Poste" class="banner-input w-full p-2 border rounded-md"><input type="email" id="banner-email" placeholder="Email" class="banner-input w-full p-2 border rounded-md"><input type="tel" id="banner-tel" placeholder="Téléphone" class="banner-input w-full p-2 border rounded-md"><div><label for="banner-image" class="block text-sm font-medium text-gray-700">Photo/Logo</label><input type="file" id="banner-image" accept="image/*" class="banner-input mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"></div>
+                            
+                            <!-- Contrôles de fixation de bannière -->
+                            <div id="banner-fix-controls" class="space-y-2">
+                                <h4 class="text-sm font-medium text-gray-700">🔧 Position de la bannière</h4>
+                                <button id="fix-banner-top-btn" class="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 flex items-center justify-center gap-2" title="Fixer la bannière en haut de toutes les pages">
+                                    <i class="fas fa-arrow-up"></i>Fixer en haut
+                                </button>
+                                <button id="fix-banner-bottom-btn" class="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 flex items-center justify-center gap-2" title="Fixer la bannière en bas de toutes les pages">
+                                    <i class="fas fa-arrow-down"></i>Fixer en bas
+                                </button>
+                            </div>
+                            
+                            <button id="modular-banner-btn" class="cv-input w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 flex items-center justify-center gap-2 hidden" title="Rendre la bannière déplaçable dans les colonnes">
+                                <i class="fas fa-arrows-up-down-left-right"></i>Rendre modulaire
+                            </button>
+                            
+                            <label class="flex items-center gap-2 text-sm">
+                                <input type="checkbox" id="toggle-banner-checkbox" class="cv-input">Afficher la bannière
+                            </label>                            <label for="banner-style-select" class="text-sm font-medium">Style de Bannière</label>
+                            <select id="banner-style-select" class="cv-input w-full p-2 border rounded-md">
+                                <option value="banner-style-modern">Moderne</option>
+                                <option value="banner-style-elegant">Élégant</option>
+                                <option value="banner-style-discret">Discret</option>
+                                <option value="banner-style-carte">Carte</option>
+                                <option value="banner-style-degrade">Dégradé</option>
+                                <option value="banner-style-premium">Premium</option>
+                                <option value="banner-style-minimal">Minimal</option>
+                                <option value="banner-style-encadre">Encadré</option>
+                                <option value="banner-style-ligne-haute">Ligne Haute</option>
+                            </select>
+                            
+                            <p class="text-sm font-medium">Alignement</p>
+                            <div class="flex gap-2">
+                                <button data-banner-align="left" class="banner-align-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Aligner la bannière à gauche">
+                                    <i class="fas fa-align-left"></i>
+                                </button>
+                                <button data-banner-align="center" class="banner-align-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Centrer la bannière">
+                                    <i class="fas fa-align-center"></i>
+                                </button>
+                                <button data-banner-align="right" class="banner-align-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Aligner la bannière à droite">
+                                    <i class="fas fa-align-right"></i>
+                                </button>
+                                <button id="banner-invert-btn" class="p-2 bg-gray-200 rounded-md text-sm" title="Inverser Logo/Texte">
+                                    <i class="fas fa-right-left"></i>
+                                </button>
+                            </div>
+                            
+                            <p class="text-sm font-medium">Taille Logo</p>
+                            <div class="flex gap-2">
+                                <button data-logo-size="sm" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo petit (40px)">P</button>
+                                <button data-logo-size="md" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo moyen (60px)">M</button>
+                                <button data-logo-size="lg" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo grand (80px)">G</button>
+                                <button data-logo-size="xl" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo très grand (100px)">XL</button>
+                                <button data-logo-size="xxl" class="logo-size-btn flex-1 bg-gray-200 p-2 rounded-md text-sm" title="Logo extra grand (120px)">XXL</button>
+                            </div>
+                            
+                            <div>
+                                <label for="banner-element-spacing" class="block text-sm font-medium text-gray-700">
+                                    Espace Bannière: <span id="banner-element-spacing-value">1</span>rem
+                                </label>
+                                <input type="range" id="banner-element-spacing" min="0.5" max="4" step="0.1" value="1" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                            </div>
+                            
+                            <input type="text" id="banner-nom" placeholder="Votre Nom & Prénom" class="banner-input w-full p-2 border rounded-md">
+                            <input type="text" id="banner-poste" placeholder="Votre Poste" class="banner-input w-full p-2 border rounded-md">
+                            <input type="email" id="banner-email" placeholder="Email" class="banner-input w-full p-2 border rounded-md">
+                            <input type="tel" id="banner-tel" placeholder="Téléphone" class="banner-input w-full p-2 border rounded-md">
+                            
+                            <div>
+                                <label for="banner-image" class="block text-sm font-medium text-gray-700">Photo/Logo</label>
+                                <input type="file" id="banner-image" accept="image/*" class="banner-input mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            </div>
                         </div>
                     </details>
                      <details class="control-group" open>
                         <summary><span>Image de Fond</span><label class="completion-label"><input type="checkbox" id="completion-banner-bg" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-4">
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-md p-3 text-sm">
+                                <p class="text-yellow-800">
+                                    <i class="fas fa-info-circle mr-2"></i>
+                                    <strong>Note importante :</strong> L'image de fond n'est pas appliquée automatiquement. 
+                                    Vous devez manuellement télécharger et ajuster l'image selon vos besoins.
+                                </p>
+                            </div>
+                            
                             <div>
-                                <label for="banner-bg-image" class="block text-sm font-medium text-gray-700">Télécharger une image</label>
+                                <label for="banner-bg-image" class="block text-sm font-medium text-gray-700">
+                                    🖼️ Télécharger une image de fond pour la bannière
+                                </label>
                                 <input type="file" id="banner-bg-image" accept="image/*" class="banner-input mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                <p class="text-xs text-gray-500 mt-1">Formats acceptés : JPG, PNG, WebP - Taille recommandée : 1200x300px</p>
                             </div>
+                            
                             <div>
-                                <label for="banner-bg-opacity" class="block text-sm font-medium text-gray-700">Opacité: <span id="banner-bg-opacity-value">1</span></label>
+                                <label for="banner-bg-opacity" class="block text-sm font-medium text-gray-700">
+                                    Opacité de l'image: <span id="banner-bg-opacity-value">1</span>
+                                </label>
                                 <input type="range" id="banner-bg-opacity" min="0" max="1" step="0.05" value="1" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                                <p class="text-xs text-gray-500">Réduisez l'opacité pour rendre le texte plus lisible</p>
                             </div>
+                            
                             <div>
-                                <label for="banner-bg-blur" class="block text-sm font-medium text-gray-700">Flou: <span id="banner-bg-blur-value">0</span>px</label>
+                                <label for="banner-bg-blur" class="block text-sm font-medium text-gray-700">
+                                    Flou de l'image: <span id="banner-bg-blur-value">0</span>px
+                                </label>
                                 <input type="range" id="banner-bg-blur" min="0" max="20" step="1" value="0" class="cv-input w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                                <p class="text-xs text-gray-500">Ajoutez du flou pour améliorer la lisibilité du texte</p>
                             </div>
-                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="banner-bg-grayscale" class="cv-input">Image en noir et blanc</label>
-                            <button id="remove-banner-bg-btn" class="ai-btn-enhanced w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🗑️ Supprimer l'image de fond de la bannière"><i class="fas fa-trash text-lg"></i> Supprimer l'image de fond</button>
+                            
+                            <label class="flex items-center gap-2 text-sm">
+                                <input type="checkbox" id="banner-bg-grayscale" class="cv-input">
+                                Image en noir et blanc
+                            </label>
+                            
+                            <button id="remove-banner-bg-btn" class="ai-btn-enhanced w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🗑️ Supprimer l'image de fond de la bannière">
+                                <i class="fas fa-trash text-lg"></i> Supprimer l'image de fond
+                            </button>
                         </div>
                     </details>
                      <details class="control-group" open>
