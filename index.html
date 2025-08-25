@@ -449,7 +449,7 @@
             margin-bottom: 1.5rem;
         }
         
-        /* Navigation des onglets avec style Apple Pro Ultra - Version Agrandie et Espacée */
+        /* Navigation des onglets avec style Apple Pro Ultra - Version Rectangulaire */
         #tab-navigation {
             background: linear-gradient(135deg, 
                 rgba(255, 255, 255, 0.95) 0%, 
@@ -457,7 +457,7 @@
                 rgba(255, 255, 255, 0.95) 100%);
             backdrop-filter: blur(30px) saturate(1.2);
             border-radius: 20px;
-            padding: 16px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 
                 0 8px 32px rgba(0, 0, 0, 0.1),
@@ -466,8 +466,8 @@
                 inset 0 -1px 0 rgba(0, 0, 0, 0.05);
             margin-bottom: 16px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
             position: relative;
             overflow: hidden;
         }
@@ -486,12 +486,12 @@
             pointer-events: none;
         }
         
-        /* Onglets avec effet de pilule Apple Pro - Version Agrandie et Espacée */
+        /* Onglets avec effet de pilule Apple Pro - Version Rectangulaire */
         .tab-btn {
             background: transparent;
             border: none;
-            border-radius: 18px;
-            padding: 18px 14px;
+            border-radius: 20px;
+            padding: 16px 24px;
             font-size: 13px;
             font-weight: 600;
             color: #666;
@@ -499,12 +499,12 @@
             cursor: pointer;
             position: relative;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            gap: 8px;
-            min-width: 130px;
-            min-height: 90px;
-            justify-content: center;
+            gap: 16px;
+            min-width: 180px;
+            min-height: 70px;
+            justify-content: flex-start;
             overflow: hidden;
             z-index: 1;
         }
@@ -522,7 +522,7 @@
                 rgba(0, 122, 255, 0) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
-            border-radius: 18px;
+            border-radius: 20px;
         }
         
         .tab-btn:hover::before {
@@ -566,14 +566,16 @@
                 rgba(255, 255, 255, 0.2) 0%, 
                 transparent 50%, 
                 rgba(255, 255, 255, 0.1) 100%);
-            border-radius: 18px;
+            border-radius: 20px;
         }
         
         .tab-btn i {
-            font-size: 22px;
+            font-size: 28px;
             flex-shrink: 0;
             filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
             transition: all 0.3s ease;
+            width: 40px;
+            text-align: center;
         }
         
         .tab-btn:hover i {
@@ -585,27 +587,34 @@
         }
         
         .tab-btn .btn-text {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             letter-spacing: 0.3px;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            text-align: center;
             line-height: 1.2;
+            flex: 1;
         }
         
         .tab-btn .btn-subtitle {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 400;
             opacity: 0.7;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-align: center;
             line-height: 1;
-            margin-top: -2px;
+            margin-top: 2px;
+        }
+        
+        /* Conteneur de texte pour organisation verticale */
+        .tab-btn .text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
         }
         
         .tab-btn.active .btn-text,
@@ -714,35 +723,37 @@
             z-index: 10;
         }
         
-        /* Responsive amélioré avec animations fluides */
+        /* Responsive amélioré pour design rectangulaire */
         @media (max-width: 1024px) {
             #tab-navigation {
-                padding: 12px;
+                padding: 16px;
                 border-radius: 18px;
-                gap: 8px;
-                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                gap: 12px;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             }
             
             .tab-btn {
-                padding: 14px 10px;
-                border-radius: 14px;
-                min-height: 75px;
-                min-width: 100px;
-            }
-            
-            .tab-btn .btn-text {
-                font-size: 11px;
-            }
-            
-            .tab-btn .btn-subtitle {
-                font-size: 9px;
+                padding: 12px 20px;
+                border-radius: 16px;
+                min-height: 60px;
+                min-width: 150px;
+                gap: 12px;
             }
             
             .tab-btn i {
-                font-size: 20px;
+                font-size: 24px;
+                width: 32px;
             }
             
-            /* Actions sur une ligne séparée sur tablette */
+            .tab-btn .btn-text {
+                font-size: 13px;
+            }
+            
+            .tab-btn .btn-subtitle {
+                font-size: 10px;
+            }
+            
+            /* Actions conservent le format rectangulaire */
             .tab-btn.action-btn {
                 margin-left: 0;
                 grid-column: span 1;
@@ -755,34 +766,61 @@
         
         @media (max-width: 768px) {
             #tab-navigation {
-                padding: 8px;
+                padding: 12px;
                 border-radius: 16px;
-                gap: 6px;
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 8px;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             }
             
             .tab-btn {
-                padding: 12px 8px;
-                border-radius: 12px;
-                min-height: 65px;
-                min-width: 70px;
+                padding: 10px 16px;
+                border-radius: 14px;
+                min-height: 50px;
+                min-width: 110px;
+                gap: 10px;
+            }
+            
+            .tab-btn i {
+                font-size: 20px;
+                width: 24px;
             }
             
             .tab-btn .btn-text {
-                font-size: 10px;
+                font-size: 12px;
             }
             
             .tab-btn .btn-subtitle {
                 display: none;
             }
             
-            .tab-btn i {
-                font-size: 18px;
+            /* Actions compactes sur mobile mais toujours rectangulaires */
+            .tab-btn.action-btn .btn-text {
+                font-size: 11px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #tab-navigation {
+                padding: 8px;
+                gap: 6px;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
             
-            /* Actions encore plus compactes sur mobile */
-            .tab-btn.action-btn .btn-text {
-                font-size: 9px;
+            .tab-btn {
+                padding: 8px 12px;
+                border-radius: 12px;
+                min-height: 45px;
+                min-width: 90px;
+                gap: 8px;
+            }
+            
+            .tab-btn i {
+                font-size: 18px;
+                width: 20px;
+            }
+            
+            .tab-btn .btn-text {
+                font-size: 11px;
             }
         }
             
@@ -4548,60 +4586,82 @@
                 <!-- Onglets de navigation -->
                 <button class="tab-btn icon-only-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" data-tooltip="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV">
                     <i class="fa-solid fa-robot"></i>
-                    <span class="btn-text">IA</span>
-                    <span class="btn-subtitle">Intelligence Artificielle</span>
+                    <div class="text-container">
+                        <span class="btn-text">IA</span>
+                        <span class="btn-subtitle">Intelligence Artificielle</span>
+                    </div>
                 </button>
                 <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" data-tooltip="📝 Gérez le contenu principal de votre CV : expériences et formations">
                     <i class="fa-solid fa-file-lines"></i>
-                    <span class="btn-text">Contenu</span>
-                    <span class="btn-subtitle">Expériences & Formations</span>
+                    <div class="text-container">
+                        <span class="btn-text">Contenu</span>
+                        <span class="btn-subtitle">Expériences & Formations</span>
+                    </div>
                 </button>
                 <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" data-tooltip="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles">
                     <i class="fa-solid fa-star"></i>
-                    <span class="btn-text">Compétences</span>
-                    <span class="btn-subtitle">Savoir-faire & Talents</span>
+                    <div class="text-container">
+                        <span class="btn-text">Compétences</span>
+                        <span class="btn-subtitle">Savoir-faire & Talents</span>
+                    </div>
                 </button>
                 <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" data-tooltip="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications">
                     <i class="fa-solid fa-puzzle-piece"></i>
-                    <span class="btn-text">Sections</span>
-                    <span class="btn-subtitle">Langues & Loisirs</span>
+                    <div class="text-container">
+                        <span class="btn-text">Sections</span>
+                        <span class="btn-subtitle">Langues & Loisirs</span>
+                    </div>
                 </button>
                 <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" data-tooltip="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale">
                     <i class="fa-solid fa-columns"></i>
-                    <span class="btn-text">Mise en Page</span>
-                    <span class="btn-subtitle">Colonnes & Espacement</span>
+                    <div class="text-container">
+                        <span class="btn-text">Mise en Page</span>
+                        <span class="btn-subtitle">Colonnes & Espacement</span>
+                    </div>
                 </button>
                 <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" data-tooltip="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV">
                     <i class="fa-solid fa-palette"></i>
-                    <span class="btn-text">Styles</span>
-                    <span class="btn-subtitle">Thèmes & Couleurs</span>
+                    <div class="text-container">
+                        <span class="btn-text">Styles</span>
+                        <span class="btn-subtitle">Thèmes & Couleurs</span>
+                    </div>
                 </button>
                 <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" data-tooltip="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact">
                     <i class="fa-solid fa-user-tie"></i>
-                    <span class="btn-text">Bannière</span>
-                    <span class="btn-subtitle">En-tête & Contact</span>
+                    <div class="text-container">
+                        <span class="btn-text">Bannière</span>
+                        <span class="btn-subtitle">En-tête & Contact</span>
+                    </div>
                 </button>
 
                 <!-- Actions rapides intégrées -->
                 <button id="download-pdf-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-blue-50 hover:bg-blue-100" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression">
                     <i class="fa-solid fa-download text-blue-600"></i>
-                    <span class="btn-text text-blue-600">PDF</span>
-                    <span class="btn-subtitle text-blue-500">Télécharger</span>
+                    <div class="text-container">
+                        <span class="btn-text text-blue-600">PDF</span>
+                        <span class="btn-subtitle text-blue-500">Télécharger</span>
+                    </div>
                 </button>
                 <button id="share-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-green-50 hover:bg-green-100" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau">
                     <i class="fa-solid fa-share-alt text-green-600"></i>
-                    <span class="btn-text text-green-600">Partager</span>
-                    <span class="btn-subtitle text-green-500">Lien unique</span>
+                    <div class="text-container">
+                        <span class="btn-text text-green-600">Partager</span>
+                        <span class="btn-subtitle text-green-500">Lien unique</span>
+                    </div>
                 </button>
                 <button id="reset-cv-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-red-50 hover:bg-red-100" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)">
                     <i class="fa-solid fa-file-circle-plus text-red-600"></i>
-                    <span class="btn-text text-red-600">Nouveau</span>
-                    <span class="btn-subtitle text-red-500">CV vierge</span>
+                    <div class="text-container">
+                        <span class="btn-text text-red-600">Nouveau</span>
+                        <span class="btn-subtitle text-red-500">CV vierge</span>
+                    </div>
                 </button>
                 <button id="toggle-overflow-btn" class="tab-btn action-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap bg-orange-50 hover:bg-orange-100" data-tooltip="📏 Activer la détection visuelle des débordements de contenu">
                     <i class="fa-solid fa-ruler-combined text-orange-600"></i>
-                    <span class="btn-text text-orange-600">Détection</span>
-                    <span class="btn-subtitle text-orange-500">Dépassement</span>
+                    <div class="text-container">
+                        <span class="btn-text text-orange-600">Détection</span>
+                        <span class="btn-subtitle text-orange-500">Dépassement</span>
+                    </div>
                 </button>
             </div>
 
