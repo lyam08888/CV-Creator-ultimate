@@ -247,23 +247,40 @@
             box-shadow: var(--shadow-lg), 0 8px 25px 0 rgba(6, 182, 212, 0.35);
         }
 
-        /* Tailles des boutons */
-        .btn-sm {
-            padding: 0.5rem 0.75rem;
+        /* Tailles des boutons harmonisées */
+        .btn-xs {
+            padding: 0.375rem 0.5rem;
             font-size: 0.75rem;
             line-height: 1rem;
+            min-height: 28px;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.1rem;
+            min-height: 32px;
+        }
+
+        .btn-base {
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            min-height: 38px;
         }
 
         .btn-lg {
-            padding: 1rem 1.5rem;
-            font-size: 1rem;
-            line-height: 1.5rem;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            line-height: 1.4rem;
+            min-height: 44px;
         }
 
         .btn-xl {
-            padding: 1.25rem 2rem;
-            font-size: 1.125rem;
-            line-height: 1.75rem;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6rem;
+            min-height: 52px;
         }
 
         /* Boutons compacts spéciaux */
@@ -281,6 +298,44 @@
 
         .btn-pill {
             border-radius: 9999px;
+        }
+
+        /* ===== AMÉLIORATION DES ICÔNES ET ESPACEMENT ===== */
+        .btn-base i {
+            font-size: 1em;
+            margin-right: 0.375rem;
+        }
+
+        .btn-base i:only-child {
+            margin-right: 0;
+        }
+
+        .btn-sm i {
+            font-size: 0.9em;
+            margin-right: 0.25rem;
+        }
+
+        .btn-lg i {
+            font-size: 1.1em;
+            margin-right: 0.5rem;
+        }
+
+        .btn-compact i {
+            font-size: 1em;
+            margin-right: 0;
+        }
+
+        /* Espacement harmonieux pour les boutons avec texte et icône */
+        .btn-base:not(.btn-compact) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+        }
+
+        .btn-base:not(.btn-compact) i + span,
+        .btn-base:not(.btn-compact) i + text {
+            margin-left: 0;
         }
 
         :root {
@@ -2197,12 +2252,20 @@
             color: #155e75;
         }
 
-        /* ===== TOOLTIPS MODERNISÉS ===== */
-        [data-tooltip] {
+        /* ===== SYSTÈME DE TOOLTIPS UNIVERSEL ===== */
+        [data-tooltip],
+        [title],
+        .btn-base[data-tooltip],
+        .ai-btn-enhanced[data-tooltip],
+        .ai-btn-compact[data-tooltip] {
             position: relative;
         }
 
-        [data-tooltip]:hover::after {
+        [data-tooltip]:hover::after,
+        [title]:hover::after,
+        .btn-base[data-tooltip]:hover::after,
+        .ai-btn-enhanced[data-tooltip]:hover::after,
+        .ai-btn-compact[data-tooltip]:hover::after {
             content: attr(data-tooltip);
             position: absolute;
             bottom: 125%;
@@ -2210,29 +2273,73 @@
             transform: translateX(-50%);
             background: var(--gray-900);
             color: white;
-            padding: 0.5rem 0.75rem;
+            padding: 0.75rem 1rem;
             border-radius: var(--border-radius);
-            font-size: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
             white-space: normal;
-            max-width: 200px;
-            z-index: 1000;
+            max-width: 280px;
+            min-width: 120px;
+            z-index: 10000;
             pointer-events: none;
-            box-shadow: var(--shadow-lg);
-            animation: fadeIn var(--transition-fast) ease-out;
-            line-height: 1.3;
+            box-shadow: var(--shadow-xl);
+            animation: tooltipFadeIn 0.2s ease-out forwards;
+            line-height: 1.4;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        [data-tooltip]:hover::before {
+        [data-tooltip]:hover::before,
+        [title]:hover::before,
+        .btn-base[data-tooltip]:hover::before,
+        .ai-btn-enhanced[data-tooltip]:hover::before,
+        .ai-btn-compact[data-tooltip]:hover::before {
             content: '';
             position: absolute;
             bottom: 117%;
             left: 50%;
             transform: translateX(-50%);
-            border: 5px solid transparent;
+            border: 6px solid transparent;
             border-top-color: var(--gray-900);
-            z-index: 1000;
+            z-index: 10000;
             pointer-events: none;
-            animation: fadeIn var(--transition-fast) ease-out;
+            animation: tooltipFadeIn 0.2s ease-out forwards;
+        }
+
+        /* Tooltips pour boutons dans des grilles */
+        .grid button[data-tooltip]:hover::after,
+        .grid .btn-base[data-tooltip]:hover::after {
+            bottom: 130%;
+            max-width: 240px;
+            font-size: 0.8rem;
+        }
+
+        /* Tooltips pour boutons compacts */
+        .btn-compact[data-tooltip]:hover::after,
+        .ai-btn-compact[data-tooltip]:hover::after {
+            bottom: 140%;
+            max-width: 200px;
+            font-size: 0.8rem;
+            padding: 0.5rem 0.75rem;
+        }
+
+        /* Animation des tooltips */
+        @keyframes tooltipFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Tooltips pour éléments en bordure d'écran */
+        .tab-btn[data-tooltip]:hover::after {
+            bottom: 140%;
+            max-width: 180px;
+            font-size: 0.8rem;
         }
 
         /* ===== RESPONSIVE DESIGN ===== */
@@ -2744,11 +2851,11 @@
             <!-- Actions Rapides -->
             <div class="space-y-2 mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
                  <div class="grid-2">
-                      <button id="download-pdf-btn" class="btn-base btn-secondary" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download text-lg"></i> PDF</button>
-                      <button id="share-btn" class="btn-base btn-success" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt text-lg"></i> Partager</button>
+                      <button id="download-pdf-btn" class="btn-base btn-secondary btn-lg w-full" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download"></i> PDF</button>
+                      <button id="share-btn" class="btn-base btn-success btn-lg w-full" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt"></i> Partager</button>
                  </div>
-                 <button id="reset-cv-btn" class="btn-base btn-danger w-full" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus text-lg"></i> Nouveau CV</button>
-                 <button id="toggle-overflow-btn" class="btn-base btn-warning w-full" data-tooltip="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined text-lg"></i> Détection Dépassement</button>
+                 <button id="reset-cv-btn" class="btn-base btn-danger btn-lg w-full" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus"></i> Nouveau CV</button>
+                 <button id="toggle-overflow-btn" class="btn-base btn-warning btn-lg w-full" data-tooltip="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined"></i> Détection Dépassement</button>
             </div>
 
 
@@ -5997,72 +6104,92 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
             // Initialisation du système d'onglets
             initializeTabSystem();
             
-            // ===== SYSTÈME D'HARMONISATION DES BOUTONS =====
+            // ===== SYSTÈME D'HARMONISATION DES BOUTONS AMÉLIORÉ =====
             function harmonizeButtons() {
                 console.log('🎨 Début de l\'harmonisation des boutons...');
                 
-                // Mapping des anciens styles vers les nouveaux
+                // D'abord, préserver tous les tooltips existants
+                const elementsWithTooltips = document.querySelectorAll('[title]');
+                elementsWithTooltips.forEach(el => {
+                    if (!el.hasAttribute('data-tooltip')) {
+                        el.setAttribute('data-tooltip', el.getAttribute('title'));
+                        el.removeAttribute('title');
+                    }
+                });
+                
+                // Mapping des anciens styles vers les nouveaux avec tailles appropriées
                 const buttonMappings = [
-                    // Boutons AI Enhanced
+                    // Boutons AI Enhanced - taille standard
                     {
                         selector: '.ai-btn-enhanced:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-primary'],
-                        removeClasses: ['ai-btn-enhanced']
+                        removeClasses: ['ai-btn-enhanced'],
+                        size: 'standard'
                     },
-                    // Boutons compacts
+                    // Boutons compacts - petite taille
                     {
                         selector: '.ai-btn-compact:not(.btn-base)',
-                        newClasses: ['btn-base', 'btn-compact', 'btn-secondary'],
-                        removeClasses: ['ai-btn-compact']
+                        newClasses: ['btn-base', 'btn-compact', 'btn-secondary', 'btn-sm'],
+                        removeClasses: ['ai-btn-compact'],
+                        size: 'compact'
                     },
-                    // Boutons de thème
+                    // Boutons de thème - petite taille
                     {
                         selector: '.theme-btn:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-sm', 'btn-secondary'],
-                        removeClasses: ['theme-btn']
+                        removeClasses: ['theme-btn'],
+                        size: 'small'
                     },
-                    // Boutons de style de compétences
+                    // Boutons de style de compétences - petite taille
                     {
                         selector: '.skill-style-btn:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-sm', 'btn-info'],
-                        removeClasses: ['skill-style-btn']
+                        removeClasses: ['skill-style-btn'],
+                        size: 'small'
                     },
-                    // Boutons de layout
+                    // Boutons de layout - petite taille
                     {
                         selector: '.layout-btn:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-sm', 'btn-secondary'],
-                        removeClasses: ['layout-btn']
+                        removeClasses: ['layout-btn'],
+                        size: 'small'
                     },
-                    // Boutons avec background spécifiques
+                    // Boutons avec couleurs spécifiques
                     {
                         selector: 'button[class*="bg-green"]:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-success'],
-                        removeClasses: []
+                        removeClasses: [],
+                        size: 'standard'
                     },
                     {
                         selector: 'button[class*="bg-red"]:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-danger'],
-                        removeClasses: []
+                        removeClasses: [],
+                        size: 'standard'
                     },
                     {
                         selector: 'button[class*="bg-yellow"]:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-warning'],
-                        removeClasses: []
+                        removeClasses: [],
+                        size: 'standard'
                     },
                     {
                         selector: 'button[class*="bg-blue"]:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-primary'],
-                        removeClasses: []
+                        removeClasses: [],
+                        size: 'standard'
                     },
                     {
                         selector: 'button[class*="bg-purple"]:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-info'],
-                        removeClasses: []
+                        removeClasses: [],
+                        size: 'standard'
                     },
                     {
                         selector: 'button[class*="bg-gray"]:not(.btn-base)',
                         newClasses: ['btn-base', 'btn-secondary'],
-                        removeClasses: []
+                        removeClasses: [],
+                        size: 'standard'
                     }
                 ];
                 
@@ -6071,16 +6198,28 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
                 buttonMappings.forEach(mapping => {
                     const buttons = document.querySelectorAll(mapping.selector);
                     buttons.forEach(button => {
+                        // Préserver le tooltip
+                        const tooltip = button.getAttribute('data-tooltip') || button.getAttribute('title');
+                        
+                        // Préserver la classe w-full
+                        const hasFullWidth = button.classList.contains('w-full') || 
+                                           button.style.width === '100%' || 
+                                           button.getAttribute('data-full-width');
+                        
                         // Supprimer les anciens styles Tailwind
                         const classesToRemove = [
                             'bg-blue-600', 'bg-blue-700', 'bg-green-600', 'bg-green-700',
                             'bg-red-600', 'bg-red-700', 'bg-yellow-500', 'bg-yellow-600',
                             'bg-purple-600', 'bg-purple-700', 'bg-gray-800', 'bg-gray-900',
+                            'bg-slate-600', 'bg-slate-700', 'bg-indigo-600', 'bg-indigo-700',
                             'hover:bg-blue-700', 'hover:bg-green-700', 'hover:bg-red-700',
                             'hover:bg-yellow-600', 'hover:bg-purple-700', 'hover:bg-gray-900',
-                            'text-white', 'py-2', 'px-4', 'rounded-lg', 'transition-all',
-                            'duration-200', 'hover:scale-105', 'flex', 'items-center',
-                            'justify-center', 'gap-2', 'w-full', ...mapping.removeClasses
+                            'hover:bg-slate-700', 'hover:bg-indigo-700',
+                            'text-white', 'py-2', 'px-4', 'py-3', 'px-3', 'p-3',
+                            'rounded-lg', 'transition-all', 'duration-200', 'duration-300',
+                            'hover:scale-105', 'flex', 'items-center', 'justify-center', 'gap-2',
+                            'text-xl', 'text-lg', 'text-sm', 'text-xs', 'font-medium',
+                            ...mapping.removeClasses
                         ];
                         
                         classesToRemove.forEach(cls => button.classList.remove(cls));
@@ -6088,32 +6227,59 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
                         // Ajouter les nouvelles classes
                         mapping.newClasses.forEach(cls => button.classList.add(cls));
                         
-                        // Préserver la classe w-full si elle était présente
-                        if (button.style.width === '100%' || button.getAttribute('data-full-width')) {
+                        // Appliquer la taille appropriée selon le contexte
+                        if (mapping.size === 'compact') {
+                            button.classList.add('btn-compact');
+                        } else if (mapping.size === 'small') {
+                            button.classList.add('btn-sm');
+                        } else if (mapping.size === 'large') {
+                            button.classList.add('btn-lg');
+                        }
+                        
+                        // Restaurer le tooltip
+                        if (tooltip) {
+                            button.setAttribute('data-tooltip', tooltip);
+                        }
+                        
+                        // Restaurer la largeur complète si nécessaire
+                        if (hasFullWidth) {
                             button.classList.add('w-full');
                         }
+                        
+                        // Ajouter la classe interactive-element pour les animations
+                        button.classList.add('interactive-element');
                         
                         harmonizedCount++;
                     });
                 });
                 
-                // Harmoniser aussi les inputs et selects
-                const inputs = document.querySelectorAll('input:not(.completion-checkbox), select, textarea');
-                inputs.forEach(input => {
-                    if (!input.classList.contains('form-input') && !input.classList.contains('form-select')) {
-                        input.classList.add(input.tagName.toLowerCase() === 'select' ? 'form-select' : 'form-input');
+                // Harmoniser aussi les boutons sans classes spéciales mais avec des styles inline
+                const inlineStyledButtons = document.querySelectorAll('button:not(.btn-base)[style*="background"], button:not(.btn-base)[class*="bg-"]');
+                inlineStyledButtons.forEach(button => {
+                    if (!button.classList.contains('btn-base')) {
+                        const tooltip = button.getAttribute('data-tooltip') || button.getAttribute('title');
+                        button.classList.add('btn-base', 'btn-secondary');
+                        if (tooltip) {
+                            button.setAttribute('data-tooltip', tooltip);
+                        }
                         harmonizedCount++;
                     }
                 });
                 
-                // Ajouter des tooltips modernisés aux éléments qui n'en ont pas
-                const elementsWithTitle = document.querySelectorAll('[title]:not([data-tooltip])');
-                elementsWithTitle.forEach(el => {
-                    el.setAttribute('data-tooltip', el.getAttribute('title'));
-                    el.removeAttribute('title');
+                // Harmoniser les inputs et selects
+                const inputs = document.querySelectorAll('input:not(.completion-checkbox):not(.form-input), select:not(.form-select), textarea:not(.form-input)');
+                inputs.forEach(input => {
+                    input.classList.add(input.tagName.toLowerCase() === 'select' ? 'form-select' : 'form-input');
+                    harmonizedCount++;
                 });
                 
                 console.log(`✅ Harmonisation terminée: ${harmonizedCount} éléments mis à jour`);
+                
+                // Vérifier que les tooltips fonctionnent
+                setTimeout(() => {
+                    const tooltippedElements = document.querySelectorAll('[data-tooltip]');
+                    console.log(`💬 ${tooltippedElements.length} éléments avec tooltips détectés`);
+                }, 100);
             }
             
             // Fonction pour ajouter des animations au survol
@@ -6257,6 +6423,25 @@ Format de sortie : Chaque catégorie sur une ligne avec format "Catégorie: comp
             
             // Afficher la notification après un court délai
             setTimeout(showHarmonizationComplete, 1000);
+            
+            // ===== DEBUG DES TOOLTIPS =====
+            function debugTooltips() {
+                const tooltippedElements = document.querySelectorAll('[data-tooltip]');
+                console.log(`🔍 Debug tooltips: ${tooltippedElements.length} éléments trouvés`);
+                
+                tooltippedElements.forEach((el, index) => {
+                    const tooltip = el.getAttribute('data-tooltip');
+                    console.log(`${index + 1}. ${el.tagName}.${el.className} → "${tooltip?.substring(0, 50)}..."`);
+                    
+                    // Ajouter un event listener de test
+                    el.addEventListener('mouseenter', () => {
+                        console.log(`💬 Tooltip affiché: "${tooltip?.substring(0, 30)}..."`);
+                    });
+                });
+            }
+            
+            // Exécuter le debug après l'harmonisation
+            setTimeout(debugTooltips, 1500);
 
             // Sliders
             Object.values(sliders).forEach(config => {
