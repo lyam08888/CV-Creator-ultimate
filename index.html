@@ -420,43 +420,49 @@
         .color-palette-btn { transition: all 0.2s ease; cursor: pointer; }
         .color-palette-btn:hover { transform: scale(1.05); }
 
-        /* Enhanced tooltips */
+        /* ===== SYSTÈME DE TOOLTIPS HARMONISÉ ===== */
+        
+        /* Tooltips pour tous les éléments avec l'attribut title */
         [title] {
             position: relative;
         }
 
-        /* Enhanced title tooltips */
         [title]:hover::after {
             content: attr(title);
             position: absolute;
-            bottom: 120%;
+            bottom: 130%;
             left: 50%;
             transform: translateX(-50%);
-            background: #1f2937;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
             color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border-radius: 8px;
             font-size: 12px;
+            font-weight: 500;
             white-space: normal;
-            max-width: 220px;
+            max-width: 250px;
+            min-width: max-content;
             z-index: 1001;
             pointer-events: none;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-            animation: tooltipFadeIn 0.2s forwards;
-            line-height: 1.3;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25), 0 3px 10px rgba(0,0,0,0.15);
+            animation: tooltipFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            line-height: 1.4;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         [title]:hover::before {
             content: '';
             position: absolute;
-            bottom: 112%;
+            bottom: 120%;
             left: 50%;
             transform: translateX(-50%);
-            border: 5px solid transparent;
+            border: 6px solid transparent;
             border-top-color: #1f2937;
             z-index: 1001;
             pointer-events: none;
-            animation: tooltipFadeIn 0.2s forwards;
+            animation: tooltipFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         /* Animation de reconstruction IA */
@@ -670,8 +676,195 @@
         }
         
         @keyframes tooltipFadeIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(8px) scale(0.95); 
+                filter: blur(1px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0) scale(1); 
+                filter: blur(0);
+            }
+        }
+
+        /* ===== SYSTÈME DE BOUTONS HARMONISÉ (ICÔNES SEULEMENT) ===== */
+        
+        /* Style pour tous les boutons icône-seulement */
+        .icon-only-btn,
+        .btn-compact,
+        .skill-style-btn,
+        .gauge-style-btn,
+        .logo-size-btn,
+        .banner-align-btn,
+        .tab-btn,
+        .ai-btn-enhanced,
+        .theme-btn,
+        .layout-btn,
+        .style-toggle-btn,
+        .section-title-style-btn,
+        .color-palette-btn,
+        button[data-gauge-style],
+        button[data-skill-style],
+        button[data-skill-template],
+        button[class*="ai-btn"],
+        .skill-template-btn {
+            position: relative;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem !important;
+            min-width: 2.5rem;
+            min-height: 2.5rem;
+            border-radius: var(--border-radius);
+            transition: all var(--transition);
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Masquer le texte, garder seulement les icônes */
+        .icon-only-btn .btn-text,
+        .icon-only-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .skill-style-btn .btn-text,
+        .skill-style-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .gauge-style-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .ai-btn-compact span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .ai-btn-enhanced.icon-only-btn .btn-text,
+        .ai-btn-enhanced.icon-only-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .theme-btn .btn-text,
+        .theme-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .layout-btn .btn-text,
+        .layout-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .style-toggle-btn .btn-text,
+        .style-toggle-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .section-title-style-btn .btn-text,
+        .section-title-style-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .color-palette-btn .btn-text,
+        .color-palette-btn span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]),
+        .btn-compact span:not(.new-badge):not(.completion-checkbox):not([class*="fa"]):not([class*="fas"]):not([class*="far"]):not([class*="fab"]) {
+            display: none !important;
+        }
+
+        /* Garde les icônes visibles */
+        .icon-only-btn i,
+        .skill-style-btn i,
+        .gauge-style-btn i,
+        .ai-btn-compact i,
+        .ai-btn-enhanced.icon-only-btn i,
+        .theme-btn i,
+        .layout-btn i,
+        .style-toggle-btn i,
+        .section-title-style-btn i,
+        .color-palette-btn i,
+        .btn-compact i {
+            display: inline-block !important;
+            margin: 0 !important;
+            font-size: 1.1em;
+        }
+
+        /* Styles d'état pour les boutons harmonisés */
+        .icon-only-btn:hover,
+        .skill-style-btn:hover,
+        .gauge-style-btn:hover,
+        .ai-btn-compact:hover,
+        .ai-btn-enhanced.icon-only-btn:hover,
+        .theme-btn:hover,
+        .layout-btn:hover,
+        .style-toggle-btn:hover,
+        .section-title-style-btn:hover,
+        .color-palette-btn:hover,
+        .btn-compact:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .icon-only-btn:active,
+        .skill-style-btn:active,
+        .gauge-style-btn:active,
+        .ai-btn-compact:active,
+        .ai-btn-enhanced.icon-only-btn:active,
+        .theme-btn:active,
+        .layout-btn:active,
+        .style-toggle-btn:active,
+        .section-title-style-btn:active,
+        .color-palette-btn:active,
+        .btn-compact:active {
+            transform: translateY(0) scale(1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .icon-only-btn.active,
+        .skill-style-btn.active,
+        .gauge-style-btn.active,
+        .theme-btn.active,
+        .layout-btn.active,
+        .style-toggle-btn.active,
+        .section-title-style-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+            color: white !important;
+            box-shadow: var(--shadow), 0 4px 14px 0 rgba(37, 99, 235, 0.25);
+        }
+
+        /* Exception pour les onglets - ils gardent leur style d'origine mais masquent le texte */
+        .tab-btn.icon-only-btn {
+            padding: 0.75rem 1rem !important;
+            min-width: auto;
+            min-height: auto;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .tab-btn.icon-only-btn:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .tab-btn.icon-only-btn:active {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Variantes de couleurs pour les boutons IA */
+        .ai-btn-compact {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .ai-btn-compact:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        }
+
+        /* Positionnement spécial des tooltips pour les petits boutons */
+        .icon-only-btn[title]:hover::after,
+        .skill-style-btn[title]:hover::after,
+        .gauge-style-btn[title]:hover::after,
+        .ai-btn-compact[title]:hover::after,
+        .ai-btn-enhanced.icon-only-btn[title]:hover::after,
+        .theme-btn[title]:hover::after,
+        .layout-btn[title]:hover::after,
+        .style-toggle-btn[title]:hover::after,
+        .section-title-style-btn[title]:hover::after,
+        .btn-compact[title]:hover::after {
+            bottom: 140%;
+            font-size: 11px;
+            max-width: 200px;
+        }
+
+        .icon-only-btn[title]:hover::before,
+        .skill-style-btn[title]:hover::before,
+        .gauge-style-btn[title]:hover::before,
+        .ai-btn-compact[title]:hover::before,
+        .ai-btn-enhanced.icon-only-btn[title]:hover::before,
+        .theme-btn[title]:hover::before,
+        .layout-btn[title]:hover::before,
+        .style-toggle-btn[title]:hover::before,
+        .section-title-style-btn[title]:hover::before,
+        .btn-compact[title]:hover::before {
+            bottom: 130%;
         }
         
         /* Special positioning for small buttons */
@@ -2834,8 +3027,8 @@
                 <div class="flex items-center gap-3"><i class="fas fa-magic-wand-sparkles text-3xl text-blue-600"></i><h1 class="text-2xl font-bold text-gray-800">Créateur de CV</h1></div>
                 <div class="flex items-center gap-2">
                     <!-- Save status removed -->
-                    <button id="undo-btn" class="btn-base btn-compact btn-secondary" data-tooltip="↶ Annule la dernière action effectuée (Ctrl+Z)"><i class="fas fa-undo"></i></button>
-                    <button id="redo-btn" class="btn-base btn-compact btn-secondary" data-tooltip="↷ Rétablit la dernière action annulée (Ctrl+Y)"><i class="fas fa-redo"></i></button>
+                    <button id="undo-btn" class="btn-base icon-only-btn btn-secondary" title="↶ Annule la dernière action effectuée (Ctrl+Z)"><i class="fas fa-undo"></i></button>
+                    <button id="redo-btn" class="btn-base icon-only-btn btn-secondary" title="↷ Rétablit la dernière action annulée (Ctrl+Y)"><i class="fas fa-redo"></i></button>
                 </div>
             </div>
             
@@ -2851,23 +3044,23 @@
             <!-- Actions Rapides -->
             <div class="space-y-2 mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
                  <div class="grid-2">
-                      <button id="download-pdf-btn" class="btn-base btn-secondary btn-lg w-full" data-tooltip="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download"></i> PDF</button>
-                      <button id="share-btn" class="btn-base btn-success btn-lg w-full" data-tooltip="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt"></i> Partager</button>
+                      <button id="download-pdf-btn" class="btn-base icon-only-btn btn-secondary btn-lg w-full" title="📄 Télécharge votre CV au format PDF avec une mise en page professionnelle optimisée pour l'impression"><i class="fa-solid fa-download"></i><span class="btn-text"> PDF</span></button>
+                      <button id="share-btn" class="btn-base icon-only-btn btn-success btn-lg w-full" title="🔗 Génère un lien unique pour partager facilement votre CV avec les recruteurs ou votre réseau"><i class="fa-solid fa-share-alt"></i><span class="btn-text"> Partager</span></button>
                  </div>
-                 <button id="reset-cv-btn" class="btn-base btn-danger btn-lg w-full" data-tooltip="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus"></i> Nouveau CV</button>
-                 <button id="toggle-overflow-btn" class="btn-base btn-warning btn-lg w-full" data-tooltip="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined"></i> Détection Dépassement</button>
+                 <button id="reset-cv-btn" class="btn-base icon-only-btn btn-danger btn-lg w-full" title="🗂️ Créer un nouveau CV vierge (supprime le contenu actuel)"><i class="fa-solid fa-file-circle-plus"></i><span class="btn-text"> Nouveau CV</span></button>
+                 <button id="toggle-overflow-btn" class="btn-base icon-only-btn btn-warning btn-lg w-full" title="📏 Activer la détection visuelle des débordements de contenu"><i class="fa-solid fa-ruler-combined"></i><span class="btn-text"> Détection Dépassement</span></button>
             </div>
 
 
             <!-- TABS -->
             <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
-                <button class="tab-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV"><i class="fa-solid fa-robot mr-1"></i> IA</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" title="📝 Gérez le contenu principal de votre CV : expériences et formations"><i class="fa-solid fa-file-lines mr-1"></i> Contenu</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" title="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles"><i class="fa-solid fa-star mr-1"></i> Compétences</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" title="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications"><i class="fa-solid fa-puzzle-piece mr-1"></i> Sections</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" title="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale"><i class="fa-solid fa-columns mr-1"></i> Mise en Page</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" title="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV"><i class="fa-solid fa-palette mr-1"></i> Styles</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" title="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact"><i class="fa-solid fa-user-tie mr-1"></i> Bannière</button>
+                <button class="tab-btn icon-only-btn active -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia" title="🤖 Accédez aux outils d'intelligence artificielle pour optimiser automatiquement votre CV"><i class="fa-solid fa-robot"></i><span class="btn-text"> IA</span></button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content" title="📝 Gérez le contenu principal de votre CV : expériences et formations"><i class="fa-solid fa-file-lines"></i><span class="btn-text"> Contenu</span></button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills" title="⭐ Configurez l'affichage et la gestion de vos compétences professionnelles"><i class="fa-solid fa-star"></i><span class="btn-text"> Compétences</span></button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom" title="🧩 Ajoutez des sections personnalisées comme langues, centres d'intérêt, certifications"><i class="fa-solid fa-puzzle-piece"></i><span class="btn-text"> Sections</span></button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout" title="📐 Personnalisez la mise en page, colonnes, espacements et disposition générale"><i class="fa-solid fa-columns"></i><span class="btn-text"> Mise en Page</span></button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles" title="🎨 Changez les couleurs, polices, thèmes et l'apparence visuelle de votre CV"><i class="fa-solid fa-palette"></i><span class="btn-text"> Styles</span></button>
+                <button class="tab-btn icon-only-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner" title="👔 Personnalisez l'en-tête de votre CV : nom, poste et informations de contact"><i class="fa-solid fa-user-tie"></i><span class="btn-text"> Bannière</span></button>
             </div>
 
             <div id="tab-content" class="py-4 flex-grow overflow-y-auto">
@@ -2877,13 +3070,13 @@
                         <summary><span>Actions Rapides IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-actions" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-3 gap-2">
-                                <button id="ai-optimize-one-page-btn" class="ai-btn-enhanced bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center transition-all duration-200 hover:scale-105" data-tooltip="🔮 L'IA optimise automatiquement votre CV pour qu'il tienne sur une seule page tout en gardant l'essentiel">
+                                <button id="ai-optimize-one-page-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="🔮 L'IA optimise automatiquement votre CV pour qu'il tienne sur une seule page tout en gardant l'essentiel">
                                     <i class="fas fa-magic-wand-sparkles text-lg"></i>
                                 </button>
-                                <button id="anonymize-btn" class="ai-btn-enhanced bg-slate-600 text-white p-3 rounded-lg hover:bg-slate-700 flex items-center justify-center transition-all duration-200 hover:scale-105" data-tooltip="🕵️ Masquer vos informations personnelles pour créer une version anonyme de votre CV">
+                                <button id="anonymize-btn" class="ai-btn-enhanced icon-only-btn bg-slate-600 text-white p-3 rounded-lg hover:bg-slate-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="🕵️ Masquer vos informations personnelles pour créer une version anonyme de votre CV">
                                     <i class="fa-solid fa-user-secret text-lg"></i>
                                 </button>
-                                <button id="toggle-presentation-mode-btn" class="ai-btn-enhanced bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center transition-all duration-200 hover:scale-105" data-tooltip="👁️ Mode présentation : masquer tous les éléments d'édition pour une vue propre">
+                                <button id="toggle-presentation-mode-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 flex items-center justify-center transition-all duration-200 hover:scale-105" title="👁️ Mode présentation : masquer tous les éléments d'édition pour une vue propre">
                                     <i class="fa-solid fa-eye text-lg"></i>
                                 </button>
                             </div>
@@ -2896,8 +3089,8 @@
                                 <label for="api-key-input" class="block text-sm font-medium text-gray-700">Clé API Gemini</label>
                                 <div class="flex gap-2">
                                     <input type="password" id="api-key-input" placeholder="Entrez votre clé API Gemini..." class="flex-1 p-2 border rounded-md text-sm">
-                                    <button id="save-api-key-btn" class="ai-btn-enhanced bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm flex items-center gap-1 transition-all duration-200 hover:scale-105" data-tooltip="💾 Sauvegarder votre clé API Gemini pour les fonctionnalités IA">
-                                        <i class="fas fa-save text-lg"></i> Sauver
+                                    <button id="save-api-key-btn" class="ai-btn-enhanced icon-only-btn bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-sm flex items-center gap-1 transition-all duration-200 hover:scale-105" title="💾 Sauvegarder votre clé API Gemini pour les fonctionnalités IA">
+                                        <i class="fas fa-save text-lg"></i><span class="btn-text"> Sauver</span>
                                     </button>
                                 </div>
                                 <div class="flex items-center gap-2">
@@ -2924,21 +3117,21 @@
                         <div class="control-group-content space-y-2">
                             <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="analyze-btn" class="ai-btn-enhanced bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i> Analyser & Remplir</button>
-                                <button id="smart-analyze-btn" class="ai-btn-enhanced bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain text-lg"></i> Analyse Smart</button>
+                                <button id="analyze-btn" class="ai-btn-enhanced icon-only-btn bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔍 Analyse automatique de vos données pour remplir intelligemment votre CV avec les meilleures informations"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i><span class="btn-text"> Analyser & Remplir</span></button>
+                                <button id="smart-analyze-btn" class="ai-btn-enhanced icon-only-btn bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🧠 Analyse intelligente avancée qui comprend le contexte et optimise automatiquement votre contenu"><i class="fa-solid fa-brain text-lg"></i><span class="btn-text"> Analyse Smart</span></button>
                             </div>
-                            <button id="industry-match-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-lg"></i> Adapter au Secteur</button>
+                            <button id="industry-match-btn" class="ai-btn-enhanced icon-only-btn w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🏭 Adapte automatiquement votre CV aux standards et attentes spécifiques de votre secteur d'activité"><i class="fa-solid fa-industry text-lg"></i><span class="btn-text"> Adapter au Secteur</span></button>
                         </div>
                     </details>
                     <details class="control-group">
                         <summary><span>Optimisations IA <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-optimizations" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="ai-score-cv-btn" class="ai-btn-enhanced bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line text-lg"></i> Score ATS</button>
-                                <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key text-lg"></i> Mots-clés</button>
+                                <button id="ai-score-cv-btn" class="ai-btn-enhanced icon-only-btn bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📊 Calcule un score ATS détaillé et vous indique comment améliorer la visibilité de votre CV"><i class="fa-solid fa-chart-line text-lg"></i><span class="btn-text"> Score ATS</span></button>
+                                <button id="ai-keyword-optimize-btn" class="ai-btn-enhanced icon-only-btn bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🔑 Optimise automatiquement les mots-clés pour maximiser vos chances d'être retenu par les recruteurs"><i class="fa-solid fa-key text-lg"></i><span class="btn-text"> Mots-clés</span></button>
                             </div>
-                            <button id="ai-create-variants-btn" class="ai-btn-enhanced w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy text-lg"></i> Créer 3 Variantes</button>
-                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced w-full bg-rose-600 text-white py-2 px-4 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-lg"></i> Personnaliser pour Poste</button>
+                            <button id="ai-create-variants-btn" class="ai-btn-enhanced icon-only-btn w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="📋 Génère 3 versions différentes de votre CV adaptées à différents types de postes ou secteurs"><i class="fa-solid fa-copy text-lg"></i><span class="btn-text"> Créer 3 Variantes</span></button>
+                            <button id="ai-personalize-job-btn" class="ai-btn-enhanced icon-only-btn w-full bg-rose-600 text-white py-2 px-4 rounded-lg hover:bg-rose-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🎯 Personnalise entièrement votre CV pour une offre d'emploi spécifique en analysant les exigences"><i class="fa-solid fa-bullseye text-lg"></i><span class="btn-text"> Personnaliser pour Poste</span></button>
                         </div>
                     </details>
                     <details class="control-group">
@@ -2948,8 +3141,8 @@
                             <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
                             <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
                             <div class="grid grid-cols-2 gap-2">
-                                <button id="generate-mail-btn" class="ai-btn-enhanced bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles text-lg"></i> Mail Présentation</button>
-                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin text-lg"></i> Message LinkedIn</button>
+                                <button id="generate-mail-btn" class="ai-btn-enhanced icon-only-btn bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="✉️ Génère un email de présentation professionnel personnalisé basé sur votre CV et votre profil"><i class="fas fa-wand-magic-sparkles text-lg"></i><span class="btn-text"> Mail Présentation</span></button>
+                                <button id="generate-linkedin-msg-btn" class="ai-btn-enhanced icon-only-btn bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-800 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💼 Crée un message LinkedIn percutant pour votre recherche d'emploi et networking professionnel"><i class="fab fa-linkedin text-lg"></i><span class="btn-text"> Message LinkedIn</span></button>
                             </div>
                             <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le message généré apparaîtra ici..."></textarea>
                         </div>
@@ -2957,9 +3150,9 @@
                     <details class="control-group">
                         <summary><span>IA Créative <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-ia-creative" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
-                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced w-full bg-violet-600 text-white py-2 px-4 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-lg"></i> Générer Devise/Slogan</button>
-                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced w-full bg-amber-600 text-white py-2 px-4 rounded-lg hover:bg-amber-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb text-lg"></i> Suggestions d'Amélioration</button>
-                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced w-full bg-cyan-600 text-white py-2 px-4 rounded-lg hover:bg-cyan-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" data-tooltip="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language text-lg"></i> Traduire CV</button>
+                            <button id="ai-generate-motto-btn" class="ai-btn-enhanced icon-only-btn w-full bg-violet-600 text-white py-2 px-4 rounded-lg hover:bg-violet-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💭 Crée une devise ou un slogan personnel unique qui reflète votre personnalité professionnelle"><i class="fa-solid fa-quote-left text-lg"></i><span class="btn-text"> Générer Devise/Slogan</span></button>
+                            <button id="ai-suggest-improvements-btn" class="ai-btn-enhanced icon-only-btn w-full bg-amber-600 text-white py-2 px-4 rounded-lg hover:bg-amber-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="💡 Analyse votre CV et propose des améliorations intelligentes pour maximiser votre impact"><i class="fa-solid fa-lightbulb text-lg"></i><span class="btn-text"> Suggestions d'Amélioration</span></button>
+                            <button id="ai-translate-cv-btn" class="ai-btn-enhanced icon-only-btn w-full bg-cyan-600 text-white py-2 px-4 rounded-lg hover:bg-cyan-700 flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105" title="🌍 Traduit automatiquement votre CV dans la langue de votre choix en conservant le contexte professionnel"><i class="fa-solid fa-language text-lg"></i><span class="btn-text"> Traduire CV</span></button>
                         </div>
                     </details>
                 </div>
@@ -2978,14 +3171,14 @@
                      <details class="control-group">
                         <summary><span>Expériences</span><label class="completion-label"><input type="checkbox" id="completion-content-exp" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
-                            <div class="flex justify-end mb-2"><button id="add-experience" class="ai-btn-compact text-sm text-blue-600 hover:text-blue-800 font-medium" data-tooltip="➕ Ajoute une nouvelle expérience professionnelle avec tous les détails : poste, entreprise, dates, missions"><i class="fas fa-circle-plus"></i> Ajouter un bloc</button></div>
+                            <div class="flex justify-end mb-2"><button id="add-experience" class="ai-btn-compact icon-only-btn text-sm text-blue-600 hover:text-blue-800 font-medium" title="➕ Ajoute une nouvelle expérience professionnelle avec tous les détails : poste, entreprise, dates, missions"><i class="fas fa-circle-plus"></i><span class="btn-text"> Ajouter un bloc</span></button></div>
                             <div id="experience-list" class="space-y-2"></div>
                         </div>
                     </details>
                      <details class="control-group">
                         <summary><span>Formations</span><label class="completion-label"><input type="checkbox" id="completion-content-form" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-2">
-                            <div class="flex justify-end mb-2"><button id="add-formation" class="ai-btn-compact text-sm text-blue-600 hover:text-blue-800 font-medium" data-tooltip="🎓 Ajoute une nouvelle formation, diplôme ou certification avec l'établissement et les dates"><i class="fas fa-circle-plus"></i> Ajouter un bloc</button></div>
+                            <div class="flex justify-end mb-2"><button id="add-formation" class="ai-btn-compact icon-only-btn text-sm text-blue-600 hover:text-blue-800 font-medium" title="🎓 Ajoute une nouvelle formation, diplôme ou certification avec l'établissement et les dates"><i class="fas fa-circle-plus"></i><span class="btn-text"> Ajouter un bloc</span></button></div>
                             <div id="formation-list" class="space-y-2"></div>
                         </div>
                     </details>
@@ -3007,7 +3200,7 @@
                             </div>
                             
                             <div id="skills-text-controls">
-                                <div class="flex justify-between items-center"><label for="competences" class="font-medium">Liste des compétences</label><div class="flex gap-2"><button id="ai-limit-skills-btn" class="ai-btn-compact text-blue-600 hover:text-blue-800" data-tooltip="🎯 Utilise l'IA pour sélectionner automatiquement les 10 compétences les plus pertinentes et impactantes"><i class="fas fa-filter"></i> 10</button><button id="ai-synthesize-skills-btn" class="ai-btn-compact text-blue-600 hover:text-blue-800" data-tooltip="🧠 Organise et synthétise intelligemment vos compétences par catégories et importance"><i class="fas fa-brain"></i></button><button id="ai-skills-from-job-btn" class="ai-btn-compact text-purple-600 hover:text-purple-800" data-tooltip="⚡ Génère automatiquement une liste de compétences optimales basée sur une offre d'emploi"><i class="fas fa-magic-wand-sparkles"></i> Job</button></div></div>
+                                <div class="flex justify-between items-center"><label for="competences" class="font-medium">Liste des compétences</label><div class="flex gap-2"><button id="ai-limit-skills-btn" class="ai-btn-compact icon-only-btn text-blue-600 hover:text-blue-800" title="🎯 Utilise l'IA pour sélectionner automatiquement les 10 compétences les plus pertinentes et impactantes"><i class="fas fa-filter"></i><span class="btn-text"> 10</span></button><button id="ai-synthesize-skills-btn" class="ai-btn-compact icon-only-btn text-blue-600 hover:text-blue-800" title="🧠 Organise et synthétise intelligemment vos compétences par catégories et importance"><i class="fas fa-brain"></i></button><button id="ai-skills-from-job-btn" class="ai-btn-compact icon-only-btn text-purple-600 hover:text-purple-800" title="⚡ Génère automatiquement une liste de compétences optimales basée sur une offre d'emploi"><i class="fas fa-magic-wand-sparkles"></i><span class="btn-text"> Job</span></button></div></div>
                                 <textarea id="competences" placeholder="Compétences (séparées par des virgules)..." rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
                             </div>
 
@@ -3022,25 +3215,25 @@
                                     <button data-gauge-style="percentage" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Pourcentage">%</button>
                                 </div>
                                 <div id="skills-level-list" class="space-y-2 border-t pt-3"></div>
-                                <button id="add-skill-level-btn" class="ai-btn-enhanced w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm transition-all duration-200 hover:scale-105" data-tooltip="➕ Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle text-lg"></i> Ajouter une compétence</button>
+                                <button id="add-skill-level-btn" class="ai-btn-enhanced icon-only-btn w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 text-sm transition-all duration-200 hover:scale-105" title="➕ Ajouter une nouvelle compétence avec niveau de maîtrise"><i class="fas fa-plus-circle text-lg"></i><span class="btn-text"> Ajouter une compétence</span></button>
                             </div>
                         </div>
                     </details>
                     <details class="control-group">
                         <summary><span>Compétences Avancées <span class="new-badge">NOUVEAU</span></span><label class="completion-label"><input type="checkbox" id="completion-skills-advanced" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
-                            <button id="skill-matcher-btn" class="ai-btn-enhanced w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2" data-tooltip="🎯 Analyse en profondeur la correspondance entre vos compétences et celles demandées dans l'offre d'emploi"><i class="fa-solid fa-search"></i> Analyse Compétences vs Poste</button>
-                            <button id="suggest-missing-skills-btn" class="ai-btn-enhanced w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2" data-tooltip="🔍 Identifie intelligemment les compétences clés manquantes pour le poste que vous visez"><i class="fa-solid fa-plus-circle"></i> Compétences Manquantes</button>
-                            <button id="skill-trend-analysis-btn" class="ai-btn-enhanced w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" data-tooltip="📈 Découvre les compétences les plus demandées et tendances dans votre secteur d'activité"><i class="fa-solid fa-trending-up"></i> Tendances du Marché</button>
+                            <button id="skill-matcher-btn" class="ai-btn-enhanced icon-only-btn w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 flex items-center justify-center gap-2" title="🎯 Analyse en profondeur la correspondance entre vos compétences et celles demandées dans l'offre d'emploi"><i class="fa-solid fa-search"></i><span class="btn-text"> Analyse Compétences vs Poste</span></button>
+                            <button id="suggest-missing-skills-btn" class="ai-btn-enhanced icon-only-btn w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 flex items-center justify-center gap-2" title="🔍 Identifie intelligemment les compétences clés manquantes pour le poste que vous visez"><i class="fa-solid fa-plus-circle"></i><span class="btn-text"> Compétences Manquantes</span></button>
+                            <button id="skill-trend-analysis-btn" class="ai-btn-enhanced icon-only-btn w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 flex items-center justify-center gap-2" title="📈 Découvre les compétences les plus demandées et tendances dans votre secteur d'activité"><i class="fa-solid fa-trending-up"></i><span class="btn-text"> Tendances du Marché</span></button>
                             <div class="border-t pt-3">
                                 <label class="text-sm font-medium mb-2 block">Templates de Compétences</label>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <button data-skill-template="tech" class="skill-template-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200" title="Compétences techniques et informatiques">Tech</button>
-                                    <button data-skill-template="marketing" class="skill-template-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200" title="Compétences en marketing et communication">Marketing</button>
-                                    <button data-skill-template="finance" class="skill-template-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200" title="Compétences financières et comptables">Finance</button>
-                                    <button data-skill-template="design" class="skill-template-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200" title="Compétences créatives et de design">Design</button>
-                                    <button data-skill-template="management" class="skill-template-btn bg-red-100 text-red-800 p-2 rounded-md text-sm hover:bg-red-200" title="Compétences de management et leadership">Management</button>
-                                    <button data-skill-template="sales" class="skill-template-btn bg-indigo-100 text-indigo-800 p-2 rounded-md text-sm hover:bg-indigo-200" title="Compétences commerciales et de vente">Ventes</button>
+                                    <button data-skill-template="tech" class="skill-template-btn icon-only-btn bg-blue-100 text-blue-800 p-2 rounded-md text-sm hover:bg-blue-200" title="Compétences techniques et informatiques"><i class="fas fa-code"></i><span class="btn-text">Tech</span></button>
+                                    <button data-skill-template="marketing" class="skill-template-btn icon-only-btn bg-green-100 text-green-800 p-2 rounded-md text-sm hover:bg-green-200" title="Compétences en marketing et communication"><i class="fas fa-bullhorn"></i><span class="btn-text">Marketing</span></button>
+                                    <button data-skill-template="finance" class="skill-template-btn icon-only-btn bg-yellow-100 text-yellow-800 p-2 rounded-md text-sm hover:bg-yellow-200" title="Compétences financières et comptables"><i class="fas fa-calculator"></i><span class="btn-text">Finance</span></button>
+                                    <button data-skill-template="design" class="skill-template-btn icon-only-btn bg-purple-100 text-purple-800 p-2 rounded-md text-sm hover:bg-purple-200" title="Compétences créatives et de design"><i class="fas fa-palette"></i><span class="btn-text">Design</span></button>
+                                    <button data-skill-template="management" class="skill-template-btn icon-only-btn bg-red-100 text-red-800 p-2 rounded-md text-sm hover:bg-red-200" title="Compétences de management et leadership"><i class="fas fa-users"></i><span class="btn-text">Management</span></button>
+                                    <button data-skill-template="sales" class="skill-template-btn icon-only-btn bg-indigo-100 text-indigo-800 p-2 rounded-md text-sm hover:bg-indigo-200" title="Compétences commerciales et de vente"><i class="fas fa-handshake"></i><span class="btn-text">Ventes</span></button>
                                 </div>
                             </div>
                         </div>
@@ -3071,7 +3264,7 @@
                                 </select>
                                 <div class="flex gap-2">
                                     <input type="text" id="new-section-title-input" class="flex-grow p-2 border rounded-md text-sm" placeholder="Ou tapez un titre personnalisé...">
-                                    <button id="add-section-btn" class="ai-btn-enhanced bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105" data-tooltip="➕ Créer une nouvelle section personnalisée"><i class="fas fa-plus text-lg"></i></button>
+                                    <button id="add-section-btn" class="ai-btn-enhanced icon-only-btn bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-all duration-200 hover:scale-105" title="➕ Créer une nouvelle section personnalisée"><i class="fas fa-plus text-lg"></i></button>
                                 </div>
                             </div>
                             <div id="custom-sections-list" class="space-y-2 mt-2 border-t pt-2"></div>
@@ -3114,7 +3307,7 @@
                                 <button data-layout="layout-3-col" class="layout-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Trois colonnes égales pour plus de contenu"><i class="fas fa-th-large"></i><span class="btn-text"> 3 Col.</span></button>
                                 <button data-layout="layout-asymmetric-1" class="layout-btn icon-only-btn bg-gray-200 p-2 rounded-md text-sm" title="Layout asymétrique : petite-grande-petite"><i class="fas fa-grip-horizontal"></i><span class="btn-text"> 1-2-1</span></button>
                             </div>
-                            <button id="ai-suggest-layout-btn" class="ai-btn-enhanced w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2" data-tooltip="🤖 L'IA analyse votre contenu et recommande automatiquement le meilleur layout pour optimiser la lisibilité"><i class="fa-solid fa-magic-wand-sparkles"></i> Suggestion IA de Layout</button>
+                            <button id="ai-suggest-layout-btn" class="ai-btn-enhanced icon-only-btn w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2" title="🤖 L'IA analyse votre contenu et recommande automatiquement le meilleur layout pour optimiser la lisibilité"><i class="fa-solid fa-magic-wand-sparkles"></i><span class="btn-text"> Suggestion IA de Layout</span></button>
                         </div>
                     </details>
                     <details class="control-group">
@@ -3133,7 +3326,7 @@
                                 <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="enable-zebra-sections" class="cv-input">Sections alternées</label>
                                 <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="enable-floating-elements" class="cv-input">Éléments flottants</label>
                             </div>
-                            <button id="auto-optimize-layout-btn" class="ai-btn-enhanced w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2" data-tooltip="⚡ Optimisation automatique intelligente de la mise en page pour un rendu parfait et professionnel"><i class="fa-solid fa-magic-wand-sparkles"></i> Auto-Optimiser Layout</button>
+                            <button id="auto-optimize-layout-btn" class="ai-btn-enhanced icon-only-btn w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2" title="⚡ Optimisation automatique intelligente de la mise en page pour un rendu parfait et professionnel"><i class="fa-solid fa-magic-wand-sparkles"></i><span class="btn-text"> Auto-Optimiser Layout</span></button>
                             <button id="save-layout-template-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2" title="Sauvegarder cette mise en page comme modèle réutilisable"><i class="fa-solid fa-bookmark"></i> Sauver comme Template</button>
                         </div>
                     </details>
